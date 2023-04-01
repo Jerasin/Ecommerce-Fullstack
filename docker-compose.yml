@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: backend/docker/Dockerfile.api
+    container_name: bellugg-api
+    ports:
+      - 3000:3000
+    volumes:
+      - ./backend/src:/app/src
+    depends_on:
+       db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile.web
+    container_name: bellugg-web
+    ports:
+      - 4200:4200
+    volumes:
+      - ./frontend/src:/app/src
+
+  db:
+    build:
+      context: .
+      dockerfile: backend/docker/Dockerfile.db
+    container_name: bellugg-db
+    environment:
+      MYSQL_DATABASE: api
+      MYSQL_USER: api
+      MYSQL_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3307:3306
+    volumes:
+      - ./db-data:/var/lib/mysql:z
+    # https://github.com/docker/compose/issues/9367
+    healthcheck:
+      test: "mysql -uroot -p$$MYSQL_ROOT_PASSWORD"
+      interval: 10s
+      timeout: 30s
+      retries: 3
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  db-data:

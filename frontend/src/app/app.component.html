@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <ul class="container-navbar">
+        <li class="navbar-list">
+          <div class="navbar-item">
+            <a class="btn-navbar" [routerLink]="['/']">Home</a>
+          </div>
+        </li>
+        <li class="navbar-list">
+          <a class="btn-navbar" [routerLink]="['/products']">Products</a>
+        </li>
+        <li class="navbar-list">
+          <a class="btn-navbar">Contact</a>
+        </li>
+        <li class="navbar-list">
+          <a class="btn-navbar">About</a>
+        </li>
+
+        <li class="navbar-login">
+          <a class="btn-navbar" [routerLink]="['/signIn']">SignIn</a>
+        </li>
+      </ul>
+
+      <router-outlet></router-outlet>
+    </div>
+  </body>
+</html>

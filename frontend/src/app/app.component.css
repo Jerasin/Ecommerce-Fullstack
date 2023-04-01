@@ -1,0 +1,33 @@
+.container-navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+.navbar-list {
+  float: left;
+}
+
+.navbar-login {
+  float: right;
+}
+
+.navbar-list .btn-navbar {
+  display: block;
+  padding: 14px 16px;
+  color: white;
+  text-decoration: none;
+}
+
+.navbar-login .btn-navbar {
+  display: block;
+  padding: 14px 16px;
+  color: white;
+  text-decoration: none;
+}
+
+.container-navbar :hover {
+  background-color: red;
+}

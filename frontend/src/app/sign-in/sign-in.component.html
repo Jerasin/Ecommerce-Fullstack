@@ -1,0 +1,61 @@
+<div class="container">
+  <h1 class="header-login">Profile</h1>
+  <div class="container-box">
+    <div class="flex-left">
+      <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+        <div class="container-form">
+          <div class="header-form">
+            <h1 class="sign-in-text">SignIn</h1>
+          </div>
+
+          <div class="body-form">
+            <div class="form-box">
+              <div class="form-box-input">
+                <input
+                  class="form-input"
+                  type="email"
+                  placeholder="Email"
+                  formControlName="email"
+                />
+              </div>
+              <div class="form-box-input">
+                <input
+                  class="form-input"
+                  type="password"
+                  placeholder="Password"
+                  formControlName="password"
+                />
+              </div>
+            </div>
+
+            <div class="form-box-input">
+              <input class="form-subject" type="text" placeholder="Subject" />
+            </div>
+
+            <div class="form-box-input">
+              <textarea
+                class="form-description"
+                placeholder="Description"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="container-btn">
+            <button
+              type="submit"
+              class="btn-sign-in"
+              [disabled]="!signInForm.valid"
+            >
+              <b>SignIn</b>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="flex-right">
+      <div style="padding: 10px">
+        <h2 style="color: white">Contact Us</h2>
+      </div>
+    </div>
+  </div>
+</div>
