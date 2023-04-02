@@ -6,16 +6,15 @@
       </div>
     </li>
     <li class="navbar-list">
-      <a class="btn-navbar" [routerLink]="['/products']">Products</a>
+      <a class="btn-navbar" [routerLink]="['/products']" *ngIf="isShowSignIn"
+        >Products</a
+      >
     </li>
     <li class="navbar-list">
       <a class="btn-navbar">Contact</a>
     </li>
     <li class="navbar-list">
       <a class="btn-navbar">About</a>
-    </li>
-    <li class="navbar-list">
-      <a class="btn-navbar">{{ isShowSignIn }}</a>
     </li>
 
     <li class="navbar-sign-in">
