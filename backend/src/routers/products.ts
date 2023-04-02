@@ -3,11 +3,18 @@ import { myDataSource } from "../app-data-source";
 import { Product } from "../entities";
 import { Repository } from "typeorm";
 import { requireJWTAuth } from "../middleware/auth.middleware";
+import { ProductProps } from "../entities";
 
 const router = Router();
 
-const getRepository = (): Repository<Product> =>
-  myDataSource.getRepository(Product);
+const getRepository = (): Repository<Product> => {
+  return myDataSource.getRepository(Product);
+};
+
+const createProduct = async (props: ProductProps): Promise<Product> => {
+  const product = getRepository().create(props);
+  return getRepository().save(product);
+};
 
 router.get(
   "/",
@@ -31,8 +38,8 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
 });
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
-  const product = getRepository().create(req.body);
-  const result = await getRepository().save(product);
+  const result = await createProduct(req.body);
+
   res.json(result);
 });
 

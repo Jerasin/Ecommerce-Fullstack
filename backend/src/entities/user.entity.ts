@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 export interface UserProps {
   firstName: string;
   lastName: string;
-  matchName: string;
+  matchName?: string;
   email: string;
   description?: string;
   img?: string;

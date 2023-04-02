@@ -1,0 +1,31 @@
+<div>
+  <ul class="container-navbar">
+    <li class="navbar-list">
+      <div class="navbar-item">
+        <a class="btn-navbar" [routerLink]="['/']">Home</a>
+      </div>
+    </li>
+    <li class="navbar-list">
+      <a class="btn-navbar" [routerLink]="['/products']">Products</a>
+    </li>
+    <li class="navbar-list">
+      <a class="btn-navbar">Contact</a>
+    </li>
+    <li class="navbar-list">
+      <a class="btn-navbar">About</a>
+    </li>
+    <li class="navbar-list">
+      <a class="btn-navbar">{{ isShowSignIn }}</a>
+    </li>
+
+    <li class="navbar-sign-in">
+      <a class="btn-navbar" [routerLink]="['/signIn']" *ngIf="!isShowSignIn"
+        >SignIn</a
+      >
+    </li>
+
+    <li class="navbar-sign-out">
+      <a class="btn-navbar" (click)="signOut()" *ngIf="isShowSignIn">SignOut</a>
+    </li>
+  </ul>
+</div>

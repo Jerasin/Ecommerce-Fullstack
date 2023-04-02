@@ -5,6 +5,8 @@ WORKDIR /app
 
 COPY ./backend .
 
+RUN npm i
+
 EXPOSE 3000
 
 

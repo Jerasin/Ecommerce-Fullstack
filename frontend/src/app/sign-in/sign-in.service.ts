@@ -2,15 +2,18 @@ import { Inject, Injectable } from '@angular/core';
 import {
   SignInInterface,
   SignInResponse,
-} from '../interfaces/sign-in.interface';
+} from '../../interfaces/sign-in.interface';
 import { Router } from '@angular/router';
-import { HttpService } from './https/http.service';
+import { HttpService } from '../https/http.service';
+import { NavbarService } from '../navbar/navbar.service';
 
 @Injectable()
 export class SignInService {
   constructor(
     @Inject('HttpService')
     private httpService: HttpService<SignInInterface, SignInResponse>,
+    @Inject('NavbarService')
+    private navbarService: NavbarService,
     private router: Router
   ) {}
 
@@ -35,6 +38,7 @@ export class SignInService {
 
     if (result.token != null) {
       localStorage.setItem('token', result.token);
+      this.navbarService.setIsShowSignIn(true);
       this.router.navigate(['products']);
     } else {
       alert('Error');

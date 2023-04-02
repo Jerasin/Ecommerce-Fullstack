@@ -1,6 +1,6 @@
 .container {
   margin: 0 auto;
-  padding: 120px 25%;
+  padding: 70px 25%;
   font-family: Helvetica;
 }
 
@@ -37,7 +37,7 @@
 .header-form {
   /* text-align: center; */
   margin-bottom: 10px;
-  padding: 0px 10px 00px 10px;
+  padding: 0px 10px 0px 10px;
   /* background-color: red; */
 }
 
@@ -80,7 +80,7 @@
   padding: 5px;
   margin: 5px;
   width: 97%;
-  height: 180px;
+  height: 150px;
 }
 
 .container-btn {
@@ -96,4 +96,36 @@
   border-radius: 5px;
   color: white;
   cursor: pointer;
+}
+
+.container-contact{
+  width: 100%;
+  height: 100%;
+}
+
+.header-contact{
+  padding: 10px;
+  border: 1px solid red;
+  text-align: center;
+}
+
+.body-contact{
+  padding: 10px;
+  border: 1px solid red;
+}
+
+.box-container{
+  display: flex;
+}
+
+.box-icon{
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.box-text{
+  display: block;
+  width: 100%;
+  text-align: center;
 }

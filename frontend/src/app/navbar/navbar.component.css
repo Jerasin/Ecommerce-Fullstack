@@ -1,0 +1,47 @@
+.container-navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  .navbar-list {
+    float: left;
+  }
+  
+  .navbar-sign-in {
+    float: right;
+  }
+
+  .navbar-sign-out {
+    float: right;
+  }
+  
+  .navbar-list .btn-navbar {
+    display: block;
+    padding: 14px 16px;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .navbar-sign-in .btn-navbar {
+    display: block;
+    padding: 14px 16px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .navbar-sign-out .btn-navbar {
+    display: block;
+    padding: 14px 16px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .container-navbar :hover {
+    background-color: red;
+  }
+  

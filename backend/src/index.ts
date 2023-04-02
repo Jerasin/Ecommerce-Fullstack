@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import cors from "cors";
 import { myDataSource } from "./app-data-source";
 import { router as productRouter } from "./routers/products";
-import { router as userRouter } from "./routers/users";
+import { router as userRouter, initUser } from "./routers/users";
 import { router as authRouter } from "./routers/auth";
 import passport from "passport";
 import { authMiddleware } from "./middleware/auth.middleware";
@@ -18,8 +18,15 @@ myDataSource
   .initialize()
   .then(() => {
     console.log("Data Source has been initialized!");
+
+    initUser()
+      .then((e) => e)
+      .catch((e) => {
+        console.log(e);
+        throw e;
+      });
   })
-  .catch((e) => {
+  .catch((e: any) => {
     console.error("Error during Data Source initialization:", e);
   });
 

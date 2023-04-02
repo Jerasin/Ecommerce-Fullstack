@@ -4,10 +4,59 @@ import { User, UserProps } from "../entities";
 import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { requireJWTAuth } from "../middleware/auth.middleware";
+import { admin } from "../../mock/user";
 
 const router = Router();
 
 const getRepository = (): Repository<User> => myDataSource.getRepository(User);
+
+const createUser = async (props: UserProps): Promise<User> => {
+  // const {
+  //   firstName,
+  //   lastName,
+  //   email,
+  //   status,
+  //   description,
+  //   password,
+  // }: UserProps = req.body;
+
+  const {
+    firstName,
+    lastName,
+    email,
+    status,
+    description,
+    password,
+  }: UserProps = props;
+
+  const salt = await bcrypt.genSalt();
+  const hashPassword = await bcrypt.hash(password, salt);
+
+  const user: UserProps = {
+    firstName,
+    lastName,
+    email,
+    status,
+    description,
+    matchName: `${firstName} ${lastName}`,
+    password: hashPassword,
+    salt,
+  };
+
+  const userProps = getRepository().create(user);
+  const result = await getRepository().save(userProps);
+  return result;
+};
+
+const findOneUser = async (props: UserProps) => {
+  return getRepository().find();
+};
+
+export const initUser = async () => {
+  const user = await findOneUser(admin);
+  if (user != null) return;
+  return createUser(admin);
+};
 
 router.get(
   "/",
@@ -31,32 +80,8 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
 });
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
-  const {
-    firstName,
-    lastName,
-    email,
-    status,
-    description,
-    password,
-  }: UserProps = req.body;
-
-  const salt = await bcrypt.genSalt();
-  const hashPassword = await bcrypt.hash(password, salt);
-
-  const user: UserProps = {
-    firstName,
-    lastName,
-    email,
-    status,
-    description,
-    matchName: `${firstName} ${lastName}`,
-    password: hashPassword,
-    salt,
-  };
-
   try {
-    const userProps = getRepository().create(user);
-    const result = await getRepository().save(userProps);
+    const result = await createUser(req.body);
     res.json(result);
   } catch (e: any) {
     res.status(400).json({ message: e?.message ?? "Unknown Error", code: 400 });

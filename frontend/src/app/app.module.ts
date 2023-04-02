@@ -10,9 +10,12 @@ import { ProductListService } from './product-list/product-list.service';
 import { ProductDetailService } from './product-details/product-details.service';
 import { HomeModule } from './home/home.module';
 import { SignInModule } from './sign-in/sign-in.module';
-import { SignInService } from './sign-in.service';
+import { SignInService } from './sign-in/sign-in.service';
 import { AuthInterceptor } from './interceptors';
 import { HttpService } from './https/http.service';
+import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarService } from './navbar/navbar.service';
+import { GuardService } from './guard/guard.service';
 
 const ProductListServiceProvider: Provider = {
   provide: 'ProductListService',
@@ -40,8 +43,18 @@ const HttpServiceProvider: Provider = {
   useClass: HttpService,
 };
 
+const NavbarServiceProvider: Provider = {
+  provide: 'NavbarService',
+  useClass: NavbarService,
+};
+
 @NgModule({
-  declarations: [AppComponent, ProductDetailsComponent, ProductListComponent],
+  declarations: [
+    AppComponent,
+    ProductDetailsComponent,
+    ProductListComponent,
+    NavbarComponent,
+  ],
   imports: [
     BrowserModule,
     RoutingModule,
@@ -55,6 +68,8 @@ const HttpServiceProvider: Provider = {
     SignInServiceProvider,
     AuthInterceptorProvider,
     HttpServiceProvider,
+    NavbarServiceProvider,
+    GuardService,
   ],
   bootstrap: [AppComponent],
   exports: [],

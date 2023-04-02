@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { SignInService } from '../sign-in.service';
+import { SignInService } from './sign-in.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -16,9 +16,6 @@ export class SignInComponent {
   });
 
   async onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.log(this.signInForm.value);
-
     const { email, password } = this.signInForm.value;
 
     if (email == null || password == null) return;
