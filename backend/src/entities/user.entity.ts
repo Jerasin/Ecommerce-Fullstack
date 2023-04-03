@@ -1,15 +1,20 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
+export enum Role {
+  Admin = "admin",
+  User = "user",
+}
+
 export interface UserProps {
   firstName: string;
   lastName: string;
   matchName?: string;
   email: string;
-  description?: string;
   img?: string;
   status?: boolean;
   password: string;
   salt?: string;
+  role?: Role;
 }
 
 @Entity()
@@ -36,11 +41,11 @@ export class User implements UserProps {
   email: string;
 
   @Column({ nullable: true })
-  description?: string;
-
-  @Column({ nullable: true })
   img?: string;
 
   @Column({ default: true })
   status?: boolean;
+
+  @Column()
+  role?: Role;
 }

@@ -105,27 +105,38 @@
 
 .header-contact{
   padding: 10px;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   text-align: center;
 }
 
 .body-contact{
+  margin-top: 20px;
   padding: 10px;
-  border: 1px solid red;
+  border: 2px solid white;
+  border-radius: 10px 
 }
 
 .box-container{
   display: flex;
+  margin: 5px;
 }
 
 .box-icon{
   display: block;
-  width: 100%;
+  width: 30%;
   text-align: center;
 }
 
 .box-text{
-  display: block;
+  width: 70%;
+  text-align: left;
+}
+
+.box-content{
   width: 100%;
-  text-align: center;
+}
+
+.contact-address{
+  color: white;
+  font-size: 22px;
 }

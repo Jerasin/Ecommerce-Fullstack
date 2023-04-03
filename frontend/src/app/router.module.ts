@@ -8,14 +8,18 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { privateRoute, publicRoute } from './guard/guard.service';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
   {
     path: 'products',
     component: ProductListComponent,
     canActivate: [privateRoute],
   },
   { path: 'product-detail/:productId', component: ProductDetailsComponent },
-  { path: 'signIn', component: SignInComponent, canActivate: [publicRoute] },
+  {
+    path: 'signIn',
+    component: SignInComponent,
+    canActivate: [publicRoute],
+  },
+  { path: '', component: HomeComponent },
 ];
 
 @NgModule({

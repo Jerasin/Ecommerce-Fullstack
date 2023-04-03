@@ -33,9 +33,10 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
     {
       email: user?.email,
       id: user?.id,
+      role: user?.role,
     },
     secret,
-    { expiresIn: "30s" }
+    { expiresIn: "1h" }
   );
 
   res.json({ token });

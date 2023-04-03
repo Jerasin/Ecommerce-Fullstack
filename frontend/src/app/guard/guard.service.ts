@@ -10,11 +10,18 @@ import {
 
 @Injectable()
 export class GuardService {
-  constructor(private router: Router) {}
-  canActivate(): boolean {
+  currentUrl: string = '';
+  constructor(private router: Router) {
+    console.log('constructor', this.router.url);
+    this.currentUrl = this.router.url;
+  }
+  canActivate(): boolean | UrlTree {
     const token = localStorage.getItem('token');
 
-    if (token == null) return false;
+    if (token == null) {
+      return this.router.createUrlTree(['/signIn']);
+    }
+
     return true;
   }
 
@@ -22,7 +29,7 @@ export class GuardService {
     const token = localStorage.getItem('token');
 
     if (token == null) return true;
-    return false;
+    return this.router.createUrlTree(['/products']);
   }
 }
 
@@ -37,6 +44,5 @@ export const publicRoute: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
-  console.log('stats', state);
   return inject(GuardService).cannotActivate();
 };

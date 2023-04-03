@@ -11,23 +11,8 @@ const router = Router();
 const getRepository = (): Repository<User> => myDataSource.getRepository(User);
 
 const createUser = async (props: UserProps): Promise<User> => {
-  // const {
-  //   firstName,
-  //   lastName,
-  //   email,
-  //   status,
-  //   description,
-  //   password,
-  // }: UserProps = req.body;
-
-  const {
-    firstName,
-    lastName,
-    email,
-    status,
-    description,
-    password,
-  }: UserProps = props;
+  const { firstName, lastName, email, status, password, role }: UserProps =
+    props;
 
   const salt = await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(password, salt);
@@ -37,10 +22,10 @@ const createUser = async (props: UserProps): Promise<User> => {
     lastName,
     email,
     status,
-    description,
     matchName: `${firstName} ${lastName}`,
     password: hashPassword,
     salt,
+    role,
   };
 
   const userProps = getRepository().create(user);
@@ -49,7 +34,7 @@ const createUser = async (props: UserProps): Promise<User> => {
 };
 
 const findOneUser = async (props: UserProps) => {
-  return getRepository().find();
+  return getRepository().findOne({ where: { email: props.email } });
 };
 
 export const initUser = async () => {

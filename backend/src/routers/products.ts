@@ -11,9 +11,18 @@ const getRepository = (): Repository<Product> => {
   return myDataSource.getRepository(Product);
 };
 
-const createProduct = async (props: ProductProps): Promise<Product> => {
+export const createProduct = async (
+  props: ProductProps
+): Promise<Product | null> => {
+  const findProduct = await findOneProduct(props);
+
+  if (findProduct != null) return null;
   const product = getRepository().create(props);
   return getRepository().save(product);
+};
+
+const findOneProduct = async (props: ProductProps): Promise<Product | null> => {
+  return getRepository().findOne({ where: { name: props.name } });
 };
 
 router.get(
@@ -25,17 +34,21 @@ router.get(
   }
 );
 
-router.get("/:id", async (req: Request, res: Response): Promise<void> => {
-  const id: number = parseInt(req.params.id);
-  const product = await getRepository().findOne({ where: { id } });
+router.get(
+  "/:id",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const id: number = parseInt(req.params.id);
+    const product = await getRepository().findOne({ where: { id } });
 
-  if (product == null) {
-    res.status(404).json({ status: "Product Not Found", code: 404 });
-    return;
+    if (product == null) {
+      res.status(404).json({ status: "Product Not Found", code: 404 });
+      return;
+    }
+
+    res.json(product);
   }
-
-  res.json(product);
-});
+);
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
   const result = await createProduct(req.body);

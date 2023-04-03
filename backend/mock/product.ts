@@ -3,6 +3,7 @@ export interface Product {
   name: string;
   price: number;
   description?: string;
+  img?: string;
 }
 
 export const productList = [
@@ -23,5 +24,6 @@ export const productList = [
     name: "TV",
     price: 400,
     description: "test3",
+    img: "product_tv.jpg",
   },
 ];
