@@ -32,20 +32,27 @@ export class ProductDetailsComponent implements OnInit {
     // First get the product id from the current route.
     const routeParams = this.activatedRoute.snapshot.paramMap;
     const productIdFromRoute = Number(routeParams.get('productId'));
-    const productById = await this.productDetailService.getProduct(
-      productIdFromRoute
-    );
+    const productById = this.productDetailService
+      .getProduct(productIdFromRoute)
+      .subscribe(
+        (data) => {
+          this.productForm.setValue({
+            id: data.id,
+            price: data.price,
+            description: data.description ?? '',
+          });
 
-    // this.product = productById;
-    this.productForm.setValue({
-      id: productById.id,
-      price: productById.price,
-      description: productById.description ?? '',
-    });
-
-    if (productById.img != null) {
-      this.imageSrc = `http://localhost:3000/images/${productById.img}`;
-    }
+          if (data.img != null) {
+            this.imageSrc = `http://localhost:3000/images/${data.img}`;
+          }
+        },
+        (e) => {
+          if (e.status == 401) {
+            localStorage.removeItem('token');
+            this.router.navigate(['signIn']);
+          }
+        }
+      );
   }
 
   async updateProduct() {

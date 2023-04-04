@@ -1,24 +1,26 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, Inject } from '@angular/core';
 import { Product } from '../../mock/productList';
-import { lastValueFrom } from 'rxjs';
+import { HttpService, Method } from '../https/http.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ProductDetailService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    @Inject('HttpService') private httpService: HttpService<any, Product[]>
+  ) {}
 
-  async getProduct(id: number): Promise<Product> {
-    return lastValueFrom(
-      this.http.get<Product>(`http://localhost:3000/products/${id}`)
+  public getProduct(id: number): Observable<any> {
+    return this.httpService.fetch(
+      `http://localhost:3000/products/${id}`,
+      Method.GET
     );
   }
 
-  async updateProduct(props: Partial<Product>): Promise<Product> {
-    return lastValueFrom(
-      this.http.put<Product>(
-        `http://localhost:3000/products/${props.id}`,
-        props
-      )
+  public updateProduct(props: Partial<Product>): Observable<any> {
+    return this.httpService.fetch(
+      `http://localhost:3000/products/${props.id}`,
+      Method.PUT,
+      props
     );
   }
 }

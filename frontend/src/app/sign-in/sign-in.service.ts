@@ -4,7 +4,7 @@ import {
   SignInResponse,
 } from '../../interfaces/sign-in.interface';
 import { Router } from '@angular/router';
-import { HttpService } from '../https/http.service';
+import { HttpService, Method } from '../https/http.service';
 import { NavbarService } from '../navbar/navbar.service';
 
 @Injectable()
@@ -17,31 +17,27 @@ export class SignInService {
     private router: Router
   ) {}
 
-  // async signIn(props: SignInInterface): Promise<void> {
-  //   const result = await lastValueFrom(
-  //     this.http.post<SignInResponse>('http://localhost:3000/auth/login', props)
-  //   );
-
-  //   if (result.token != null) {
-  //     localStorage.setItem('token', result.token);
-  //     this.router.navigate(['products']);
-  //   } else {
-  //     alert('Error');
-  //   }
-  // }
-
-  async signIn(props: SignInInterface): Promise<void> {
-    const result = await this.httpService.fetch(
-      'http://localhost:3000/auth/login',
-      props
-    );
-
-    if (result.token != null) {
-      localStorage.setItem('token', result.token);
-      this.navbarService.setIsShowSignIn(true);
-      this.router.navigate(['products']);
-    } else {
-      alert('Error');
-    }
+  signIn(props: SignInInterface): void {
+    this.httpService
+      .fetch('http://localhost:3000/auth/login', Method.POST, props)
+      .subscribe({
+        next: (value) => {
+          console.log('value', value);
+          if (value.token != null) {
+            localStorage.setItem('token', value.token);
+            this.navbarService.setIsShowSignIn(true);
+            this.router.navigate(['products']);
+          } else {
+            alert('Error');
+          }
+        },
+        error: (e) => {
+          console.log('error', e);
+          if (e.status == 401) {
+            localStorage.removeItem('token');
+            this.router.navigate(['signIn']);
+          }
+        },
+      });
   }
 }

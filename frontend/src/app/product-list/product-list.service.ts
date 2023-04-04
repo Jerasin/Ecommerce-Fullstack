@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Product } from '../../mock/productList';
-import { HttpService } from '../https/http.service';
+import { HttpService, Method } from '../https/http.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ProductListService {
@@ -8,7 +9,7 @@ export class ProductListService {
     @Inject('HttpService') private httpService: HttpService<any, Product[]>
   ) {}
 
-  async getProducts(): Promise<Product[]> {
-    return this.httpService.fetch('http://localhost:3000/products');
+  getProducts(): Observable<any> {
+    return this.httpService.fetch('http://localhost:3000/products', Method.GET);
   }
 }
