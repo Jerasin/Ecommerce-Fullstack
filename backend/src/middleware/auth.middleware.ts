@@ -12,7 +12,6 @@ export const authMiddleware = (): Strategy => {
   };
 
   const jwtAuth = new jwtStrategy(header, (payload, done) => {
-    console.log("payload", payload);
     done(null, true);
   });
 

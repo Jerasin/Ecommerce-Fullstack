@@ -52,6 +52,32 @@
             />
           </div>
         </div>
+
+        <div style="display: flex">
+          <div class="box-text">
+            <p>upload:</p>
+          </div>
+
+          <div class="box-input">
+            <input
+              class="input-field"
+              type="file"
+              placeholder="picture"
+              (change)="readURL($event)"
+              accept="image/png, image/gif, image/jpeg"
+            />
+          </div>
+        </div>
+
+        <div class="container-image">
+          <img
+            style="width: 25%"
+            id="blah"
+            *ngIf="imageSrc"
+            [src]="imageSrc"
+            alt="your image"
+          />
+        </div>
       </div>
 
       <div class="container-btn">

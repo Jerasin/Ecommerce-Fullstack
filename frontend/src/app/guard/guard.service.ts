@@ -12,7 +12,6 @@ import {
 export class GuardService {
   currentUrl: string = '';
   constructor(private router: Router) {
-    console.log('constructor', this.router.url);
     this.currentUrl = this.router.url;
   }
   canActivate(): boolean | UrlTree {

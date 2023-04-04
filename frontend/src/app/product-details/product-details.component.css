@@ -54,3 +54,8 @@
     background-color: rgba(255, 0, 0, 0.495);
     cursor: pointer;
 }
+
+.container-image{
+    margin: 5px;
+    text-align: center
+}

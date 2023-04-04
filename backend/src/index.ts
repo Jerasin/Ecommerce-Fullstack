@@ -9,6 +9,7 @@ import { authMiddleware } from "./middleware/auth.middleware";
 import { createProduct } from "./routers/products";
 import { productList } from "../mock/product";
 import path from "path";
+import { router as uploadRouter } from "./routers/upload";
 
 const app: Express = express();
 const port = 3000;
@@ -39,6 +40,7 @@ myDataSource
 app.use("/products", productRouter);
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
+app.use("/upload", uploadRouter);
 
 app.listen(port, () => {
   console.log("imgPath", imgPath);

@@ -16,7 +16,6 @@ export class ProductListComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    console.log('ngOnInit is running...');
     const result = await this.productListService.getProducts();
     const token = localStorage.getItem('token');
 
@@ -25,6 +24,11 @@ export class ProductListComponent implements OnInit {
       this.role = decoded['role'];
     }
 
-    this.products = result;
+    this.products = result.map((product) => {
+      return {
+        ...product,
+        img: `http://localhost:3000/images/${product.img}`,
+      };
+    });
   }
 }
