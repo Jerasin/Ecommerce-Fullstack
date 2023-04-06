@@ -12,7 +12,7 @@
 .container-box {
   align-items: center;
   font-family: arial;
-  font-size: 24px;
+  font-size: 20px;
   margin: 25px;
   width: 350px;
   height: 200px;
@@ -43,27 +43,61 @@
 .container-body{
   display: flex;
   padding: 15px;
+  align-items: center;
 }
 
 .container-box-price{
+  text-align: right;
   padding-top: 8px;
-  margin-top: 15px;
+  margin-top: 14px;
   width: 50%;
 }
 
-.container-btn-edit{
+.box-price{
+  display: flex;
+}
+
+.box-available{
+  display: flex;
+}
+
+.box-text{
+  width: 60%;
+}
+
+.box-unit{
+  width: 40%;
+}
+
+.container-btn-box{
   margin-top: 15px;
+  justify-content: center;
   display: block;
   width: 50%;
+}
 
+.container-btn-sell{
+  margin-top: 15px;
+  display: block;
+  width: 25%;
 }
 
 .btn-edit{
-  width: 80px;
+  width: 100px;
   padding: 10px;
   background-color: rgba(0, 55, 255, 0.522);
   border-radius: 5px;
   cursor: pointer;
+  margin: 5px 4px 5px 4px;
+}
+
+.btn-sell{
+  width: 100px;
+  padding: 10px;
+  background-color: orange;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px 4px 5px 4px;
 }
 
 

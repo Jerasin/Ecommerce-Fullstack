@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductDetailService } from './product-details.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+import { Observable, mergeMap, concat, combineLatest, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'product-detail',
@@ -14,6 +16,7 @@ import { Router } from '@angular/router';
 export class ProductDetailsComponent implements OnInit {
   // product: Product | undefined;
   imageSrc: any = null;
+  productName: string = '';
 
   productForm = new FormGroup({
     id: new FormControl(0),
@@ -32,47 +35,126 @@ export class ProductDetailsComponent implements OnInit {
     // First get the product id from the current route.
     const routeParams = this.activatedRoute.snapshot.paramMap;
     const productIdFromRoute = Number(routeParams.get('productId'));
-    const productById = this.productDetailService
-      .getProduct(productIdFromRoute)
-      .subscribe(
-        (data) => {
-          this.productForm.setValue({
-            id: data.id,
-            price: data.price,
-            description: data.description ?? '',
-          });
+    this.productDetailService.getProduct(productIdFromRoute).subscribe({
+      next: (data) => {
+        console.log('data', data);
+        this.productName = data.name;
+        this.productForm.setValue({
+          id: data.id,
+          price: data.price,
+          description: data.description ?? '',
+        });
 
-          if (data.img != null) {
-            this.imageSrc = `http://localhost:3000/images/${data.img}`;
-          }
-        },
-        (e) => {
-          if (e.status == 401) {
-            localStorage.removeItem('token');
-            this.router.navigate(['signIn']);
-          }
+        if (data.img != null) {
+          this.imageSrc = `${environment.apiUrl}/images/${
+            data.img
+          }?${Date.now()}`;
+        } else {
+          this.imageSrc = '/assets/images/noImage.jpg';
         }
-      );
+      },
+      error: (err) => {
+        if (err.status == 401) {
+          localStorage.removeItem('token');
+          this.router.navigate(['signIn']);
+        }
+      },
+    });
   }
 
-  async updateProduct() {
-    console.log('updateProduct', this.productForm.value);
+  updateProduct() {
     const { id, price, description } = this.productForm.value;
 
     if (id == null || price == null) return;
 
-    // await this.productDetailService.updateProduct({
-    //   id,
-    //   price,
-    //   description: description ?? '',
-    // });
+    forkJoin({
+      updateProduct: this.productDetailService.updateProduct({
+        id,
+        price,
+        description: description ?? '',
+      }),
+      uploadImage: this.uploadImage(id),
+    }).subscribe({
+      next: (value) => {
+        console.log('value', value);
+        this.router.navigate(['products']);
+      },
+      error: (err) => {
+        if (err.status == 401) {
+          localStorage.removeItem('token');
+          this.router.navigate(['signIn']);
+        }
+      },
+    });
 
-    if (this.imageSrc != null) {
-      await this.uploadImage();
-    }
+    // this.productDetailService
+    //   .updateProduct({
+    //     id,
+    //     price,
+    //     description: description ?? '',
+    //   })
+    //   .pipe(mergeMap(() => this.uploadImage(id)))
+    //   .subscribe({
+    //     next: (_) => {
+    //       this.router.navigate(['products']);
+    //     },
+    //     error: (err) => {
+    //       if (err.status == 401) {
+    //         localStorage.removeItem('token');
+    //         this.router.navigate(['signIn']);
+    //       }
+    //     },
+    //   });
 
-    // this.router.navigate(['products']);
+    // console.log('navigate router');
   }
+
+  // updateProduct() {
+  //   const { id, price, description } = this.productForm.value;
+
+  //   if (id == null || price == null) return;
+
+  //   this.productDetailService
+  //     .updateProduct({
+  //       id,
+  //       price,
+  //       description: description ?? '',
+  //     })
+  //     .subscribe({
+  //       next: (_) => {},
+  //       error: (err) => {
+  //         if (err.status == 401) {
+  //           localStorage.removeItem('token');
+  //           this.router.navigate(['signIn']);
+  //         }
+  //       },
+  //     });
+
+  //   const regexBase64 =
+  //     /data:image\/[bmp,gif,ico,jpg,png,svg,webp,x\-icon,svg+xml]+;base64,[a-zA-Z0-9,+,/]+={0,2}/;
+
+  //   if (
+  //     this.imageSrc != null &&
+  //     this.imageSrc != '' &&
+  //     regexBase64.test(this.imageSrc)
+  //   ) {
+  //     // console.log('upload image', this.imageSrc);
+  //     this.uploadImage(id).subscribe({
+  //       next: (_) => {},
+  //       error: (err) => {
+  //         if (err.status == 401) {
+  //           localStorage.removeItem('token');
+  //           this.router.navigate(['signIn']);
+  //         }
+  //       },
+  //     });
+  //     console.log('uploadImage success');
+  //   }
+
+  //   console.log('navigate router');
+
+  //   this.router.navigate(['products']);
+  // }
 
   readURL(event: any): void {
     if (event.target.files != null && event.target.files[0]) {
@@ -85,7 +167,27 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  async uploadImage() {
-    console.log('img', this.imageSrc);
+  uploadImage(productId: number): Observable<any> {
+    console.log('uploadImage');
+    const formData = new FormData();
+
+    formData.append('image', this.imageSrc);
+    formData.append('productId', productId.toString());
+
+    // this.productDetailService.uploadImage(formData).subscribe({
+    //   next: (_) => {},
+    //   error: (err) => {
+    //     if (err.status == 401) {
+    //       localStorage.removeItem('token');
+    //       this.router.navigate(['signIn']);
+    //     }
+    //   },
+    // });
+
+    // console.log('navigate router');
+
+    // this.router.navigate(['products']);
+
+    return this.productDetailService.uploadImage(formData);
   }
 }

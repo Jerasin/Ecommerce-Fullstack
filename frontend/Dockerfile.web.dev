@@ -8,4 +8,4 @@ RUN npm i -g @angular/cli
 
 EXPOSE 4200
 
-CMD [ "ng","serve","--open","--configuration=local"]
+CMD [ "ng","serve","--open","--configuration=development"]

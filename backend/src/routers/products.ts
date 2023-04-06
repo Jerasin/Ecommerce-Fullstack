@@ -7,7 +7,7 @@ import { ProductProps } from "../entities";
 
 const router = Router();
 
-const getRepository = (): Repository<Product> => {
+export const getRepoProduct = (): Repository<Product> => {
   return myDataSource.getRepository(Product);
 };
 
@@ -17,19 +17,19 @@ export const createProduct = async (
   const findProduct = await findOneProduct(props);
 
   if (findProduct != null) return null;
-  const product = getRepository().create(props);
-  return getRepository().save(product);
+  const product = getRepoProduct().create(props);
+  return getRepoProduct().save(product);
 };
 
 const findOneProduct = async (props: ProductProps): Promise<Product | null> => {
-  return getRepository().findOne({ where: { name: props.name } });
+  return getRepoProduct().findOne({ where: { name: props.name } });
 };
 
 router.get(
   "/",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const products = await getRepository().find();
+    const products = await getRepoProduct().find();
     res.json(products);
   }
 );
@@ -39,7 +39,7 @@ router.get(
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
     const id: number = parseInt(req.params.id);
-    const product = await getRepository().findOne({ where: { id } });
+    const product = await getRepoProduct().findOne({ where: { id } });
 
     if (product == null) {
       res.status(404).json({ status: "Product Not Found", code: 404 });
@@ -58,7 +58,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 
 router.put("/:id", async (req: Request, res: Response): Promise<void> => {
   const id: number = parseInt(req.params.id);
-  const product = await getRepository().findOne({ where: { id } });
+  const product = await getRepoProduct().findOne({ where: { id } });
 
   if (product == null) {
     res.status(404).json({ status: "Product Not Found", code: 404 });
@@ -67,7 +67,7 @@ router.put("/:id", async (req: Request, res: Response): Promise<void> => {
 
   const updateProduct = { ...product, ...req.body };
 
-  const result = await getRepository().save(updateProduct);
+  const result = await getRepoProduct().save(updateProduct);
   res.json(result);
 });
 

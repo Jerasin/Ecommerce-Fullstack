@@ -12,4 +12,11 @@ export class ProductListService {
   getProducts(): Observable<any> {
     return this.httpService.fetch('http://localhost:3000/products', Method.GET);
   }
+
+  getWareHouses(): Observable<any> {
+    return this.httpService.fetch(
+      'http://localhost:3000/wareHouse',
+      Method.GET
+    );
+  }
 }

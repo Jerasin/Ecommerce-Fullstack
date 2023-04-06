@@ -26,5 +26,12 @@
     <li class="navbar-sign-out">
       <a class="btn-navbar" (click)="signOut()" *ngIf="isShowSignIn">SignOut</a>
     </li>
+
+    <li class="navbar-icon">
+      <p style="vertical-align: top">
+        <mat-icon class="btn-navbar">shopping_cart</mat-icon>
+        {{ itemSelectCount }}
+      </p>
+    </li>
   </ul>
 </div>

@@ -1,4 +1,4 @@
-import { NgModule, Provider } from '@angular/core';
+import { NgModule, OnInit, Provider } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
@@ -12,10 +12,11 @@ import { SignInModule } from './sign-in/sign-in.module';
 import { SignInService } from './sign-in/sign-in.service';
 import { AuthInterceptor } from './interceptors';
 import { HttpService } from './https/http.service';
-import { NavbarComponent } from './navbar/navbar.component';
 import { NavbarService } from './navbar/navbar.service';
 import { GuardService } from './guard/guard.service';
 import { ProductDetailsModule } from './product-details/product-details.module';
+import { environment } from 'src/environments/environment';
+import { NavbarModule } from './navbar/navbar.module';
 
 const ProductListServiceProvider: Provider = {
   provide: 'ProductListService',
@@ -49,7 +50,7 @@ const NavbarServiceProvider: Provider = {
 };
 
 @NgModule({
-  declarations: [AppComponent, ProductListComponent, NavbarComponent],
+  declarations: [AppComponent, ProductListComponent],
   imports: [
     BrowserModule,
     RoutingModule,
@@ -57,6 +58,7 @@ const NavbarServiceProvider: Provider = {
     HomeModule,
     SignInModule,
     ProductDetailsModule,
+    NavbarModule,
   ],
   providers: [
     ProductListServiceProvider,
@@ -70,4 +72,8 @@ const NavbarServiceProvider: Provider = {
   bootstrap: [AppComponent],
   exports: [],
 })
-export class AppModule {}
+export class AppModule implements OnInit {
+  ngOnInit(): void {
+    console.log('environment', environment);
+  }
+}

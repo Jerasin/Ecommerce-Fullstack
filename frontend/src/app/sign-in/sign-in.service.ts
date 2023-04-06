@@ -6,6 +6,7 @@ import {
 import { Router } from '@angular/router';
 import { HttpService, Method } from '../https/http.service';
 import { NavbarService } from '../navbar/navbar.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class SignInService {
@@ -19,10 +20,9 @@ export class SignInService {
 
   signIn(props: SignInInterface): void {
     this.httpService
-      .fetch('http://localhost:3000/auth/login', Method.POST, props)
+      .fetch(`${environment.apiUrl}/auth/login`, Method.POST, props)
       .subscribe({
         next: (value) => {
-          console.log('value', value);
           if (value.token != null) {
             localStorage.setItem('token', value.token);
             this.navbarService.setIsShowSignIn(true);

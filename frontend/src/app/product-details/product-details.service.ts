@@ -23,4 +23,12 @@ export class ProductDetailService {
       props
     );
   }
+
+  public uploadImage(source: FormData) {
+    return this.httpService.fetch(
+      `http://localhost:3000/upload`,
+      Method.POST,
+      source
+    );
+  }
 }

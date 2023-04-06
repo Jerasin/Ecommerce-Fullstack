@@ -17,6 +17,14 @@
   .navbar-sign-out {
     float: right;
   }
+
+  .navbar-icon{
+    display: block;
+    padding: 10px 16px;
+    color: white;
+    text-decoration: none;
+    float: right;
+  }
   
   .navbar-list .btn-navbar {
     display: block;

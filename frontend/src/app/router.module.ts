@@ -13,7 +13,11 @@ const routes: Routes = [
     component: ProductListComponent,
     canActivate: [privateRoute],
   },
-  { path: 'product-detail/:productId', component: ProductDetailsComponent },
+  {
+    path: 'product-detail/:productId',
+    component: ProductDetailsComponent,
+    canActivate: [privateRoute],
+  },
   {
     path: 'signIn',
     component: SignInComponent,
@@ -23,7 +27,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [BrowserModule, RouterModule.forRoot(routes)],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' }),
+  ],
   exports: [RouterModule],
 })
 export class RoutingModule {}

@@ -12,20 +12,50 @@
       </div>
 
       <div class="container-box-image">
-        <img style="width: 300px" src="{{ product.img }}" alt="" />
+        <img
+          style="width: 300px; height: 250px"
+          src="{{ product.img }}"
+          alt=""
+        />
       </div>
 
       <div class="container-body">
         <div class="container-box-price">
-          <p>Price: {{ product.price }}</p>
+          <div class="box-price">
+            <div class="box-text">
+              <p>Price:</p>
+            </div>
+            <div class="box-unit">
+              <p>{{ product.price }}</p>
+            </div>
+          </div>
+
+          <div class="box-available">
+            <div class="box-text">
+              <p>Available:</p>
+            </div>
+
+            <div class="box-unit">
+              <p>{{ product.available }}</p>
+            </div>
+          </div>
         </div>
-        <div class="container-btn-edit" *ngIf="role == 'admin'">
-          <button
-            class="btn-edit"
-            [routerLink]="['/product-detail', product.id]"
-          >
-            Edit
-          </button>
+
+        <div class="container-btn-box">
+          <div *ngIf="role == 'admin'">
+            <button
+              class="btn-edit"
+              [routerLink]="['/product-detail', product.id]"
+            >
+              Edit
+            </button>
+          </div>
+
+          <div *ngIf="role == 'admin'">
+            <button class="btn-sell" (click)="setShoppingCar(product)">
+              Add Car
+            </button>
+          </div>
         </div>
       </div>
     </div>
