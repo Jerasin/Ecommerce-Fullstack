@@ -17,6 +17,9 @@ import { GuardService } from './guard/guard.service';
 import { ProductDetailsModule } from './product-details/product-details.module';
 import { environment } from 'src/environments/environment';
 import { NavbarModule } from './navbar/navbar.module';
+import { OrderModule } from './order/order.module';
+import { OrderService } from './order/order.service';
+import { TransactionService } from './transaction/transaction.service';
 
 const ProductListServiceProvider: Provider = {
   provide: 'ProductListService',
@@ -49,6 +52,16 @@ const NavbarServiceProvider: Provider = {
   useClass: NavbarService,
 };
 
+const OrderServiceProvider: Provider = {
+  provide: 'OrderService',
+  useClass: OrderService,
+};
+
+const TransactionServiceProvider: Provider = {
+  provide: 'TransactionService',
+  useClass: TransactionService,
+};
+
 @NgModule({
   declarations: [AppComponent, ProductListComponent],
   imports: [
@@ -59,6 +72,7 @@ const NavbarServiceProvider: Provider = {
     SignInModule,
     ProductDetailsModule,
     NavbarModule,
+    OrderModule,
   ],
   providers: [
     ProductListServiceProvider,
@@ -68,6 +82,8 @@ const NavbarServiceProvider: Provider = {
     HttpServiceProvider,
     NavbarServiceProvider,
     GuardService,
+    OrderServiceProvider,
+    TransactionServiceProvider,
   ],
   bootstrap: [AppComponent],
   exports: [],

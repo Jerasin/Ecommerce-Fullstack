@@ -2,7 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import formidable from "formidable";
 import fs from "fs";
 import path from "path";
-import { getRepoProduct } from "./products";
+import { productRepo } from "./products";
 
 const router = Router();
 
@@ -35,10 +35,10 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     });
 
     const productId = parseInt(fields.productId.toString());
-    const product = await getRepoProduct().findOne({
+    const product = await productRepo().findOne({
       where: { id: productId },
     });
-    await getRepoProduct().save({ ...product, img: fileName });
+    await productRepo().save({ ...product, img: fileName });
 
     res
       .status(201)

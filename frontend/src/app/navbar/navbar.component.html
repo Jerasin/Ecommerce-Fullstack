@@ -27,8 +27,8 @@
       <a class="btn-navbar" (click)="signOut()" *ngIf="isShowSignIn">SignOut</a>
     </li>
 
-    <li class="navbar-icon">
-      <p style="vertical-align: top">
+    <li class="navbar-icon" *ngIf="isShowSignIn">
+      <p style="vertical-align: top" [routerLink]="['/order']">
         <mat-icon class="btn-navbar">shopping_cart</mat-icon>
         {{ itemSelectCount }}
       </p>

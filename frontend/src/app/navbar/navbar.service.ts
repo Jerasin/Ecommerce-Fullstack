@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 export interface SelectItem {
   productId: number;
   amount: number;
+  name: string;
+  price: number;
 }
 
 @Injectable()

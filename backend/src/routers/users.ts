@@ -8,7 +8,7 @@ import { admin } from "../../mock/user";
 
 const router = Router();
 
-const getRepository = (): Repository<User> => myDataSource.getRepository(User);
+const userRepo = (): Repository<User> => myDataSource.getRepository(User);
 
 const createUser = async (props: UserProps): Promise<User> => {
   const { firstName, lastName, email, status, password, role }: UserProps =
@@ -28,13 +28,13 @@ const createUser = async (props: UserProps): Promise<User> => {
     role,
   };
 
-  const userProps = getRepository().create(user);
-  const result = await getRepository().save(userProps);
+  const userProps = userRepo().create(user);
+  const result = await userRepo().save(userProps);
   return result;
 };
 
 const findOneUser = async (props: UserProps) => {
-  return getRepository().findOne({ where: { email: props.email } });
+  return userRepo().findOne({ where: { email: props.email } });
 };
 
 export const initUser = async () => {
@@ -47,14 +47,14 @@ router.get(
   "/",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const users = await getRepository().find();
+    const users = await userRepo().find();
     res.json(users);
   }
 );
 
 router.get("/:id", async (req: Request, res: Response): Promise<void> => {
   const id: number = parseInt(req.params.id);
-  const user = await getRepository().findOne({ where: { id } });
+  const user = await userRepo().findOne({ where: { id } });
 
   if (user == null) {
     res.status(404).json({ status: "User Not Found", code: 404 });
@@ -75,7 +75,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 
 router.put("/:id", async (req: Request, res: Response): Promise<void> => {
   const id: number = parseInt(req.params.id);
-  const user = await getRepository().findOne({ where: { id } });
+  const user = await userRepo().findOne({ where: { id } });
 
   if (user == null) {
     res.status(404).json({ status: "User Not Found", code: 404 });
@@ -84,7 +84,7 @@ router.put("/:id", async (req: Request, res: Response): Promise<void> => {
 
   const updateProduct = { ...user, ...req.body };
 
-  const result = await getRepository().save(updateProduct);
+  const result = await userRepo().save(updateProduct);
   res.json(result);
 });
 

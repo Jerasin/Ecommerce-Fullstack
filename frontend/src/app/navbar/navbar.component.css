@@ -24,6 +24,7 @@
     color: white;
     text-decoration: none;
     float: right;
+    cursor: pointer;
   }
   
   .navbar-list .btn-navbar {

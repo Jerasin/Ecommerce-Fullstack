@@ -1,16 +1,25 @@
-import { Entity, Column, OneToOne, PrimaryColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  OneToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+} from "typeorm";
 import { Product } from "./product.entity";
+import { Base, BaseInterface } from "./base.entity";
 
-export interface WareHouseProps {
-  productId: number;
+export interface WareHouseProps extends BaseInterface {
+  productId: Product | number;
   amount: number;
 }
 
 @Entity("wareHouse")
-export class WareHouse {
-  @OneToOne(() => Product, (product) => product.id)
+export class WareHouse extends Base implements WareHouseProps {
   @PrimaryColumn()
-  productId: number;
+  @OneToOne(() => Product)
+  @JoinColumn({ name: "productId" })
+  productId: Product | number;
 
   @Column()
   amount: number;

@@ -14,6 +14,12 @@ import {
   createWareHouse,
 } from "./routers/warehouse";
 import { wareHouseList } from "../mock/warehouse";
+import { createTransaction } from "./routers/transaction";
+import { transactionList } from "../mock/transaction";
+import { saleOrderList } from "../mock/saleOrder";
+import { createSaleOrder } from "./routers/saleOrder";
+import { router as transactionRouter } from "./routers/transaction";
+import { router as saleOrderRouter } from "./routers/saleOrder";
 
 const app: Express = express();
 const port = 3000;
@@ -42,6 +48,18 @@ myDataSource
         await createWareHouse(item);
       })
     );
+
+    await Promise.all(
+      transactionList.map(async (item) => {
+        await createTransaction(item);
+      })
+    );
+
+    await Promise.all(
+      saleOrderList.map(async (item) => {
+        await createSaleOrder(item);
+      })
+    );
   })
   .catch((e: any) => {
     console.error("Error during Data Source initialization:", e);
@@ -52,6 +70,8 @@ app.use("/users", userRouter);
 app.use("/auth", authRouter);
 app.use("/upload", uploadRouter);
 app.use("/wareHouse", wareHouseRouter);
+app.use("/transaction", transactionRouter);
+app.use("/saleOrder", saleOrderRouter);
 
 app.listen(port, () => {
   console.log("imgPath", imgPath);

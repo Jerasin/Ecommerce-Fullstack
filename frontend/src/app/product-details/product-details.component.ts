@@ -6,7 +6,8 @@ import { ProductDetailService } from './product-details.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { Observable, mergeMap, concat, combineLatest, forkJoin } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
+import { NavbarService } from '../navbar/navbar.service';
 
 @Component({
   selector: 'product-detail',
@@ -28,11 +29,11 @@ export class ProductDetailsComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     @Inject('ProductDetailService')
-    private productDetailService: ProductDetailService
+    private productDetailService: ProductDetailService,
+    @Inject('NavbarService') private navbarService: NavbarService
   ) {}
 
   async ngOnInit() {
-    // First get the product id from the current route.
     const routeParams = this.activatedRoute.snapshot.paramMap;
     const productIdFromRoute = Number(routeParams.get('productId'));
     this.productDetailService.getProduct(productIdFromRoute).subscribe({
@@ -56,6 +57,8 @@ export class ProductDetailsComponent implements OnInit {
       error: (err) => {
         if (err.status == 401) {
           localStorage.removeItem('token');
+          localStorage.removeItem('shopping');
+          this.navbarService.setIsShowSignIn(false);
           this.router.navigate(['signIn']);
         }
       },
@@ -82,79 +85,12 @@ export class ProductDetailsComponent implements OnInit {
       error: (err) => {
         if (err.status == 401) {
           localStorage.removeItem('token');
+          localStorage.removeItem('shopping');
           this.router.navigate(['signIn']);
         }
       },
     });
-
-    // this.productDetailService
-    //   .updateProduct({
-    //     id,
-    //     price,
-    //     description: description ?? '',
-    //   })
-    //   .pipe(mergeMap(() => this.uploadImage(id)))
-    //   .subscribe({
-    //     next: (_) => {
-    //       this.router.navigate(['products']);
-    //     },
-    //     error: (err) => {
-    //       if (err.status == 401) {
-    //         localStorage.removeItem('token');
-    //         this.router.navigate(['signIn']);
-    //       }
-    //     },
-    //   });
-
-    // console.log('navigate router');
   }
-
-  // updateProduct() {
-  //   const { id, price, description } = this.productForm.value;
-
-  //   if (id == null || price == null) return;
-
-  //   this.productDetailService
-  //     .updateProduct({
-  //       id,
-  //       price,
-  //       description: description ?? '',
-  //     })
-  //     .subscribe({
-  //       next: (_) => {},
-  //       error: (err) => {
-  //         if (err.status == 401) {
-  //           localStorage.removeItem('token');
-  //           this.router.navigate(['signIn']);
-  //         }
-  //       },
-  //     });
-
-  //   const regexBase64 =
-  //     /data:image\/[bmp,gif,ico,jpg,png,svg,webp,x\-icon,svg+xml]+;base64,[a-zA-Z0-9,+,/]+={0,2}/;
-
-  //   if (
-  //     this.imageSrc != null &&
-  //     this.imageSrc != '' &&
-  //     regexBase64.test(this.imageSrc)
-  //   ) {
-  //     // console.log('upload image', this.imageSrc);
-  //     this.uploadImage(id).subscribe({
-  //       next: (_) => {},
-  //       error: (err) => {
-  //         if (err.status == 401) {
-  //           localStorage.removeItem('token');
-  //           this.router.navigate(['signIn']);
-  //         }
-  //       },
-  //     });
-  //     console.log('uploadImage success');
-  //   }
-
-  //   console.log('navigate router');
-
-  //   this.router.navigate(['products']);
-  // }
 
   readURL(event: any): void {
     if (event.target.files != null && event.target.files[0]) {
@@ -168,25 +104,10 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   uploadImage(productId: number): Observable<any> {
-    console.log('uploadImage');
     const formData = new FormData();
 
     formData.append('image', this.imageSrc);
     formData.append('productId', productId.toString());
-
-    // this.productDetailService.uploadImage(formData).subscribe({
-    //   next: (_) => {},
-    //   error: (err) => {
-    //     if (err.status == 401) {
-    //       localStorage.removeItem('token');
-    //       this.router.navigate(['signIn']);
-    //     }
-    //   },
-    // });
-
-    // console.log('navigate router');
-
-    // this.router.navigate(['products']);
 
     return this.productDetailService.uploadImage(formData);
   }

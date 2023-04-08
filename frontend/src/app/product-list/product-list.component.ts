@@ -55,6 +55,8 @@ export class ProductListComponent implements OnInit {
       error: (err) => {
         if (err.status == 401) {
           localStorage.removeItem('token');
+          localStorage.removeItem('shopping');
+          this.navbarService.setIsShowSignIn(false);
           this.router.navigate(['signIn']);
         }
       },
@@ -72,7 +74,12 @@ export class ProductListComponent implements OnInit {
     const findItem = this.selectItem.findIndex((e) => e.productId == value.id);
 
     if (findItem == -1) {
-      this.selectItem.push({ productId: value.id, amount: 1 });
+      this.selectItem.push({
+        productId: value.id,
+        amount: 1,
+        name: value.name,
+        price: value.price,
+      });
     } else {
       this.selectItem[findItem]['amount'] += 1;
     }

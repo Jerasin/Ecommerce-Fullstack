@@ -12,7 +12,7 @@ export enum Method {
 export class HttpService<I, O> {
   constructor(private http: HttpClient) {}
 
-  fetch(path: string, method = Method.GET, props?: I): Observable<any> {
+  fetch(path: string, method = Method.GET, props?: I): Observable<O> {
     let http = null;
 
     switch (method) {

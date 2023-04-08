@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
 import { myDataSource } from "../app-data-source";
 import { Product } from "../entities";
 import { Repository } from "typeorm";
@@ -7,7 +7,7 @@ import { ProductProps } from "../entities";
 
 const router = Router();
 
-export const getRepoProduct = (): Repository<Product> => {
+export const productRepo = (): Repository<Product> => {
   return myDataSource.getRepository(Product);
 };
 
@@ -17,19 +17,19 @@ export const createProduct = async (
   const findProduct = await findOneProduct(props);
 
   if (findProduct != null) return null;
-  const product = getRepoProduct().create(props);
-  return getRepoProduct().save(product);
+  const product = productRepo().create(props);
+  return productRepo().save(product);
 };
 
 const findOneProduct = async (props: ProductProps): Promise<Product | null> => {
-  return getRepoProduct().findOne({ where: { name: props.name } });
+  return productRepo().findOne({ where: { name: props.name } });
 };
 
 router.get(
   "/",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const products = await getRepoProduct().find();
+    const products = await productRepo().find();
     res.json(products);
   }
 );
@@ -39,7 +39,7 @@ router.get(
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
     const id: number = parseInt(req.params.id);
-    const product = await getRepoProduct().findOne({ where: { id } });
+    const product = await productRepo().findOne({ where: { id } });
 
     if (product == null) {
       res.status(404).json({ status: "Product Not Found", code: 404 });
@@ -58,7 +58,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 
 router.put("/:id", async (req: Request, res: Response): Promise<void> => {
   const id: number = parseInt(req.params.id);
-  const product = await getRepoProduct().findOne({ where: { id } });
+  const product = await productRepo().findOne({ where: { id } });
 
   if (product == null) {
     res.status(404).json({ status: "Product Not Found", code: 404 });
@@ -67,7 +67,7 @@ router.put("/:id", async (req: Request, res: Response): Promise<void> => {
 
   const updateProduct = { ...product, ...req.body };
 
-  const result = await getRepoProduct().save(updateProduct);
+  const result = await productRepo().save(updateProduct);
   res.json(result);
 });
 

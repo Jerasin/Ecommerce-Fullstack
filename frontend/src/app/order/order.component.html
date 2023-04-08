@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="container-header">
+    <h3>Product Details</h3>
+  </div>
+  <form>
+    <div class="container-box">
+      <div class="container-body">
+        <table class="container-table">
+          <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Price</th>
+            <th>Status</th>
+          </tr>
+          <tr *ngFor="let product of selectItem">
+            <th>{{ product.name }}</th>
+            <th>{{ product.amount }}</th>
+            <th>{{ product.price }}</th>
+            <th>
+              <div style="margin: 5px">
+                <button
+                  type="button"
+                  class="btn-delete"
+                  (click)="deleteSelectItem(product.productId)"
+                >
+                  <b>Delete</b>
+                </button>
+              </div>
+            </th>
+          </tr>
+        </table>
+      </div>
+
+      <div class="container-btn">
+        <div style="display: flex; justify-content: end">
+          <div style="margin: 10px">
+            <button
+              class="btn-save"
+              type="button"
+              (click)="createTransaction()"
+            >
+              Sell
+            </button>
+          </div>
+
+          <div style="margin: 10px">
+            <button class="btn-back" [routerLink]="['/products']">back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

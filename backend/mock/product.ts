@@ -1,23 +1,21 @@
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  description?: string;
-  img?: string;
-}
+import { Product } from "../src/entities";
 
-export const productList = [
+export const productList: Product[] = [
   {
     id: 1,
     name: "Tissue",
     price: 150,
     description: "test1",
+    createBy: "admin",
+    weightPriority: 1,
   },
   {
     id: 2,
     name: "NoteBook",
-    price: 150,
+    price: 500,
     description: "test2",
+    createBy: "admin",
+    weightPriority: 2,
   },
   {
     id: 3,
@@ -25,5 +23,22 @@ export const productList = [
     price: 400,
     description: "test3",
     img: "product_tv.jpg",
+    createBy: "admin",
+    weightPriority: 3,
+  },
+  {
+    id: 4,
+    name: "Book",
+    price: 120,
+    description: "test4",
+    createBy: "admin",
+    weightPriority: 4,
+  },
+  {
+    id: 5,
+    name: "Iphone",
+    price: 3200,
+    createBy: "admin",
+    weightPriority: 5,
   },
 ];

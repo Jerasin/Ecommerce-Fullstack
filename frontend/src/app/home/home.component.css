@@ -1,15 +1,20 @@
 .container {
-  background-image: url("../../assets/images/home-page-md.jpg");
-  height: 100vh;
+  height: 100%;
   width: 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  position: fixed;
-  /* bottom: 15px; */
 }
 
-/* .container-bg {
-  text-align: center;
+.container-banner-header{
+  margin: 15px;
+  padding: 4px;
+}
 
-  position: relative;
-} */
+.banner-header {
+  height: 500px;
+  width: 100%;
+  border-radius: 15px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+

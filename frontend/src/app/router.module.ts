@@ -6,6 +6,7 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { privateRoute, publicRoute } from './guard/guard.service';
+import { OrderComponent } from './order/order.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,11 @@ const routes: Routes = [
     path: 'signIn',
     component: SignInComponent,
     canActivate: [publicRoute],
+  },
+  {
+    path: 'order',
+    component: OrderComponent,
+    canActivate: [privateRoute],
   },
   { path: '', component: HomeComponent },
 ];
