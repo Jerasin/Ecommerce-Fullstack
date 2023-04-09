@@ -54,7 +54,18 @@ router.get(
 
 router.get("/:id", async (req: Request, res: Response): Promise<void> => {
   const id: number = parseInt(req.params.id);
-  const user = await userRepo().findOne({ where: { id } });
+  const user = await userRepo().findOne({
+    where: { id },
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      status: true,
+      img: true,
+      address: true,
+    },
+  });
 
   if (user == null) {
     res.status(404).json({ status: "User Not Found", code: 404 });
@@ -82,9 +93,13 @@ router.put("/:id", async (req: Request, res: Response): Promise<void> => {
     return;
   }
 
-  const updateProduct = { ...user, ...req.body };
+  console.log("req", req.body);
 
-  const result = await userRepo().save(updateProduct);
+  user.address = req.body.address;
+
+  console.log("user", user);
+
+  const result = await userRepo().save(user);
   res.json(result);
 });
 

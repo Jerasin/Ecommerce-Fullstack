@@ -5,9 +5,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class ProductDetailService {
-  constructor(
-    @Inject('HttpService') private httpService: HttpService<any, Product[]>
-  ) {}
+  constructor(@Inject('HttpService') private httpService: HttpService) {}
 
   public getProduct(id: number): Observable<any> {
     return this.httpService.fetch(

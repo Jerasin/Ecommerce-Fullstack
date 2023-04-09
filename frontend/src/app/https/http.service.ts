@@ -9,10 +9,10 @@ export enum Method {
 }
 
 @Injectable()
-export class HttpService<I, O> {
+export class HttpService {
   constructor(private http: HttpClient) {}
 
-  fetch(path: string, method = Method.GET, props?: I): Observable<O> {
+  fetch<I, O>(path: string, method = Method.GET, props?: I): Observable<O> {
     let http = null;
 
     switch (method) {

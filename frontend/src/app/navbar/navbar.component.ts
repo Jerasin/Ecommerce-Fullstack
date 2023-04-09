@@ -2,6 +2,8 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavbarService } from './navbar.service';
 import { Subscription } from 'rxjs';
+import jwtDecode from 'jwt-decode';
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -12,6 +14,8 @@ export class NavbarComponent implements OnInit {
   itemSelectCount = 0;
   getIsShowSignInSub: Subscription;
   getSelectItemSub: Subscription;
+  userId: number;
+
   constructor(
     @Inject('NavbarService') private navbarService: NavbarService,
     private router: Router
@@ -30,6 +34,13 @@ export class NavbarComponent implements OnInit {
     this.getSelectItemSub = this.navbarService
       .getSelectItem()
       .subscribe((e) => (this.itemSelectCount = e.length));
+
+    const token = localStorage.getItem('token');
+
+    if (token != null) {
+      const decode: any = jwtDecode(token);
+      this.userId = decode.id;
+    }
   }
 
   signOut() {

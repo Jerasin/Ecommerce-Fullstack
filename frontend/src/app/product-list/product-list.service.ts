@@ -5,12 +5,17 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class ProductListService {
-  constructor(
-    @Inject('HttpService') private httpService: HttpService<any, Product[]>
-  ) {}
+  constructor(@Inject('HttpService') private httpService: HttpService) {}
 
   getProducts(): Observable<any> {
     return this.httpService.fetch('http://localhost:3000/products', Method.GET);
+  }
+
+  getProductByCategory(id: number): Observable<any> {
+    return this.httpService.fetch(
+      `http://localhost:3000/products/category/${id}`,
+      Method.GET
+    );
   }
 
   getWareHouses(): Observable<any> {

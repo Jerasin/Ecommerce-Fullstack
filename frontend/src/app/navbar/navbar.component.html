@@ -1,4 +1,4 @@
-<div>
+<div class="container">
   <ul class="container-navbar">
     <li class="navbar-list">
       <div class="navbar-item">
@@ -6,12 +6,10 @@
       </div>
     </li>
     <li class="navbar-list">
-      <a class="btn-navbar" [routerLink]="['/products']" *ngIf="isShowSignIn"
-        >Products</a
-      >
+      <a class="btn-navbar" [routerLink]="['/products']">Products</a>
     </li>
     <li class="navbar-list">
-      <a class="btn-navbar">Contact</a>
+      <a class="btn-navbar" [routerLink]="['/category']">Category</a>
     </li>
     <li class="navbar-list">
       <a class="btn-navbar">About</a>
@@ -23,15 +21,35 @@
       >
     </li>
 
+    <li class="navbar-sign-in">
+      <a class="btn-navbar" [routerLink]="['/signUp']" *ngIf="!isShowSignIn"
+        >SignUp</a
+      >
+    </li>
+
     <li class="navbar-sign-out">
-      <a class="btn-navbar" (click)="signOut()" *ngIf="isShowSignIn">SignOut</a>
+      <div class="container-logout" (click)="signOut()" *ngIf="isShowSignIn">
+        <mat-icon class="btn-navbar">logout</mat-icon>
+      </div>
+    </li>
+
+    <li class="navbar-sign-out">
+      <div
+        class="container-logout"
+        [routerLink]="['/user', userId]"
+        *ngIf="isShowSignIn && userId"
+      >
+        <mat-icon class="btn-navbar">person</mat-icon>
+      </div>
     </li>
 
     <li class="navbar-icon" *ngIf="isShowSignIn">
-      <p style="vertical-align: top" [routerLink]="['/order']">
+      <div class="container-notification" [routerLink]="['/order']">
         <mat-icon class="btn-navbar">shopping_cart</mat-icon>
-        {{ itemSelectCount }}
-      </p>
+        <div class="notification" *ngIf="itemSelectCount > 0">
+          {{ itemSelectCount }}
+        </div>
+      </div>
     </li>
   </ul>
 </div>

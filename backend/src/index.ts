@@ -1,25 +1,33 @@
 import express, { Express } from "express";
 import cors from "cors";
 import { myDataSource } from "./app-data-source";
-import { router as productRouter, createProduct } from "./routers/products";
-import { router as userRouter, initUser } from "./routers/users";
-import { router as authRouter } from "./routers/auth";
 import passport from "passport";
 import { authMiddleware } from "./middleware/auth.middleware";
-import { productList } from "../mock/product";
 import path from "path";
+
+// route or function in route
+import { router as userRouter, initUser } from "./routers/users";
+import { router as authRouter } from "./routers/auth";
 import { router as uploadRouter } from "./routers/upload";
 import {
   router as wareHouseRouter,
   createWareHouse,
 } from "./routers/warehouse";
+import { createSaleOrder } from "./routers/saleOrder";
+import {
+  router as transactionRouter,
+  createTransaction,
+} from "./routers/transaction";
+import { router as saleOrderRouter } from "./routers/saleOrder";
+import { router as productRouter, createProduct } from "./routers/products";
+import { router as categoryRouter, createCategory } from "./routers/category";
+
+// mock data
+import { productList } from "../mock/product";
 import { wareHouseList } from "../mock/warehouse";
-import { createTransaction } from "./routers/transaction";
 import { transactionList } from "../mock/transaction";
 import { saleOrderList } from "../mock/saleOrder";
-import { createSaleOrder } from "./routers/saleOrder";
-import { router as transactionRouter } from "./routers/transaction";
-import { router as saleOrderRouter } from "./routers/saleOrder";
+import { categoryList } from "../mock/categories";
 
 const app: Express = express();
 const port = 3000;
@@ -36,6 +44,12 @@ myDataSource
     console.log("Data Source has been initialized!");
 
     await initUser();
+
+    await Promise.all(
+      categoryList.map(async (item) => {
+        await createCategory(item);
+      })
+    );
 
     await Promise.all(
       productList.map(async (item) => {
@@ -72,6 +86,7 @@ app.use("/upload", uploadRouter);
 app.use("/wareHouse", wareHouseRouter);
 app.use("/transaction", transactionRouter);
 app.use("/saleOrder", saleOrderRouter);
+app.use("/category", categoryRouter);
 
 app.listen(port, () => {
   console.log("imgPath", imgPath);

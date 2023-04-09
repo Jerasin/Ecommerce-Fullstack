@@ -12,7 +12,7 @@ import { environment } from '../../environments/environment';
 export class SignInService {
   constructor(
     @Inject('HttpService')
-    private httpService: HttpService<SignInInterface, SignInResponse>,
+    private httpService: HttpService,
     @Inject('NavbarService')
     private navbarService: NavbarService,
     private router: Router
@@ -20,7 +20,11 @@ export class SignInService {
 
   signIn(props: SignInInterface): void {
     this.httpService
-      .fetch(`${environment.apiUrl}/auth/login`, Method.POST, props)
+      .fetch<any, SignInResponse>(
+        `${environment.apiUrl}/auth/login`,
+        Method.POST,
+        props
+      )
       .subscribe({
         next: (value) => {
           if (value.token != null) {

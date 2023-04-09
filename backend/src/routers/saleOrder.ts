@@ -15,7 +15,6 @@ export const createSaleOrder = async (
   props: SaleOrderProps
 ): Promise<SaleOrder | null> => {
   const transactionId: string = props.transactionId as string;
-  console.log("test55512", props);
 
   const saleOrder = await findSaleOrder(transactionId);
 

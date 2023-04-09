@@ -15,7 +15,12 @@
   }
 
   .navbar-sign-out {
+    display: block;
+    padding: 10px 16px;
+    color: white;
+    text-decoration: none;
     float: right;
+    cursor: pointer;
   }
 
   .navbar-icon{
@@ -42,15 +47,24 @@
     cursor: pointer;
   }
 
-  .navbar-sign-out .btn-navbar {
-    display: block;
-    padding: 14px 16px;
-    color: white;
-    text-decoration: none;
-    cursor: pointer;
+  .navbar-list :hover {
+    background-color: gray;
   }
-  
-  .container-navbar :hover {
+
+  .container-notification{
+    position: relative;
+  }
+
+  .notification{
+    position: absolute;
     background-color: red;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    padding-top: 0.2rem;
+    top: -0.3em;
+    left: 1em;
   }
   

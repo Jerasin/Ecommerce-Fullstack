@@ -1,11 +1,4 @@
-import {
-  Entity,
-  Column,
-  OneToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-} from "typeorm";
+import { Entity, Column, OneToOne, PrimaryColumn, JoinColumn } from "typeorm";
 import { Product } from "./product.entity";
 import { Base, BaseInterface } from "./base.entity";
 

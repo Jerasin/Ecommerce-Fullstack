@@ -9,9 +9,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class TransactionService {
-  constructor(
-    @Inject('HttpService') private httpService: HttpService<any, Transaction>
-  ) {}
+  constructor(@Inject('HttpService') private httpService: HttpService) {}
 
   public createTransaction(value: TransactionProps): Observable<Transaction> {
     return this.httpService.fetch(

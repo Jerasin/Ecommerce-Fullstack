@@ -1,12 +1,5 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  Index,
-} from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, Index } from "typeorm";
 import { Base, BaseInterface } from "./base.entity";
-import { SaleOrder } from "./saleOrder.entity";
 
 export interface TransactionProps extends BaseInterface {
   orderId: string;

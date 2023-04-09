@@ -1,6 +1,7 @@
 .container {
   height: 100%;
   width: 100%;
+  padding-bottom: 50px;
 }
 
 .container-banner-header{
@@ -16,5 +17,28 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.container-image{
+  display: grid;
+  justify-content: center;
+  grid-template-columns: auto auto auto;
+  grid-gap: 50px;
+}
+
+.card-header{
+  text-align: center;
+  margin: 15px;
+}
+
+.card-image{
+  margin: 0px 0px 2px 2px;
+}
+
+
+
+
+
+
+
 
 

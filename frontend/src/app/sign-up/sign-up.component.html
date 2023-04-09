@@ -1,11 +1,11 @@
 <div class="container">
-  <h1 class="header-login">SignIn</h1>
+  <h1 class="header-login">SignUp</h1>
   <div class="container-box">
     <div class="flex-left">
-      <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
         <div class="container-form">
           <div class="header-form">
-            <h1 class="sign-in-text">Profile</h1>
+            <h1 class="sign-in-text">SignIn</h1>
           </div>
 
           <div class="body-form">
@@ -27,15 +27,23 @@
                 />
               </div>
             </div>
+
+            <div class="form-box-input">
+              <input
+                class="form-description"
+                type="text"
+                placeholder="Description"
+              />
+            </div>
+
+            <div class="form-box-input">
+              <textarea class="form-address" placeholder="Address"></textarea>
+            </div>
           </div>
 
           <div class="container-btn">
-            <button
-              type="submit"
-              class="btn-sign-in"
-              [disabled]="!signInForm.valid"
-            >
-              <b>SignIn</b>
+            <button type="submit" class="btn-sign-in">
+              <b>SignUp</b>
             </button>
           </div>
         </div>

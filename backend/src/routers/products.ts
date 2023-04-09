@@ -35,6 +35,35 @@ router.get(
 );
 
 router.get(
+  "/productSuggest",
+  async (req: Request, res: Response): Promise<void> => {
+    const products = await productRepo()
+      .createQueryBuilder()
+      .where("weightPriority is not null")
+      .getMany();
+    res.json(products);
+  }
+);
+
+router.get(
+  "/category/:id",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const id: number = parseInt(req.params.id);
+
+    const products = await productRepo().find({
+      where: {
+        category: {
+          id,
+        },
+      },
+    });
+
+    res.json(products);
+  }
+);
+
+router.get(
   "/:id",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
@@ -50,25 +79,33 @@ router.get(
   }
 );
 
-router.post("/", async (req: Request, res: Response): Promise<void> => {
-  const result = await createProduct(req.body);
+router.post(
+  "/",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const result = await createProduct(req.body);
 
-  res.json(result);
-});
-
-router.put("/:id", async (req: Request, res: Response): Promise<void> => {
-  const id: number = parseInt(req.params.id);
-  const product = await productRepo().findOne({ where: { id } });
-
-  if (product == null) {
-    res.status(404).json({ status: "Product Not Found", code: 404 });
-    return;
+    res.json(result);
   }
+);
 
-  const updateProduct = { ...product, ...req.body };
+router.put(
+  "/:id",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const id: number = parseInt(req.params.id);
+    const product = await productRepo().findOne({ where: { id } });
 
-  const result = await productRepo().save(updateProduct);
-  res.json(result);
-});
+    if (product == null) {
+      res.status(404).json({ status: "Product Not Found", code: 404 });
+      return;
+    }
+
+    const updateProduct = { ...product, ...req.body };
+
+    const result = await productRepo().save(updateProduct);
+    res.json(result);
+  }
+);
 
 export { router };

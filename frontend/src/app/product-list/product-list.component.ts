@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { forkJoin } from 'rxjs';
 import { NavbarService, SelectItem } from '../navbar/navbar.service';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -17,12 +19,13 @@ export class ProductListComponent implements OnInit {
   result: Product[] = [];
   role: string | undefined;
   selectItem: SelectItem[] = [];
-
+  productIdFromRoute: number | null = null;
   constructor(
     @Inject('ProductListService')
     private productListService: ProductListService,
     @Inject('NavbarService') private navbarService: NavbarService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     this.navbarService.getSelectItem().subscribe({
       next: (value) => {
@@ -32,8 +35,14 @@ export class ProductListComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    const routeParams = this.activatedRoute.snapshot.paramMap;
+
+    if (routeParams.get('categoryId') != null) {
+      this.productIdFromRoute = Number(routeParams.get('categoryId'));
+    }
+
     forkJoin({
-      getProducts: this.productListService.getProducts(),
+      getProducts: this.calculateRedirectProductPage(this.productIdFromRoute),
       getWareHouses: this.productListService.getWareHouses(),
     }).subscribe({
       next: ({ getProducts, getWareHouses }) => {
@@ -86,5 +95,15 @@ export class ProductListComponent implements OnInit {
 
     localStorage.setItem('shopping', JSON.stringify(this.selectItem));
     this.navbarService.setSelectItem(this.selectItem);
+  }
+
+  private calculateRedirectProductPage(categoryId: number): Observable<any> {
+    console.log('categoryId', categoryId);
+
+    if (categoryId != null) {
+      return this.productListService.getProductByCategory(categoryId);
+    } else {
+      return this.productListService.getProducts();
+    }
   }
 }

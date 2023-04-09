@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import { Base, BaseInterface } from "./base.entity";
-import { WareHouse } from "./warehouse.entity";
+import { Category } from "./categories.entity";
 
 export interface ProductProps extends BaseInterface {
   name: string;
@@ -8,10 +8,11 @@ export interface ProductProps extends BaseInterface {
   description?: string;
   img?: string;
   weightPriority?: number;
+  category: Category[] | number;
 }
 
 @Entity()
-export class Product extends Base {
+export class Product extends Base implements ProductProps {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -29,4 +30,7 @@ export class Product extends Base {
 
   @Column({ nullable: true, unique: true })
   weightPriority?: number;
+
+  @ManyToOne(() => Category, (category) => category.product)
+  category: Category[] | number;
 }

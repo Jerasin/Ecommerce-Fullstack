@@ -8,9 +8,7 @@ import { WareHouseProps } from '../../interfaces/warehouse.interface';
 
 @Injectable()
 export class OrderService {
-  constructor(
-    @Inject('HttpService') private httpService: HttpService<any, Order>
-  ) {}
+  constructor(@Inject('HttpService') private httpService: HttpService) {}
 
   public createSaleOrder(value: OrderProps): Observable<Order> {
     return this.httpService.fetch(

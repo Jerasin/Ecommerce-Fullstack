@@ -15,6 +15,7 @@ export interface UserProps {
   password: string;
   salt?: string;
   role?: Role;
+  address?: string;
 }
 
 @Entity()
@@ -48,4 +49,7 @@ export class User implements UserProps {
 
   @Column()
   role?: Role;
+
+  @Column({ nullable: true })
+  address?: string;
 }

@@ -7,10 +7,18 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
 import { SignInComponent } from './sign-in/sign-in.component';
 import { privateRoute, publicRoute } from './guard/guard.service';
 import { OrderComponent } from './order/order.component';
+import { CategoryComponent } from './category/category.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
   {
     path: 'products',
+    component: ProductListComponent,
+    canActivate: [privateRoute],
+  },
+  {
+    path: 'products/:categoryId',
     component: ProductListComponent,
     canActivate: [privateRoute],
   },
@@ -25,8 +33,23 @@ const routes: Routes = [
     canActivate: [publicRoute],
   },
   {
+    path: 'signUp',
+    component: SignUpComponent,
+    canActivate: [publicRoute],
+  },
+  {
     path: 'order',
     component: OrderComponent,
+    canActivate: [privateRoute],
+  },
+  {
+    path: 'category',
+    component: CategoryComponent,
+    canActivate: [privateRoute],
+  },
+  {
+    path: 'user/:userId',
+    component: UserComponent,
     canActivate: [privateRoute],
   },
   { path: '', component: HomeComponent },
