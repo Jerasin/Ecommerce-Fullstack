@@ -33,6 +33,27 @@ export const findOneTransaction = (
     .getOne();
 };
 
+router.get(
+  "/",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const transactions = await transactionRepo().find();
+    res.json(transactions);
+  }
+);
+
+router.get(
+  "/:id",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const createBy: string = req.params.email;
+
+    const transactions = await transactionRepo().find({ where: { createBy } });
+
+    res.json(transactions);
+  }
+);
+
 router.post("/", async (req: Request, res: Response): Promise<void> => {
   const result = await createTransaction(req.body);
 

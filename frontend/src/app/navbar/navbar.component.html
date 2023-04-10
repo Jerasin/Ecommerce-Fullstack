@@ -12,7 +12,7 @@
       <a class="btn-navbar" [routerLink]="['/category']">Category</a>
     </li>
     <li class="navbar-list">
-      <a class="btn-navbar">About</a>
+      <a class="btn-navbar" [routerLink]="['/history', email]">History</a>
     </li>
 
     <li class="navbar-sign-in">
@@ -37,7 +37,7 @@
       <div
         class="container-logout"
         [routerLink]="['/user', userId]"
-        *ngIf="isShowSignIn && userId"
+        *ngIf="isShowSignIn"
       >
         <mat-icon class="btn-navbar">person</mat-icon>
       </div>

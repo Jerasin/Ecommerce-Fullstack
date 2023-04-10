@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="container-header">
+    <h3>History</h3>
+  </div>
+  <form>
+    <div class="container-box">
+      <div class="container-body">
+        <table class="container-table">
+          <tr>
+            <th>ProductId</th>
+            <th>Product Name</th>
+            <th>Amount</th>
+            <th>Price</th>
+          </tr>
+          <tr *ngFor="let item of data">
+            <th>{{ item.productId }}</th>
+            <th>{{ item.productName }}</th>
+            <th>{{ item.amount }}</th>
+            <th>{{ item.price }}</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </form>
+</div>

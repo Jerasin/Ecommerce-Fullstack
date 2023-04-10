@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit {
   getIsShowSignInSub: Subscription;
   getSelectItemSub: Subscription;
   userId: number;
+  email: string;
 
   constructor(
     @Inject('NavbarService') private navbarService: NavbarService,
@@ -40,6 +41,7 @@ export class NavbarComponent implements OnInit {
     if (token != null) {
       const decode: any = jwtDecode(token);
       this.userId = decode.id;
+      this.email = decode.email;
     }
   }
 

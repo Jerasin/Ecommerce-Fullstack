@@ -29,7 +29,13 @@ export const findSaleOrder = (saleOrderId: string): Promise<SaleOrder[]> => {
     .createQueryBuilder("so")
     .leftJoinAndSelect(Transaction, "t", "t.orderId = so.transactionId")
     .where("so.transactionId = :orderId", { orderId: saleOrderId })
-    .select(["so.transactionId AS transactionId"])
+    .select([
+      "so.transactionId AS transactionId",
+      "so.productName AS productName",
+      "so.price AS price",
+      "so.amount AS amount",
+      "so.productId AS productId",
+    ])
     .getRawMany();
 };
 

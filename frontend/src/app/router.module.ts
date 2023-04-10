@@ -10,6 +10,8 @@ import { OrderComponent } from './order/order.component';
 import { CategoryComponent } from './category/category.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { UserComponent } from './user/user.component';
+import { HistoryComponent } from './history/history.component';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
 
 const routes: Routes = [
   {
@@ -50,6 +52,16 @@ const routes: Routes = [
   {
     path: 'user/:userId',
     component: UserComponent,
+    canActivate: [privateRoute],
+  },
+  {
+    path: 'history/:userId',
+    component: HistoryComponent,
+    canActivate: [privateRoute],
+  },
+  {
+    path: 'orderDetail/:orderId',
+    component: OrderDetailComponent,
     canActivate: [privateRoute],
   },
   { path: '', component: HomeComponent },

@@ -70,6 +70,8 @@ export class OrderComponent {
         forkJoin(this.createSaleOrder(value.orderId)).subscribe((e) => {
           console.log('updateWareHouse', e);
         });
+        localStorage.removeItem('shopping');
+        this.navbarService.setSelectItem([]);
         this.router.navigate(['products']);
       },
       error: (err) => {
