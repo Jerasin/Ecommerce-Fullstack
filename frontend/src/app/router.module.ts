@@ -20,6 +20,11 @@ const routes: Routes = [
     canActivate: [privateRoute],
   },
   {
+    path: 'product/:productId',
+    component: ProductListComponent,
+    canActivate: [privateRoute],
+  },
+  {
     path: 'products/:categoryId',
     component: ProductListComponent,
     canActivate: [privateRoute],

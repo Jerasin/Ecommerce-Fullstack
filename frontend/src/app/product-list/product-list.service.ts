@@ -11,6 +11,13 @@ export class ProductListService {
     return this.httpService.fetch('http://localhost:3000/products', Method.GET);
   }
 
+  getProductById(id: number): Observable<any> {
+    return this.httpService.fetch(
+      `http://localhost:3000/products/${id}`,
+      Method.GET
+    );
+  }
+
   getProductByCategory(id: number): Observable<any> {
     return this.httpService.fetch(
       `http://localhost:3000/products/category/${id}`,

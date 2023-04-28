@@ -8,6 +8,7 @@ import { forkJoin } from 'rxjs';
 import { NavbarService, SelectItem } from '../navbar/navbar.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { BaseTypeOption } from '../../interfaces/base.interface';
 
 @Component({
   selector: 'app-product-list',
@@ -19,7 +20,8 @@ export class ProductListComponent implements OnInit {
   result: Product[] = [];
   role: string | undefined;
   selectItem: SelectItem[] = [];
-  productIdFromRoute: number | null = null;
+  itemIdFromRoute: BaseTypeOption = null;
+
   constructor(
     @Inject('ProductListService')
     private productListService: ProductListService,
@@ -38,15 +40,32 @@ export class ProductListComponent implements OnInit {
     const routeParams = this.activatedRoute.snapshot.paramMap;
 
     if (routeParams.get('categoryId') != null) {
-      this.productIdFromRoute = Number(routeParams.get('categoryId'));
+      console.log(
+        "routeParams.get('categoryId')",
+        routeParams.get('categoryId')
+      );
+      this.itemIdFromRoute = {
+        categoryId: Number(routeParams.get('categoryId')),
+      };
+    } else if (routeParams.get('productId') != null) {
+      this.itemIdFromRoute = {
+        productId: Number(routeParams.get('productId')),
+      };
     }
 
+    console.log('test1');
+
     forkJoin({
-      getProducts: this.calculateRedirectProductPage(this.productIdFromRoute),
+      getProducts: this.calculateRedirectProductPage(this.itemIdFromRoute),
       getWareHouses: this.productListService.getWareHouses(),
     }).subscribe({
       next: ({ getProducts, getWareHouses }) => {
         console.log('getProducts', getProducts);
+
+        if (!Array.isArray(getProducts)) {
+          getProducts = [getProducts];
+        }
+
         this.products = getProducts.map((product: Product) => {
           const findWareHouse = getWareHouses.find(
             (value: any) => value.productId == product.id
@@ -97,11 +116,13 @@ export class ProductListComponent implements OnInit {
     this.navbarService.setSelectItem(this.selectItem);
   }
 
-  private calculateRedirectProductPage(categoryId: number): Observable<any> {
-    console.log('categoryId', categoryId);
-
-    if (categoryId != null) {
-      return this.productListService.getProductByCategory(categoryId);
+  private calculateRedirectProductPage(
+    options: BaseTypeOption
+  ): Observable<any> {
+    if (options?.categoryId != null) {
+      return this.productListService.getProductByCategory(options.categoryId);
+    } else if (options?.productId != null) {
+      return this.productListService.getProductById(options.productId);
     } else {
       return this.productListService.getProducts();
     }

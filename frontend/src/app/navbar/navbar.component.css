@@ -15,10 +15,6 @@ header {
 .navbar-sign-out {
     cursor: pointer;
 }
-
-.navbar-icon{
-    cursor: pointer;
-}
   
 .btn-navbar {
     display: block;
@@ -31,8 +27,9 @@ header {
     background-color: gray;
 }
 
-.navbar-sign-in :hover {
+.navbar-item :hover {
     background-color: gray;
+    cursor: pointer;
 }
 
 .container-notification{

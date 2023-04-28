@@ -17,19 +17,19 @@
   </ul>
 
   <ul class="container-navbar">
-    <li class="navbar-sign-in">
+    <li class="navbar-item">
       <a class="btn-navbar" [routerLink]="['/signIn']" *ngIf="!isShowSignIn"
         >SignIn</a
       >
     </li>
 
-    <li class="navbar-sign-in">
+    <li class="navbar-item">
       <a class="btn-navbar" [routerLink]="['/signUp']" *ngIf="!isShowSignIn"
         >SignUp</a
       >
     </li>
 
-    <li class="navbar-icon" *ngIf="isShowSignIn">
+    <li class="navbar-item" *ngIf="isShowSignIn">
       <div class="container-notification" [routerLink]="['/order']">
         <mat-icon class="btn-navbar">shopping_cart</mat-icon>
         <div class="notification" *ngIf="itemSelectCount > 0">
@@ -38,7 +38,7 @@
       </div>
     </li>
 
-    <li class="navbar-sign-out">
+    <li class="navbar-item">
       <div
         class="container-logout"
         [routerLink]="['/user', userId]"
@@ -48,7 +48,7 @@
       </div>
     </li>
 
-    <li class="navbar-sign-up">
+    <li class="navbar-item">
       <div class="container-logout" (click)="signOut()" *ngIf="isShowSignIn">
         <mat-icon class="btn-navbar">logout</mat-icon>
       </div>

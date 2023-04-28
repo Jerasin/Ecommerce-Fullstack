@@ -6,3 +6,8 @@ export interface BaseInterface {
   createBy?: string;
   updateBy?: string;
 }
+
+export interface BaseTypeOption {
+  categoryId?: number;
+  productId?: number;
+}

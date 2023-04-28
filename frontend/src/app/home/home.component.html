@@ -8,6 +8,8 @@
     <div class="container-image">
       <div class="card-image" *ngFor="let product of imageTopTierSuggest">
         <img
+          [routerLink]="['/product', product.id]"
+          class="image-navigation"
           style="width: 300px; height: 250px"
           src="{{ product.img }}"
           alt=""
