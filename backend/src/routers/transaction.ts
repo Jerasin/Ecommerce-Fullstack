@@ -42,13 +42,29 @@ router.get(
   }
 );
 
+// router.get(
+//   "/:id",
+//   requireJWTAuth,
+//   async (req: Request, res: Response): Promise<void> => {
+//     const createBy: string = req.params.email;
+
+//     const transactions = await transactionRepo().find({ where: { createBy } });
+
+//     res.json(transactions);
+//   }
+// );
+
 router.get(
-  "/:id",
+  "/history/:userId",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const createBy: string = req.params.email;
+    const userId: number = parseInt(req.params.id);
 
-    const transactions = await transactionRepo().find({ where: { createBy } });
+    const transactions = await transactionRepo().find({
+      where: { userId },
+      // take: page,
+      // skip: size,
+    });
 
     res.json(transactions);
   }

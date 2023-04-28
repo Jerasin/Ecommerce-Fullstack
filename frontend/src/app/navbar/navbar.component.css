@@ -1,61 +1,45 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #333;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
 .container-navbar {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-  }
+    display: flex;
+}
   
-  .navbar-list {
-    float: left;
-  }
-  
-  .navbar-sign-in {
-    float: right;
-  }
-
-  .navbar-sign-out {
-    display: block;
-    padding: 10px 16px;
-    color: white;
-    text-decoration: none;
-    float: right;
+.navbar-sign-out {
     cursor: pointer;
-  }
+}
 
-  .navbar-icon{
-    display: block;
-    padding: 10px 16px;
-    color: white;
-    text-decoration: none;
-    float: right;
+.navbar-icon{
     cursor: pointer;
-  }
+}
   
-  .navbar-list .btn-navbar {
+.btn-navbar {
     display: block;
     padding: 14px 16px;
     color: white;
     text-decoration: none;
-  }
+}
   
-  .navbar-sign-in .btn-navbar {
-    display: block;
-    padding: 14px 16px;
-    color: white;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  .navbar-list :hover {
+.navbar-list :hover {
     background-color: gray;
-  }
+}
 
-  .container-notification{
+.navbar-sign-in :hover {
+    background-color: gray;
+}
+
+.container-notification{
     position: relative;
-  }
+}
 
-  .notification{
+.notification{
     position: absolute;
     background-color: red;
     width: 1.5rem;
@@ -64,7 +48,7 @@
     color: white;
     text-align: center;
     padding-top: 0.2rem;
-    top: -0.3em;
-    left: 1em;
-  }
+    top: 0em;
+    left: 2em;
+}
   

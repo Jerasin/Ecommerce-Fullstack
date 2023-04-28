@@ -14,7 +14,7 @@ export class OrderService {
     return this.httpService.fetch(
       `${environment.apiUrl}/saleOrder`,
       Method.POST,
-      value
+      { props: value }
     );
   }
 
@@ -22,7 +22,7 @@ export class OrderService {
     return this.httpService.fetch(
       `${environment.apiUrl}/wareHouse/updateAmount/${value.productId}`,
       Method.PUT,
-      value
+      { props: value }
     );
   }
 }

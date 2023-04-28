@@ -15,7 +15,7 @@ export class TransactionService {
     return this.httpService.fetch(
       `${environment.apiUrl}/transaction`,
       Method.POST,
-      value
+      { props: value }
     );
   }
 }

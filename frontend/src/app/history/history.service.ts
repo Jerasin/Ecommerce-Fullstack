@@ -8,9 +8,9 @@ import { Transaction } from '../../interfaces/transaction.interface';
 export class HistoryService {
   constructor(@Inject('HttpService') private httpService: HttpService) {}
 
-  public getTransactionsByCreated(email: string): Observable<Transaction[]> {
+  public getTransactionsByCreated(userId: number): Observable<Transaction[]> {
     return this.httpService.fetch<any, Transaction[]>(
-      `${environment.apiUrl}/transaction/${email}`
+      `${environment.apiUrl}/transaction/history/${userId}`
     );
   }
 }

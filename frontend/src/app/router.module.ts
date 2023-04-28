@@ -70,7 +70,9 @@ const routes: Routes = [
 @NgModule({
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' }),
+    RouterModule.forRoot(routes, {
+      onSameUrlNavigation: 'reload',
+    }),
   ],
   exports: [RouterModule],
 })

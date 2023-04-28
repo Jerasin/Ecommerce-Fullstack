@@ -18,15 +18,13 @@ export class ProductDetailService {
     return this.httpService.fetch(
       `http://localhost:3000/products/${props.id}`,
       Method.PUT,
-      props
+      { props }
     );
   }
 
   public uploadImage(source: FormData) {
-    return this.httpService.fetch(
-      `http://localhost:3000/upload`,
-      Method.POST,
-      source
-    );
+    return this.httpService.fetch(`http://localhost:3000/upload`, Method.POST, {
+      props: source,
+    });
   }
 }

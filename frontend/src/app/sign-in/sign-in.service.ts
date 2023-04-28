@@ -23,7 +23,7 @@ export class SignInService {
       .fetch<any, SignInResponse>(
         `${environment.apiUrl}/auth/login`,
         Method.POST,
-        props
+        { props }
       )
       .subscribe({
         next: (value) => {

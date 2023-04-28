@@ -18,7 +18,7 @@ export class UserService {
     return this.httpService.fetch<Record<string, any>, User>(
       `http://localhost:3000/users/${id}`,
       Method.PUT,
-      data
+      { props: data }
     );
   }
 }

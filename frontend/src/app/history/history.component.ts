@@ -9,7 +9,7 @@ import { Transaction } from '../../interfaces/transaction.interface';
   styleUrls: ['./history.component.css'],
 })
 export class HistoryComponent implements OnInit {
-  private email: string;
+  private userId: number;
   public data: Transaction[];
 
   constructor(
@@ -19,9 +19,9 @@ export class HistoryComponent implements OnInit {
   ngOnInit(): void {
     const token = localStorage.getItem('token');
     const decode: any = jwtDecode(token);
-    this.email = decode.email;
+    this.userId = decode.id;
 
-    this.historyService.getTransactionsByCreated(this.email).subscribe({
+    this.historyService.getTransactionsByCreated(this.userId).subscribe({
       next: (value) => {
         this.data = value;
       },
