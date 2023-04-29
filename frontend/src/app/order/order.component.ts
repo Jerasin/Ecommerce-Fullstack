@@ -4,10 +4,10 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { OrderService } from './order.service';
 import { TransactionProps } from '../../interfaces/transaction.interface';
 import { Observable, forkJoin } from 'rxjs';
-import { Order } from '../../interfaces/order.interface';
+import { Order } from '../../interfaces';
 import { TransactionService } from '../transaction/transaction.service';
-import jwtDecode from 'jwt-decode';
 import { Router } from '@angular/router';
+import { decodeToken } from '../../util';
 
 @Component({
   selector: 'app-order',
@@ -32,15 +32,17 @@ export class OrderComponent {
     private transactionService: TransactionService,
     private router: Router
   ) {
+    console.log('test');
     this.token = localStorage.getItem('token');
 
     if (this.token != null) {
-      const decode: any = jwtDecode(this.token);
+      const decode = decodeToken(this.token);
       this.email = decode.email;
     }
 
     this.navbarService.getSelectItem().subscribe({
       next: (value) => {
+        console.log('getSelectItem', value);
         this.selectItem = value;
       },
     });

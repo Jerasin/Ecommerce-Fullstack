@@ -14,6 +14,9 @@
     <li class="navbar-list">
       <a class="btn-navbar" [routerLink]="['/history', userId]">History</a>
     </li>
+    <li class="navbar-list" *ngIf="role == 'admin'">
+      <a class="btn-navbar" [routerLink]="['/history', userId]">Dashboard</a>
+    </li>
   </ul>
 
   <ul class="container-navbar">

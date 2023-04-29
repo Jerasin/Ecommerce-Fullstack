@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { SessionUser } from '../../interfaces/user.interface';
 
 export interface SelectItem {
   productId: number;
@@ -14,8 +15,13 @@ export class NavbarService {
   private isLogin = new BehaviorSubject<boolean>(
     this.token != null ? true : false
   );
+  // private selectItem = new BehaviorSubject<SelectItem[]>([]);
   private selectItem = new BehaviorSubject<SelectItem[]>([]);
-  constructor() {}
+  private sessionUser = new BehaviorSubject<SessionUser>(null);
+
+  constructor() {
+    console.log('NavbarService');
+  }
 
   public setIsShowSignIn(payload: boolean) {
     return this.isLogin.next(payload);
@@ -31,5 +37,13 @@ export class NavbarService {
 
   public getSelectItem() {
     return this.selectItem.asObservable();
+  }
+
+  public setSessionUser(payload: SessionUser) {
+    return this.sessionUser.next(payload);
+  }
+
+  public getSessionUser(): Observable<SessionUser> {
+    return this.sessionUser.asObservable();
   }
 }

@@ -2,26 +2,47 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavbarService } from './navbar.service';
 import { Subscription } from 'rxjs';
-import jwtDecode from 'jwt-decode';
+import { decodeToken } from '../../util';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   isShowSignIn = false;
   itemSelectCount = 0;
   getIsShowSignInSub: Subscription;
   getSelectItemSub: Subscription;
+  getSessionUser: Subscription;
   userId: number;
-  email: string;
+  role: string;
 
   constructor(
     @Inject('NavbarService') private navbarService: NavbarService,
     private router: Router
-  ) {
+  ) {}
+
+  signOut() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('shopping');
+    this.navbarService.setIsShowSignIn(false);
+    this.navbarService.setSelectItem([]);
+    this.navbarService.setSessionUser(null);
+    this.router.navigate(['signIn']);
+  }
+
+  ngOnInit(): void {
+    console.log('ngOnInit NavbarComponent');
+
     const getSelectItem = localStorage.getItem('shopping');
+    const getToken = localStorage.getItem('token');
+    const tokenSessionUser = decodeToken(getToken);
+
+    if (tokenSessionUser != null) {
+      this.userId = tokenSessionUser.id;
+      this.navbarService.setSessionUser(tokenSessionUser);
+    }
 
     if (getSelectItem != null) {
       this.navbarService.setSelectItem(JSON.parse(getSelectItem));
@@ -36,24 +57,15 @@ export class NavbarComponent implements OnInit {
       .getSelectItem()
       .subscribe((e) => (this.itemSelectCount = e.length));
 
-    const token = localStorage.getItem('token');
-
-    if (token != null) {
-      const decode: any = jwtDecode(token);
-      this.userId = decode.id;
-      this.email = decode.email;
-    }
+    this.getSessionUser = this.navbarService.getSessionUser().subscribe((e) => {
+      console.log('getSessionUser', e);
+      this.role = e?.role;
+    });
   }
 
-  signOut() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('shopping');
-    this.navbarService.setIsShowSignIn(false);
-    this.navbarService.setSelectItem([]);
-    this.router.navigate(['signIn']);
-  }
-
-  ngOnInit(): void {
-    console.log('ngOnInit NavbarComponent');
+  ngOnDestroy(): void {
+    this.getIsShowSignInSub.unsubscribe();
+    this.getSelectItemSub.unsubscribe();
+    this.getSessionUser.unsubscribe();
   }
 }

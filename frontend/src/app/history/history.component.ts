@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { HistoryService } from './history.service';
-import jwtDecode from 'jwt-decode';
-import { Transaction } from '../../interfaces/transaction.interface';
+import { Transaction } from '../../interfaces';
+import { decodeToken } from '../../util';
 
 @Component({
   selector: 'app-history',
@@ -18,7 +18,7 @@ export class HistoryComponent implements OnInit {
 
   ngOnInit(): void {
     const token = localStorage.getItem('token');
-    const decode: any = jwtDecode(token);
+    const decode = decodeToken(token);
     this.userId = decode.id;
 
     this.historyService.getTransactionsByCreated(this.userId).subscribe({

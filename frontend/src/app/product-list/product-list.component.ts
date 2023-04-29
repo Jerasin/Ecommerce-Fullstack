@@ -40,10 +40,6 @@ export class ProductListComponent implements OnInit {
     const routeParams = this.activatedRoute.snapshot.paramMap;
 
     if (routeParams.get('categoryId') != null) {
-      console.log(
-        "routeParams.get('categoryId')",
-        routeParams.get('categoryId')
-      );
       this.itemIdFromRoute = {
         categoryId: Number(routeParams.get('categoryId')),
       };
@@ -53,15 +49,11 @@ export class ProductListComponent implements OnInit {
       };
     }
 
-    console.log('test1');
-
     forkJoin({
       getProducts: this.calculateRedirectProductPage(this.itemIdFromRoute),
       getWareHouses: this.productListService.getWareHouses(),
     }).subscribe({
       next: ({ getProducts, getWareHouses }) => {
-        console.log('getProducts', getProducts);
-
         if (!Array.isArray(getProducts)) {
           getProducts = [getProducts];
         }

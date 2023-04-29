@@ -6,7 +6,7 @@ import { authMiddleware } from "./middleware/auth.middleware";
 import path from "path";
 
 // route or function in route
-import { router as userRouter, initUser } from "./routers/users";
+import { router as userRouter, initUserAdmin, initUser } from "./routers/users";
 import { router as authRouter } from "./routers/auth";
 import { router as uploadRouter } from "./routers/upload";
 import {
@@ -43,6 +43,7 @@ myDataSource
   .then(async () => {
     console.log("Data Source has been initialized!");
 
+    await initUserAdmin();
     await initUser();
 
     await Promise.all(

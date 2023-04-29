@@ -4,7 +4,7 @@ import { User, UserProps } from "../entities";
 import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { requireJWTAuth } from "../middleware/auth.middleware";
-import { admin } from "../../mock/user";
+import { admin, test } from "../../mock/user";
 
 const router = Router();
 
@@ -37,10 +37,16 @@ const findOneUser = async (props: UserProps) => {
   return userRepo().findOne({ where: { email: props.email } });
 };
 
-export const initUser = async () => {
+export const initUserAdmin = async () => {
   const user = await findOneUser(admin);
   if (user != null) return;
   return createUser(admin);
+};
+
+export const initUser = async () => {
+  const user = await findOneUser(test);
+  if (user != null) return;
+  return createUser(test);
 };
 
 router.get(

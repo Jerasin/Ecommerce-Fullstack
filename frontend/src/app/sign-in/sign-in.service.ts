@@ -1,12 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
-import {
-  SignInInterface,
-  SignInResponse,
-} from '../../interfaces/sign-in.interface';
+import { SignInInterface, SignInResponse, SessionUser } from '../../interfaces';
 import { Router } from '@angular/router';
 import { HttpService, Method } from '../https/http.service';
 import { NavbarService } from '../navbar/navbar.service';
 import { environment } from '../../environments/environment';
+import { decodeToken } from '../../util';
 
 @Injectable()
 export class SignInService {
@@ -29,6 +27,8 @@ export class SignInService {
         next: (value) => {
           if (value.token != null) {
             localStorage.setItem('token', value.token);
+            const tokenSessionUser = decodeToken(value.token);
+            this.navbarService.setSessionUser(tokenSessionUser);
             this.navbarService.setIsShowSignIn(true);
             this.router.navigate(['products']);
           } else {

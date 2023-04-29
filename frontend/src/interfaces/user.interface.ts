@@ -13,3 +13,9 @@ export interface UserProps {
   img?: string;
   address?: string;
 }
+
+export interface SessionUser {
+  id: number;
+  email: string;
+  role: string;
+}
