@@ -12,12 +12,6 @@
     <li class="navbar-item">
       <a class="btn-navbar" [routerLink]="['/category']">Category</a>
     </li>
-    <li class="navbar-item" *ngIf="isShowSignIn">
-      <a class="btn-navbar" [routerLink]="['/history', userId]">History</a>
-    </li>
-    <li class="navbar-item" *ngIf="role == 'admin'">
-      <a class="btn-navbar" [routerLink]="['/dashboard']">Dashboard</a>
-    </li>
   </ul>
 
   <ul class="container-navbar">
@@ -39,6 +33,12 @@
         <div class="notification" *ngIf="itemSelectCount > 0">
           {{ itemSelectCount }}
         </div>
+      </div>
+    </li>
+
+    <li class="navbar-item" *ngIf="isShowSignIn">
+      <div class="container-person" [routerLink]="['/history', userId]">
+        <mat-icon class="btn-navbar-icon">receiptlong</mat-icon>
       </div>
     </li>
 

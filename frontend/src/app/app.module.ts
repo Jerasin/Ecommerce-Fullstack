@@ -30,6 +30,8 @@ import { HistoryModule } from './history/history.module';
 import { HistoryService } from './history/history.service';
 import { OrderDetailService } from './order-detail/order-detail.service';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { DashboardService } from './dashboard/dashboard.service';
 
 const OrderDetailServiceProvider: Provider = {
   provide: 'OrderDetailService',
@@ -97,6 +99,11 @@ const UserServiceProvider: Provider = {
   useClass: UserService,
 };
 
+const DashboardServiceProvider: Provider = {
+  provide: 'DashboardService',
+  useClass: DashboardService,
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -116,6 +123,7 @@ const UserServiceProvider: Provider = {
     SignUpModule,
     UserModule,
     HistoryModule,
+    DashboardModule,
   ],
   providers: [
     ProductListServiceProvider,
@@ -132,6 +140,7 @@ const UserServiceProvider: Provider = {
     UserServiceProvider,
     HistoryServiceProvider,
     OrderDetailServiceProvider,
+    DashboardServiceProvider,
   ],
   bootstrap: [AppComponent],
   exports: [],

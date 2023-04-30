@@ -1,1 +1,76 @@
-<p>dashboard works!</p>
+<div class="container">
+  <div class="container-header">
+    <p class="text-header">Dashboard</p>
+  </div>
+
+  <div class="container-body">
+    <div class="container-card">
+      <div class="card">
+        <div class="card-icon">
+          <mat-icon class="btn-navbar-icon">group</mat-icon>
+        </div>
+        <div class="card-text">
+          <p>UserCount:</p>
+          <div>1</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <mat-icon class="btn-navbar-icon">storefront</mat-icon>
+        </div>
+        <div class="card-text">
+          <p>ProductCount</p>
+          <div>1</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <mat-icon class="btn-navbar-icon">category</mat-icon>
+        </div>
+        <div class="card-text">
+          <p>Category Count</p>
+          <div>1</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <mat-icon class="btn-navbar-icon">receipt</mat-icon>
+        </div>
+        <div class="card-text">
+          <p>Order Total Count</p>
+          <div>1</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-report">
+      <table class="container-table">
+        <tr class="container-table-header">
+          <th>OrderId</th>
+          <th>Total Amount</th>
+          <th>Total Price</th>
+          <th>Status</th>
+        </tr>
+        <tr *ngFor="let item of reports | async">
+          <td>{{ item.orderId }}</td>
+          <td>{{ item.totalAmount }}</td>
+          <td>{{ item.totalPrice }}</td>
+          <td>
+            <div style="margin: 5px">
+              <button
+                type="button"
+                class="btn-detail"
+                [routerLink]="['/orderDetail', item.orderId]"
+              >
+                <b>Detail</b>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
