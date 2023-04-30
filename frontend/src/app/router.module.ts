@@ -5,19 +5,25 @@ import { HomeComponent } from './home/home.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { SignInComponent } from './sign-in/sign-in.component';
-import { privateRoute, publicRoute } from './guard/guard.service';
+import { privateRoute, publicRoute, adminRoute } from './guard/guard.service';
 import { OrderComponent } from './order/order.component';
 import { CategoryComponent } from './category/category.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { UserComponent } from './user/user.component';
 import { HistoryComponent } from './history/history.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
     path: 'products',
     component: ProductListComponent,
     canActivate: [privateRoute],
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [adminRoute],
   },
   {
     path: 'product/:productId',

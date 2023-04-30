@@ -1,35 +1,34 @@
 <div class="container">
   <div class="container-header">
-    <h3>History</h3>
+    <h2 style="font-size: 40px;">History</h2>
   </div>
-  <form>
-    <div class="container-box">
-      <div class="container-body">
-        <table class="container-table">
-          <tr>
-            <th>OrderId</th>
-            <th>Total Amount</th>
-            <th>Total Price</th>
-            <th>Status</th>
-          </tr>
-          <tr *ngFor="let item of data">
-            <th>{{ item.orderId }}</th>
-            <th>{{ item.totalAmount }}</th>
-            <th>{{ item.totalPrice }}</th>
-            <th>
-              <div style="margin: 5px">
-                <button
-                  type="button"
-                  class="btn-delete"
-                  [routerLink]="['/orderDetail', item.orderId]"
-                >
-                  <b>Detail</b>
-                </button>
-              </div>
-            </th>
-          </tr>
-        </table>
-      </div>
+
+  <div class="container-box">
+    <div class="container-body">
+      <table class="container-table">
+        <tr class="container-table-header">
+          <th>OrderId</th>
+          <th>Total Amount</th>
+          <th>Total Price</th>
+          <th>Status</th>
+        </tr>
+        <tr *ngFor="let item of data">
+          <td>{{ item.orderId }}</td>
+          <td>{{ item.totalAmount }}</td>
+          <td>{{ item.totalPrice }}</td>
+          <td>
+            <div style="margin: 5px">
+              <button
+                type="button"
+                class="btn-delete"
+                [routerLink]="['/orderDetail', item.orderId]"
+              >
+                <b>Detail</b>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
-  </form>
+  </div>
 </div>

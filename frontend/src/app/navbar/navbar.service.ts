@@ -15,7 +15,6 @@ export class NavbarService {
   private isLogin = new BehaviorSubject<boolean>(
     this.token != null ? true : false
   );
-  // private selectItem = new BehaviorSubject<SelectItem[]>([]);
   private selectItem = new BehaviorSubject<SelectItem[]>([]);
   private sessionUser = new BehaviorSubject<SessionUser>(null);
 

@@ -63,3 +63,17 @@ table, th, td {
     border-radius: 5px;
     cursor: pointer;
 }
+
+.container-body-empty{
+    height: 160px;
+    position: relative;
+}
+
+.body-empty{
+    width: 60%;
+    padding: 10px;
+    text-align: center;
+    position: absolute;
+    top: 30%;
+    left: 18%;
+}

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NavbarService } from './navbar.service';
 import { Subscription } from 'rxjs';
 import { decodeToken } from '../../util';
+import { SessionUser } from '../../interfaces';
 
 @Component({
   selector: 'app-navbar',
@@ -34,10 +35,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log('ngOnInit NavbarComponent');
-
+    let tokenSessionUser: SessionUser = null;
     const getSelectItem = localStorage.getItem('shopping');
     const getToken = localStorage.getItem('token');
-    const tokenSessionUser = decodeToken(getToken);
+
+    if (getToken != null) {
+      tokenSessionUser = decodeToken(getToken);
+    }
 
     if (tokenSessionUser != null) {
       this.userId = tokenSessionUser.id;

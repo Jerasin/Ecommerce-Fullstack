@@ -1,59 +1,56 @@
 <header class="container">
   <ul class="container-navbar">
-    <li class="navbar-list">
-      <div class="navbar-item">
-        <a class="btn-navbar" [routerLink]="['/']">Home</a>
-      </div>
+    <li class="navbar-text">
+      <p>Logo</p>
     </li>
-    <li class="navbar-list">
+    <li class="navbar-item">
+      <a class="btn-navbar" [routerLink]="['/']">Home</a>
+    </li>
+    <li class="navbar-item">
       <a class="btn-navbar" [routerLink]="['/products']">Product</a>
     </li>
-    <li class="navbar-list">
+    <li class="navbar-item">
       <a class="btn-navbar" [routerLink]="['/category']">Category</a>
     </li>
-    <li class="navbar-list">
+    <li class="navbar-item" *ngIf="isShowSignIn">
       <a class="btn-navbar" [routerLink]="['/history', userId]">History</a>
     </li>
-    <li class="navbar-list" *ngIf="role == 'admin'">
-      <a class="btn-navbar" [routerLink]="['/history', userId]">Dashboard</a>
+    <li class="navbar-item" *ngIf="role == 'admin'">
+      <a class="btn-navbar" [routerLink]="['/dashboard']">Dashboard</a>
     </li>
   </ul>
 
   <ul class="container-navbar">
-    <li class="navbar-item">
-      <a class="btn-navbar" [routerLink]="['/signIn']" *ngIf="!isShowSignIn"
-        >SignIn</a
-      >
+    <li class="navbar-item-sign" *ngIf="!isShowSignIn">
+      <div class="container-navbar-btn">
+        <a class="btn-navbar" [routerLink]="['/signIn']">SignIn</a>
+      </div>
     </li>
 
-    <li class="navbar-item">
-      <a class="btn-navbar" [routerLink]="['/signUp']" *ngIf="!isShowSignIn"
-        >SignUp</a
-      >
+    <li class="navbar-item-sign" *ngIf="!isShowSignIn">
+      <div class="container-navbar-btn">
+        <a class="btn-navbar" [routerLink]="['/signUp']">SignUp</a>
+      </div>
     </li>
 
     <li class="navbar-item" *ngIf="isShowSignIn">
       <div class="container-notification" [routerLink]="['/order']">
-        <mat-icon class="btn-navbar">shopping_cart</mat-icon>
+        <mat-icon class="btn-navbar-icon">shopping_cart</mat-icon>
         <div class="notification" *ngIf="itemSelectCount > 0">
           {{ itemSelectCount }}
         </div>
       </div>
     </li>
 
-    <li class="navbar-item">
-      <div
-        class="container-logout"
-        [routerLink]="['/user', userId]"
-        *ngIf="isShowSignIn"
-      >
-        <mat-icon class="btn-navbar">person</mat-icon>
+    <li class="navbar-item" *ngIf="isShowSignIn">
+      <div class="container-person" [routerLink]="['/user', userId]">
+        <mat-icon class="btn-navbar-icon">person</mat-icon>
       </div>
     </li>
 
-    <li class="navbar-item">
-      <div class="container-logout" (click)="signOut()" *ngIf="isShowSignIn">
-        <mat-icon class="btn-navbar">logout</mat-icon>
+    <li class="navbar-item" *ngIf="isShowSignIn">
+      <div class="container-logout" (click)="signOut()">
+        <mat-icon class="btn-navbar-icon">logout</mat-icon>
       </div>
     </li>
   </ul>
