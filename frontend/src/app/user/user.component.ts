@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { ShareService } from '../share';
 
 @Component({
   selector: 'app-user',
@@ -21,7 +22,8 @@ export class UserComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     @Inject('UserService') private userService: UserService,
-    private router: Router
+    private router: Router,
+    @Inject('ShareService') private shareService: ShareService
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +40,15 @@ export class UserComponent implements OnInit {
           id: value.id,
           address: value.address,
         });
+      },
+      error: (err) => {
+        console.log('error', err);
+        if (err?.status == 401) {
+          this.shareService.tokenRedirectExpire();
+          return;
+        }
+
+        throw err;
       },
     });
   }

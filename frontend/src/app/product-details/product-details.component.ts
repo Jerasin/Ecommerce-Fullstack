@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { Observable, forkJoin } from 'rxjs';
 import { NavbarService } from '../navbar/navbar.service';
+import { ShareService } from '../share';
 
 @Component({
   selector: 'product-detail',
@@ -30,7 +31,8 @@ export class ProductDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     @Inject('ProductDetailService')
     private productDetailService: ProductDetailService,
-    @Inject('NavbarService') private navbarService: NavbarService
+    @Inject('NavbarService') private navbarService: NavbarService,
+    @Inject('ShareService') private shareService: ShareService
   ) {}
 
   async ngOnInit() {
@@ -55,11 +57,15 @@ export class ProductDetailsComponent implements OnInit {
         }
       },
       error: (err) => {
-        if (err.status == 401) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('shopping');
+        if (err?.status == 401) {
           this.navbarService.setIsShowSignIn(false);
-          this.router.navigate(['signIn']);
+          this.shareService.tokenRedirectExpire({
+            keyLocalStorage: ['token', 'shopping'],
+          });
+
+          // localStorage.removeItem('token');
+          // localStorage.removeItem('shopping');
+          // this.router.navigate(['signIn']);
         }
       },
     });

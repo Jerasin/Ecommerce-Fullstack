@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { Product } from '../../mock/productList';
 import { HttpService, Method } from '../https/http.service';
 import { Observable } from 'rxjs';
 

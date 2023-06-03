@@ -28,9 +28,12 @@ import { wareHouseList } from "../mock/warehouse";
 import { transactionList } from "../mock/transaction";
 import { saleOrderList } from "../mock/saleOrder";
 import { categoryList } from "../mock/categories";
+import dotenv from "dotenv";
+
+const { API_PORT } = dotenv.config().parsed as Record<string, any>;
 
 const app: Express = express();
-const port = 3000;
+const port = API_PORT;
 const imgPath = path.join(__dirname, "../../src/images");
 
 app.use(cors());

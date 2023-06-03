@@ -12,10 +12,12 @@ import { SessionUser } from '../../interfaces';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   isShowSignIn = false;
+  isShowNavbar = true;
   itemSelectCount = 0;
   getIsShowSignInSub: Subscription;
   getSelectItemSub: Subscription;
   getSessionUser: Subscription;
+  getShowNavbar: Subscription;
   userId: number;
   role: string;
 
@@ -62,9 +64,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .subscribe((e) => (this.itemSelectCount = e.length));
 
     this.getSessionUser = this.navbarService.getSessionUser().subscribe((e) => {
-      console.log('getSessionUser', e);
       this.role = e?.role;
     });
+
+    this.getShowNavbar = this.navbarService
+      .getShowNavbar()
+      .subscribe((e) => (this.isShowNavbar = e));
   }
 
   ngOnDestroy(): void {

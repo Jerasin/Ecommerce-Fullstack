@@ -43,7 +43,6 @@ export class HomeComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.homeService.getSuggestProduct().subscribe({
       next: (value: Product[]) => {
-        console.log('value', value);
         this.imageTopTierSuggest = value.map((product) => {
           return {
             ...product,

@@ -1,4 +1,4 @@
-import { TransactionProps } from "../src/entities";
+import { Status, TransactionProps } from "../src/entities";
 
 export const transactionList: TransactionProps[] = [
   {
@@ -7,6 +7,7 @@ export const transactionList: TransactionProps[] = [
     totalAmount: 2,
     userId: 1,
     createBy: "admin",
+    status: Status.APPROVE,
   },
   {
     orderId: "0002",
@@ -14,5 +15,6 @@ export const transactionList: TransactionProps[] = [
     totalAmount: 3,
     userId: 1,
     createBy: "admin",
+    status: Status.PENDING,
   },
 ];

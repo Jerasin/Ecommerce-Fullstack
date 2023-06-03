@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { CategoryService } from './category.service';
 import { Category } from '../../interfaces/category.interface';
 import { environment } from '../../environments/environment';
+import { ShareService } from '../share';
 
 @Component({
   selector: 'app-category',
@@ -11,7 +12,8 @@ import { environment } from '../../environments/environment';
 export class CategoryComponent implements OnInit {
   categories: Category[] = [];
   constructor(
-    @Inject('CategoryService') private categoryService: CategoryService
+    @Inject('CategoryService') private categoryService: CategoryService,
+    @Inject('ShareService') private shareService: ShareService
   ) {}
 
   ngOnInit(): void {
@@ -26,6 +28,14 @@ export class CategoryComponent implements OnInit {
                 : '/assets/images/noImage.jpg',
           };
         });
+      },
+      error: (err) => {
+        if (err?.status == 401) {
+          this.shareService.tokenRedirectExpire();
+          return;
+        }
+
+        throw err;
       },
     });
   }

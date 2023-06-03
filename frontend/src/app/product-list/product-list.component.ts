@@ -9,6 +9,7 @@ import { NavbarService, SelectItem } from '../navbar/navbar.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { BaseTypeOption } from '../../interfaces/base.interface';
+import { ShareService } from '../share';
 
 @Component({
   selector: 'app-product-list',
@@ -27,11 +28,20 @@ export class ProductListComponent implements OnInit {
     private productListService: ProductListService,
     @Inject('NavbarService') private navbarService: NavbarService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    @Inject('ShareService') private shareService: ShareService
   ) {
     this.navbarService.getSelectItem().subscribe({
       next: (value) => {
         this.selectItem = value;
+      },
+      error: (err) => {
+        if (err?.status == 401) {
+          this.shareService.tokenRedirectExpire();
+          return;
+        }
+
+        throw err;
       },
     });
   }

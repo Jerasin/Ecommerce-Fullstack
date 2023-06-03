@@ -24,6 +24,20 @@ export const createTransaction = async (
   return transactionRepo().save(payload);
 };
 
+async function updateTransaction(
+  transaction: Transaction
+): Promise<Transaction | undefined> {
+  const { id } = transaction;
+  const findTransaction = await transactionRepo().findOne({ where: { id } });
+
+  if (findTransaction == null) return;
+
+  const updateTransaction = { ...findTransaction, ...transaction };
+
+  const result = await transactionRepo().save(updateTransaction);
+  return result;
+}
+
 export const findOneTransaction = (
   id: TransactionProps
 ): Promise<Transaction | null> => {
@@ -70,10 +84,25 @@ router.get(
   }
 );
 
-router.post("/", async (req: Request, res: Response): Promise<void> => {
-  const result = await createTransaction(req.body);
+router.post(
+  "/",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const result = await createTransaction(req.body);
 
-  res.json(result);
+    res.json(result);
+  }
+);
+
+router.put("/:id", requireJWTAuth, async (req: Request, res: Response) => {
+  const transaction = updateTransaction(req.body);
+
+  if (transaction == null) {
+    res.status(404).json({ status: "Product Not Found", code: 404 });
+    return;
+  }
+
+  res.json(transaction);
 });
 
 export { router };

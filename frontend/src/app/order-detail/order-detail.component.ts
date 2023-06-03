@@ -3,6 +3,7 @@ import { OrderDetailService } from './order-detail.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Order } from '../../interfaces/order.interface';
+import { ShareService } from '../share';
 
 @Component({
   selector: 'app-order-detail',
@@ -13,13 +14,23 @@ export class OrderDetailComponent implements OnInit {
   data: Order[];
   constructor(
     private activatedRoute: ActivatedRoute,
-    @Inject('OrderDetailService') private orderDetailService: OrderDetailService
+    @Inject('OrderDetailService')
+    private orderDetailService: OrderDetailService,
+    @Inject('ShareService') private shareService: ShareService
   ) {}
 
   ngOnInit(): void {
     this.getSaleOrderById().subscribe({
       next: (value) => {
         this.data = value;
+      },
+      error: (err) => {
+        if (err?.status == 401) {
+          this.shareService.tokenRedirectExpire();
+          return;
+        }
+
+        throw err;
       },
     });
   }

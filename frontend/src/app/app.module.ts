@@ -3,60 +3,26 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { ProductListComponent } from './product-list/product-list.component';
+import { ProductListModule } from './product-list';
 import { RoutingModule } from './router.module';
-import { ProductListService } from './product-list/product-list.service';
-import { ProductDetailService } from './product-details/product-details.service';
-import { HomeModule } from './home/home.module';
-import { SignInModule } from './sign-in/sign-in.module';
-import { SignInService } from './sign-in/sign-in.service';
+import { HomeModule } from './home';
+import { SignInModule } from './sign-in';
 import { AuthInterceptor } from './interceptors';
 import { HttpService } from './https/http.service';
-import { NavbarService } from './navbar/navbar.service';
-import { GuardService } from './guard/guard.service';
-import { ProductDetailsModule } from './product-details/product-details.module';
+import { GuardService } from './guard';
+import { ProductDetailsModule } from './product-details';
 import { environment } from 'src/environments/environment';
 import { NavbarModule } from './navbar/navbar.module';
-import { OrderModule } from './order/order.module';
-import { OrderService } from './order/order.service';
-import { TransactionService } from './transaction/transaction.service';
-import { HomeService } from './home/home.service';
-import { CategoryComponent } from './category/category.component';
-import { CategoryService } from './category/category.service';
-import { SignUpModule } from './sign-up/sign-up.module';
-import { UserModule } from './user/user.module';
-import { UserService } from './user/user.service';
-import { HistoryModule } from './history/history.module';
-import { HistoryService } from './history/history.service';
-import { OrderDetailService } from './order-detail/order-detail.service';
-import { OrderDetailComponent } from './order-detail/order-detail.component';
-import { DashboardModule } from './dashboard/dashboard.module';
-import { DashboardService } from './dashboard/dashboard.service';
-
-const OrderDetailServiceProvider: Provider = {
-  provide: 'OrderDetailService',
-  useClass: OrderDetailService,
-};
-
-const HistoryServiceProvider: Provider = {
-  provide: 'HistoryService',
-  useClass: HistoryService,
-};
-
-const ProductListServiceProvider: Provider = {
-  provide: 'ProductListService',
-  useClass: ProductListService,
-};
-
-const ProductDetailServiceProvider: Provider = {
-  provide: 'ProductDetailService',
-  useClass: ProductDetailService,
-};
-
-const SignInServiceProvider: Provider = {
-  provide: 'SignInService',
-  useClass: SignInService,
-};
+import { OrderModule } from './order';
+import { TransactionModule } from './transaction';
+import { CategoryModule } from './category';
+import { SignUpModule } from './sign-up';
+import { UserModule } from './user';
+import { HistoryModule } from './history';
+import { OrderDetailModule } from './order-detail';
+import { DashboardModule } from './dashboard';
+import { LayoutModule } from './layout';
+import { ShareModule } from './share';
 
 const AuthInterceptorProvider: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -69,51 +35,12 @@ const HttpServiceProvider: Provider = {
   useClass: HttpService,
 };
 
-const NavbarServiceProvider: Provider = {
-  provide: 'NavbarService',
-  useClass: NavbarService,
-};
-
-const OrderServiceProvider: Provider = {
-  provide: 'OrderService',
-  useClass: OrderService,
-};
-
-const TransactionServiceProvider: Provider = {
-  provide: 'TransactionService',
-  useClass: TransactionService,
-};
-
-const HomeServiceProvider: Provider = {
-  provide: 'HomeService',
-  useClass: HomeService,
-};
-
-const CategoryServiceProvider: Provider = {
-  provide: 'CategoryService',
-  useClass: CategoryService,
-};
-
-const UserServiceProvider: Provider = {
-  provide: 'UserService',
-  useClass: UserService,
-};
-
-const DashboardServiceProvider: Provider = {
-  provide: 'DashboardService',
-  useClass: DashboardService,
-};
-
 @NgModule({
-  declarations: [
-    AppComponent,
-    ProductListComponent,
-    CategoryComponent,
-    OrderDetailComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule,
     RoutingModule,
+    LayoutModule,
+    BrowserModule,
     HttpClientModule,
     HomeModule,
     SignInModule,
@@ -124,24 +51,13 @@ const DashboardServiceProvider: Provider = {
     UserModule,
     HistoryModule,
     DashboardModule,
+    ProductListModule,
+    TransactionModule,
+    CategoryModule,
+    OrderDetailModule,
+    ShareModule,
   ],
-  providers: [
-    ProductListServiceProvider,
-    ProductDetailServiceProvider,
-    SignInServiceProvider,
-    AuthInterceptorProvider,
-    HttpServiceProvider,
-    NavbarServiceProvider,
-    GuardService,
-    OrderServiceProvider,
-    TransactionServiceProvider,
-    HomeServiceProvider,
-    CategoryServiceProvider,
-    UserServiceProvider,
-    HistoryServiceProvider,
-    OrderDetailServiceProvider,
-    DashboardServiceProvider,
-  ],
+  providers: [AuthInterceptorProvider, HttpServiceProvider, GuardService],
   bootstrap: [AppComponent],
   exports: [],
 })

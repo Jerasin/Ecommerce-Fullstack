@@ -23,6 +23,9 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    data: {
+      test: 1,
+    },
     canActivate: [adminRoute],
   },
   {

@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon';
 
 export interface BaseInterface {
-  createdAt?: DateTime;
-  updatedAt?: DateTime;
+  createdAt?: string;
+  updatedAt?: string;
   createBy?: string;
   updateBy?: string;
 }

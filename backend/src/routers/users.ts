@@ -58,55 +58,69 @@ router.get(
   }
 );
 
-router.get("/:id", async (req: Request, res: Response): Promise<void> => {
-  const id: number = parseInt(req.params.id);
-  const user = await userRepo().findOne({
-    where: { id },
-    select: {
-      id: true,
-      firstName: true,
-      lastName: true,
-      email: true,
-      status: true,
-      img: true,
-      address: true,
-    },
-  });
+router.get(
+  "/:id",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const id: number = parseInt(req.params.id);
+    const user = await userRepo().findOne({
+      where: { id },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        status: true,
+        img: true,
+        address: true,
+      },
+    });
 
-  if (user == null) {
-    res.status(404).json({ status: "User Not Found", code: 404 });
-    return;
+    if (user == null) {
+      res.status(404).json({ status: "User Not Found", code: 404 });
+      return;
+    }
+
+    res.json(user);
   }
+);
 
-  res.json(user);
-});
+router.post(
+  "/",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const result = await createUser(req.body);
+      res.json(result);
+    } catch (e: any) {
+      res
+        .status(400)
+        .json({ message: e?.message ?? "Unknown Error", code: 400 });
+    }
+  }
+);
 
-router.post("/", async (req: Request, res: Response): Promise<void> => {
-  try {
-    const result = await createUser(req.body);
+router.put(
+  "/:id",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const id: number = parseInt(req.params.id);
+    const user = await userRepo().findOne({ where: { id } });
+
+    if (user == null) {
+      res.status(404).json({ status: "User Not Found", code: 404 });
+      return;
+    }
+
+    console.log("req", req.body);
+
+    user.address = req.body.address;
+
+    console.log("user", user);
+
+    const result = await userRepo().save(user);
     res.json(result);
-  } catch (e: any) {
-    res.status(400).json({ message: e?.message ?? "Unknown Error", code: 400 });
   }
-});
-
-router.put("/:id", async (req: Request, res: Response): Promise<void> => {
-  const id: number = parseInt(req.params.id);
-  const user = await userRepo().findOne({ where: { id } });
-
-  if (user == null) {
-    res.status(404).json({ status: "User Not Found", code: 404 });
-    return;
-  }
-
-  console.log("req", req.body);
-
-  user.address = req.body.address;
-
-  console.log("user", user);
-
-  const result = await userRepo().save(user);
-  res.json(result);
-});
+);
 
 export { router };
