@@ -1,5 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavbarService } from '../navbar';
+import { Store } from '@ngrx/store';
+import { showNavbarDashBoardDisable, showNavbarEnable } from '../store';
 
 export interface TokenRedirectExpireOptions {
   keyLocalStorage?: string[];
@@ -8,7 +11,11 @@ export interface TokenRedirectExpireOptions {
 
 @Injectable()
 export class ShareService {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private store: Store,
+    @Inject('NavbarService') private navbarService: NavbarService
+  ) {}
 
   public tokenRedirectExpire(
     props?: TokenRedirectExpireOptions
@@ -23,5 +30,15 @@ export class ShareService {
     }
 
     return this.router.navigate([targetPath]);
+  }
+
+  public signOut(): void {
+    localStorage.clear();
+    this.navbarService.setIsShowSignIn(false);
+    this.navbarService.setSelectItem([]);
+    this.navbarService.setSessionUser(null);
+    this.store.dispatch(showNavbarDashBoardDisable());
+    this.store.dispatch(showNavbarEnable());
+    this.router.navigate(['signIn']);
   }
 }
