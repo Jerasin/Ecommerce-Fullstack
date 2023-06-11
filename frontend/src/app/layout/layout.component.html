@@ -1,7 +1,15 @@
-<div>
-  <app-navbar *ngIf="showNavbarReducer$ | async"></app-navbar>
-  <app-navbar-dashboard
-    *ngIf="showNavbarDashBoardReducer$ | async"
-  ></app-navbar-dashboard>
+<div *ngIf="showNavbarReducer$ | async">
+  <app-navbar></app-navbar>
   <router-outlet></router-outlet>
+</div>
+
+<div *ngIf="showNavbarDashBoardReducer$ | async">
+  <div class="container-navbar-dashboard">
+    <div style="width: 10px">
+      <app-navbar-dashboard></app-navbar-dashboard>
+    </div>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
