@@ -8,7 +8,7 @@ export interface ProductProps extends BaseInterface {
   description?: string;
   img?: string;
   weightPriority?: number;
-  category: Category[] | number;
+  category: Category | number;
 }
 
 @Entity()
@@ -32,5 +32,5 @@ export class Product extends Base implements ProductProps {
   weightPriority?: number;
 
   @ManyToOne(() => Category, (category) => category.product)
-  category: Category[] | number;
+  category: Category | number;
 }

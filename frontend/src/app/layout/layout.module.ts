@@ -4,6 +4,7 @@ import { NavbarModule } from '../navbar/navbar.module';
 import { LayoutComponent } from './layout.component';
 import { RoutingModule } from '../router.module';
 import { LayoutService } from './layout.service';
+import { NavbarDashboardModule } from '../navbar-dashboard';
 
 const LayoutServiceProvider: Provider = {
   provide: 'LayoutService',
@@ -12,7 +13,7 @@ const LayoutServiceProvider: Provider = {
 
 @NgModule({
   declarations: [LayoutComponent],
-  imports: [CommonModule, NavbarModule, RoutingModule],
+  imports: [CommonModule, NavbarModule, RoutingModule, NavbarDashboardModule],
   providers: [LayoutServiceProvider],
   exports: [LayoutComponent],
 })

@@ -41,4 +41,11 @@ export const productList: ProductProps[] = [
     weightPriority: 5,
     category: 2,
   },
+  {
+    name: "Ipad",
+    price: 3200,
+    createBy: "admin",
+    weightPriority: 6,
+    category: 2,
+  },
 ];

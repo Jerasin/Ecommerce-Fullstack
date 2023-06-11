@@ -1,11 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Status, Transaction } from '../../interfaces';
 import { DateTime } from 'luxon';
 import { SessionUser } from '../../interfaces';
 import { decodeToken } from '../../util';
 import { ShareService } from '../share';
+import { Store } from '@ngrx/store';
+import { showNavbarDashBoardEnable, showNavbarDisable } from '../store';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,11 +17,15 @@ import { ShareService } from '../share';
 export class DashboardComponent implements OnInit {
   reports = new BehaviorSubject<Transaction[]>([]);
   email: string;
+  showNavbarDashBoardReducer$: Observable<boolean>;
+
   constructor(
     @Inject('DashboardService') private dashboardService: DashboardService,
-    @Inject('ShareService') private shareService: ShareService
+    @Inject('ShareService') private shareService: ShareService,
+    private store: Store
   ) {
-    this.dashboardService.test();
+    this.store.dispatch(showNavbarDashBoardEnable());
+    this.store.dispatch(showNavbarDisable());
   }
 
   ngOnInit(): void {

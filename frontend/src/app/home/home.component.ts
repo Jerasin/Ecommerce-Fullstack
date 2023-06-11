@@ -7,8 +7,9 @@ import {
   OnInit,
 } from '@angular/core';
 import { HomeService } from './home.service';
-import { Product } from '../../mock/productList';
+import { Product } from '../../interfaces';
 import { environment } from '../../environments/environment';
+import { Pagination } from '../../interfaces/base.interface';
 
 @Component({
   selector: 'app-home',
@@ -20,14 +21,11 @@ export class HomeComponent implements AfterViewInit, OnInit {
   mySlides?: ElementRef<HTMLDivElement>;
 
   imageTopTierSuggest: Product[] = [];
-  // slideIndex: number;
+
   constructor(
     @Inject('HomeService') private homeService: HomeService,
     private elementRef: ElementRef
-  ) {
-    // this.slideIndex = 1;
-    // this.showSlides(this.slideIndex);
-  }
+  ) {}
 
   ngAfterViewInit() {
     console.log(
@@ -42,8 +40,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.homeService.getSuggestProduct().subscribe({
-      next: (value: Product[]) => {
-        this.imageTopTierSuggest = value.map((product) => {
+      next: (value: Pagination<Product[]>) => {
+        this.imageTopTierSuggest = value.data.map((product) => {
           return {
             ...product,
             img:
@@ -55,33 +53,4 @@ export class HomeComponent implements AfterViewInit, OnInit {
       },
     });
   }
-
-  // currentSlide(n: number) {
-  //   this.showSlides((this.slideIndex = n));
-  // }
-
-  // showSlides(n: number) {
-  //   let i;
-  //   let slides = document.getElementsByClassName(
-  //     'mySlides'
-  //   ) as HTMLCollectionOf<HTMLElement>;
-
-  //   console.log('slides', slides);
-
-  //   let dots = document.getElementsByClassName('dot');
-  //   if (n > slides.length) {
-  //     this.slideIndex = 1;
-  //   }
-  //   if (n < 1) {
-  //     this.slideIndex = slides.length;
-  //   }
-  //   for (i = 0; i < slides.length; i++) {
-  //     slides[i].style.display = 'none';
-  //   }
-  //   for (i = 0; i < dots.length; i++) {
-  //     dots[i].className = dots[i].className.replace(' active', '');
-  //   }
-  //   slides[this.slideIndex - 1].style.display = 'block';
-  //   dots[this.slideIndex - 1].className += ' active';
-  // }
 }

@@ -11,3 +11,11 @@ export interface BaseTypeOption {
   categoryId?: number;
   productId?: number;
 }
+
+export interface Pagination<T> {
+  page: number;
+  size: number;
+  total: number;
+  totalPage: number;
+  data: T;
+}

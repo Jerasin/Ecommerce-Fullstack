@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 
-import { Product } from '../../mock/productList';
+import { Product } from '../../interfaces';
 import { ActivatedRoute } from '@angular/router';
 import { ProductDetailService } from './product-details.service';
 import { FormGroup, FormControl } from '@angular/forms';

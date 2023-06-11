@@ -1,14 +1,14 @@
 import { Request, Response, Router } from "express";
-import { myDataSource } from "../app-data-source";
 import { Transaction } from "../entities";
 import { Repository } from "typeorm";
 import { requireJWTAuth } from "../middleware/auth.middleware";
 import { TransactionProps, SaleOrder } from "../entities";
+import { repo } from "./base";
 
 const router = Router();
 
 export const transactionRepo = (): Repository<Transaction> => {
-  return myDataSource.getRepository(Transaction);
+  return repo(Transaction);
 };
 
 export const createTransaction = async (

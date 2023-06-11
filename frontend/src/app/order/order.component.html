@@ -1,6 +1,6 @@
 <div class="container">
   <div class="container-header">
-    <h3>Order Details</h3>
+    <h2>Order Details</h2>
   </div>
   <form>
     <div class="container-box">
@@ -19,10 +19,10 @@
             <th>Status</th>
           </tr>
           <tr *ngFor="let product of selectItem">
-            <th>{{ product.name }}</th>
-            <th>{{ product.amount }}</th>
-            <th>{{ product.price }}</th>
-            <th>
+            <td>{{ product.name }}</td>
+            <td>{{ product.amount }}</td>
+            <td>{{ product.price }}</td>
+            <td>
               <div style="margin: 5px">
                 <button
                   type="button"
@@ -32,7 +32,7 @@
                   <b>Delete</b>
                 </button>
               </div>
-            </th>
+            </td>
           </tr>
         </table>
       </div>

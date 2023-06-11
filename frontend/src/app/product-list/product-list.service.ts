@@ -1,13 +1,16 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpService, Method } from '../https/http.service';
 import { Observable } from 'rxjs';
-
+import { Pagination, Product } from '../../interfaces';
 @Injectable()
 export class ProductListService {
   constructor(@Inject('HttpService') private httpService: HttpService) {}
 
-  getProducts(): Observable<any> {
-    return this.httpService.fetch('http://localhost:3000/products', Method.GET);
+  getProducts(page = 1, size = 5): Observable<Pagination<Product[]>> {
+    return this.httpService.fetch(
+      `http://localhost:3000/products?page=${page}&size=${size}`,
+      Method.GET
+    );
   }
 
   getProductById(id: number): Observable<any> {
@@ -17,9 +20,9 @@ export class ProductListService {
     );
   }
 
-  getProductByCategory(id: number): Observable<any> {
+  getProductByCategory(id: number, page = 1, size = 5): Observable<any> {
     return this.httpService.fetch(
-      `http://localhost:3000/products/category/${id}`,
+      `http://localhost:3000/products/category/${id}?page=${page}&size=${size}`,
       Method.GET
     );
   }

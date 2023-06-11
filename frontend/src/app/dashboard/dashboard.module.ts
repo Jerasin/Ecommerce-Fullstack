@@ -13,6 +13,6 @@ const DashboardServiceProvider: Provider = {
 @NgModule({
   declarations: [DashboardComponent],
   providers: [DashboardServiceProvider],
-  imports: [CommonModule, MatIconModule, RoutingModule],
+  imports: [RoutingModule, CommonModule, MatIconModule],
 })
 export class DashboardModule {}

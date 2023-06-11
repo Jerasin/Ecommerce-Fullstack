@@ -17,15 +17,6 @@ export class NavbarService {
   );
   private selectItem = new BehaviorSubject<SelectItem[]>([]);
   private sessionUser = new BehaviorSubject<SessionUser>(null);
-  public showNavbar = new BehaviorSubject<boolean>(true);
-
-  public setShowNavbar(payload: boolean) {
-    return this.showNavbar.next(payload);
-  }
-
-  public getShowNavbar() {
-    return this.showNavbar.asObservable();
-  }
 
   public setIsShowSignIn(payload: boolean) {
     return this.isLogin.next(payload);

@@ -5,3 +5,4 @@ export * from './sign-in.interface';
 export * from './transaction.interface';
 export * from './user.interface';
 export * from './warehouse.interface';
+export * from './product.interface';

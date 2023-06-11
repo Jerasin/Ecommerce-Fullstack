@@ -1,14 +1,14 @@
 import { Request, Response, Router } from "express";
-import { myDataSource } from "../app-data-source";
 import { Product } from "../entities";
 import { Repository } from "typeorm";
 import { requireJWTAuth } from "../middleware/auth.middleware";
 import { ProductProps } from "../entities";
+import { pagination, repo } from "./base";
 
 const router = Router();
 
 export const productRepo = (): Repository<Product> => {
-  return myDataSource.getRepository(Product);
+  return repo(Product);
 };
 
 export const createProduct = async (
@@ -29,7 +29,10 @@ router.get(
   "/",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const products = await productRepo().find();
+    const { page, size } = req.query ?? {};
+    const pageNumber = parseInt(page as string);
+    const sizeNumber = parseInt(size as string);
+    const products = await pagination(Product, pageNumber, sizeNumber);
     res.json(products);
   }
 );
@@ -37,10 +40,7 @@ router.get(
 router.get(
   "/productSuggest",
   async (req: Request, res: Response): Promise<void> => {
-    const products = await productRepo()
-      .createQueryBuilder()
-      .where("weightPriority is not null")
-      .getMany();
+    const products = await pagination(Product);
     res.json(products);
   }
 );
@@ -50,14 +50,22 @@ router.get(
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
     const id: number = parseInt(req.params.id);
+    const { page, size } = req.query ?? {};
+    const pageNumber = parseInt(page as string);
+    const sizeNumber = parseInt(size as string);
 
-    const products = await productRepo().find({
-      where: {
-        category: {
-          id,
-        },
+    if (isNaN(pageNumber) || isNaN(sizeNumber)) {
+      res.status(400).json({ status: "Query String Error", code: 400 });
+    }
+
+    const products = await pagination(Product, pageNumber, sizeNumber, {
+      categoryId: id,
+      relations: {
+        category: true,
       },
     });
+
+    console.log("products", typeof products.data[0].category);
 
     res.json(products);
   }

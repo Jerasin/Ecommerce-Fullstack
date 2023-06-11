@@ -18,7 +18,7 @@ export class GuardService {
     router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        console.log('prev:', event.url);
+        // console.log('prev:', event.url);
         this.setPreviousUrl(event.url);
       });
 

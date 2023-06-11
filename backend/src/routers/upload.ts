@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
 import formidable from "formidable";
 import fs from "fs";
 import path from "path";
@@ -43,9 +43,6 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     res
       .status(201)
       .json({ status: "success", message: "upload image success" });
-
-    // console.log("fields", fields);
-    // console.log("files", files);
   });
 });
 

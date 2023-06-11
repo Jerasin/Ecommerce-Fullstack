@@ -1,13 +1,13 @@
 import { Request, Response, Router } from "express";
-import { myDataSource } from "../app-data-source";
 import { Category, CategoryProps } from "../entities";
 import { Repository } from "typeorm";
 import { requireJWTAuth } from "../middleware/auth.middleware";
+import { repo } from "./base";
 
 const router = Router();
 
 export const categoryRepo = (): Repository<Category> => {
-  return myDataSource.getRepository(Category);
+  return repo(Category);
 };
 
 export const createCategory = async (

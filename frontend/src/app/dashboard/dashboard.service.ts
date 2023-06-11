@@ -7,10 +7,7 @@ import { NavbarService } from '../navbar';
 
 @Injectable()
 export class DashboardService {
-  constructor(
-    @Inject('HttpService') private httpService: HttpService,
-    @Inject('NavbarService') private navbarService: NavbarService
-  ) {}
+  constructor(@Inject('HttpService') private httpService: HttpService) {}
 
   public getTransactions(): Observable<Transaction[]> {
     return this.httpService.fetch<any, Transaction[]>(
@@ -24,9 +21,5 @@ export class DashboardService {
       Method.PUT,
       { props: transaction }
     );
-  }
-
-  public test() {
-    this.navbarService.setShowNavbar(false);
   }
 }

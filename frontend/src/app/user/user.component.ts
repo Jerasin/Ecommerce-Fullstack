@@ -4,6 +4,9 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { ShareService } from '../share';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { decrement, increment, reset } from './user.actions';
 
 @Component({
   selector: 'app-user',
@@ -18,13 +21,17 @@ export class UserComponent implements OnInit {
     id: new FormControl(null),
     address: new FormControl(null),
   });
+  count$: Observable<number>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     @Inject('UserService') private userService: UserService,
     private router: Router,
-    @Inject('ShareService') private shareService: ShareService
-  ) {}
+    @Inject('ShareService') private shareService: ShareService,
+    private store: Store<{ count: number }>
+  ) {
+    this.count$ = this.store.select('count');
+  }
 
   ngOnInit(): void {
     const routeParams = this.activatedRoute.snapshot.paramMap;
@@ -48,7 +55,7 @@ export class UserComponent implements OnInit {
           return;
         }
 
-        throw err;
+        alert(JSON.stringify(err));
       },
     });
   }
@@ -63,5 +70,20 @@ export class UserComponent implements OnInit {
         },
       });
     }
+  }
+
+  increment() {
+    // TODO: Dispatch an increment action
+    this.store.dispatch(increment());
+  }
+
+  decrement() {
+    // TODO: Dispatch a decrement action
+    this.store.dispatch(decrement());
+  }
+
+  reset() {
+    // TODO: Dispatch a reset action
+    this.store.dispatch(reset());
   }
 }

@@ -49,8 +49,8 @@ services:
   adminer:
     image: adminer
     restart: always
-    # ports:
-    #   - 8080:8080
+    ports:
+      - 8080:8080
 
   nginx:
     build:
@@ -61,7 +61,6 @@ services:
     ports:
       - 4200:4200
       - 3000:3000
-      - 8090:8080
     depends_on:
       - api
 

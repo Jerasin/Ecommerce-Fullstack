@@ -1,14 +1,14 @@
 import { Request, Response, Router } from "express";
-import { myDataSource } from "../app-data-source";
 import { User, UserProps } from "../entities";
 import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { requireJWTAuth } from "../middleware/auth.middleware";
 import { admin, test } from "../../mock/user";
+import { repo } from "./base";
 
 const router = Router();
 
-const userRepo = (): Repository<User> => myDataSource.getRepository(User);
+const userRepo = (): Repository<User> => repo(User);
 
 const createUser = async (props: UserProps): Promise<User> => {
   const { firstName, lastName, email, status, password, role }: UserProps =

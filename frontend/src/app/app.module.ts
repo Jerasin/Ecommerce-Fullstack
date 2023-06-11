@@ -23,6 +23,30 @@ import { OrderDetailModule } from './order-detail';
 import { DashboardModule } from './dashboard';
 import { LayoutModule } from './layout';
 import { ShareModule } from './share';
+import { NavbarDashboardModule } from './navbar-dashboard';
+import {
+  ActionReducer,
+  ActionReducerMap,
+  MetaReducer,
+  StoreModule,
+} from '@ngrx/store';
+import { showNavbarDashBoardReducer, showNavbarReducer } from './store';
+import { localStorageSync } from 'ngrx-store-localstorage';
+
+const reducers: ActionReducerMap<any> = {
+  showNavbarDashBoardReducer,
+  showNavbarReducer,
+};
+
+export function localStorageSyncReducer(
+  reducer: ActionReducer<any>
+): ActionReducer<any> {
+  return localStorageSync({
+    keys: ['count', 'showNavbarDashBoardReducer', 'showNavbarReducer'],
+  })(reducer);
+}
+
+const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 const AuthInterceptorProvider: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -56,6 +80,8 @@ const HttpServiceProvider: Provider = {
     CategoryModule,
     OrderDetailModule,
     ShareModule,
+    NavbarDashboardModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
   ],
   providers: [AuthInterceptorProvider, HttpServiceProvider, GuardService],
   bootstrap: [AppComponent],

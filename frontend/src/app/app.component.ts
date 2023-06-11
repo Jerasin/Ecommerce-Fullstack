@@ -13,11 +13,11 @@ export class AppComponent implements OnInit {
   title = 'Front End';
 
   ngOnInit(): void {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        console.log('prev:', event.url);
-        this.route = event.url;
-      });
+    // this.router.events
+    //   .pipe(filter((event) => event instanceof NavigationEnd))
+    //   .subscribe((event: NavigationEnd) => {
+    //     console.log('prev:', event.url);
+    //     this.route = event.url;
+    //   });
   }
 }

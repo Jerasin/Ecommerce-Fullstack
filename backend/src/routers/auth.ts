@@ -1,14 +1,14 @@
 import { Request, Response, Router } from "express";
-import { myDataSource } from "../app-data-source";
 import { User } from "../entities";
 import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
+import { repo } from "./base";
 
 const router = Router();
 const secret = "SecretKey";
 
-const getRepository = (): Repository<User> => myDataSource.getRepository(User);
+const getRepository = (): Repository<User> => repo(User);
 
 router.post("/login", async (req: Request, res: Response): Promise<void> => {
   let matchPassword = false;

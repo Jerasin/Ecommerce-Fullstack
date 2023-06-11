@@ -1,12 +1,3 @@
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  description?: string;
-  img?: string;
-  available?: number;
-}
-
 export const productList = [
   {
     id: 1,

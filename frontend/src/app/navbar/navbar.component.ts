@@ -17,7 +17,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   getIsShowSignInSub: Subscription;
   getSelectItemSub: Subscription;
   getSessionUser: Subscription;
-  getShowNavbar: Subscription;
   userId: number;
   role: string;
 
@@ -27,8 +26,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {}
 
   signOut() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('shopping');
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('shopping');
+    localStorage.clear();
     this.navbarService.setIsShowSignIn(false);
     this.navbarService.setSelectItem([]);
     this.navbarService.setSessionUser(null);
@@ -66,10 +66,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.getSessionUser = this.navbarService.getSessionUser().subscribe((e) => {
       this.role = e?.role;
     });
-
-    this.getShowNavbar = this.navbarService
-      .getShowNavbar()
-      .subscribe((e) => (this.isShowNavbar = e));
   }
 
   ngOnDestroy(): void {
