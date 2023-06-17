@@ -5,15 +5,16 @@ import { HttpService, Method } from '../https/http.service';
 import { NavbarService } from '../navbar/navbar.service';
 import { environment } from '../../environments/environment';
 import { decodeToken } from '../../util';
+import { Store } from '@ngrx/store';
+import { isLogin, setSessionUser } from '../store';
 
 @Injectable()
 export class SignInService {
   constructor(
     @Inject('HttpService')
     private httpService: HttpService,
-    @Inject('NavbarService')
-    private navbarService: NavbarService,
-    private router: Router
+    private router: Router,
+    private store: Store<{ isLoginReducer: boolean }>
   ) {}
 
   signIn(props: SignInInterface): void {
@@ -28,8 +29,8 @@ export class SignInService {
           if (value.token != null) {
             localStorage.setItem('token', value.token);
             const tokenSessionUser = decodeToken(value.token);
-            this.navbarService.setSessionUser(tokenSessionUser);
-            this.navbarService.setIsShowSignIn(true);
+            this.store.dispatch(setSessionUser({ session: tokenSessionUser }));
+            this.store.dispatch(isLogin());
             this.router.navigate(['products']);
           } else {
             alert('Error');

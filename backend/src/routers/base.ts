@@ -85,3 +85,9 @@ export const pagination = async <T extends ObjectLiteral>(
     totalPage: Math.ceil(count / sizeNumber),
   };
 };
+
+export const countAll = async <T extends ObjectLiteral>(
+  model: EntityTarget<any>
+): Promise<number> => {
+  return repo<T>(model).count();
+};

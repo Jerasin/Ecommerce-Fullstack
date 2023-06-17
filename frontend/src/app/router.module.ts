@@ -13,6 +13,7 @@ import { UserComponent } from './user/user.component';
 import { HistoryComponent } from './history/history.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 const routes: Routes = [
   {

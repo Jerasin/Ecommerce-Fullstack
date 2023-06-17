@@ -11,7 +11,7 @@
         </div>
         <div class="card-text">
           <p>UserCount:</p>
-          <div>1</div>
+          <p class="card-count">{{ count?.user ?? 0 }}</p>
         </div>
       </div>
 
@@ -21,7 +21,7 @@
         </div>
         <div class="card-text">
           <p>ProductCount</p>
-          <div>1</div>
+          <p class="card-count">{{ count?.product ?? 0 }}</p>
         </div>
       </div>
 
@@ -31,7 +31,7 @@
         </div>
         <div class="card-text">
           <p>Category Count</p>
-          <div>1</div>
+          <p class="card-count">{{ count?.category ?? 0 }}</p>
         </div>
       </div>
 
@@ -41,7 +41,7 @@
         </div>
         <div class="card-text">
           <p>Order Total Count</p>
-          <div>1</div>
+          <p class="card-count">{{ count?.transaction ?? 0 }}</p>
         </div>
       </div>
     </div>
@@ -113,4 +113,19 @@
       </table>
     </div>
   </div>
+
+  <!-- <div class="container-pagination">
+    <ul *ngFor="let item of totalPage" class="pagination">
+      <li class="test" [ngClass]="{ test1: item === selectPage }">
+        <button
+          [disabled]="selectPage == item"
+          [ngClass]="{ 'dis-btn-page': item === selectPage }"
+          class="btn-page"
+          (click)="selectPageAndSize(item, 5)"
+        >
+          {{ item }}
+        </button>
+      </li>
+    </ul>
+  </div> -->
 </div>

@@ -1,13 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Status, Transaction } from '../../interfaces';
+import { BehaviorSubject, Observable, forkJoin } from 'rxjs';
+import {
+  DashboardCount,
+  Status,
+  Transaction,
+  SessionUser,
+} from '../../interfaces';
 import { DateTime } from 'luxon';
-import { SessionUser } from '../../interfaces';
 import { decodeToken } from '../../util';
 import { ShareService } from '../share';
-import { Store } from '@ngrx/store';
-import { showNavbarDashBoardEnable, showNavbarDisable } from '../store';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,15 +20,13 @@ export class DashboardComponent implements OnInit {
   reports = new BehaviorSubject<Transaction[]>([]);
   email: string;
   showNavbarDashBoardReducer$: Observable<boolean>;
+  count: DashboardCount;
+  totalPage: number[];
 
   constructor(
     @Inject('DashboardService') private dashboardService: DashboardService,
-    @Inject('ShareService') private shareService: ShareService,
-    private store: Store
-  ) {
-    this.store.dispatch(showNavbarDashBoardEnable());
-    this.store.dispatch(showNavbarDisable());
-  }
+    @Inject('ShareService') private shareService: ShareService
+  ) {}
 
   ngOnInit(): void {
     let tokenSessionUser: SessionUser = null;
@@ -34,34 +34,49 @@ export class DashboardComponent implements OnInit {
     tokenSessionUser = decodeToken(getToken);
     this.email = tokenSessionUser.email;
 
-    this.dashboardService.getTransactions().subscribe({
-      next: (value) => {
-        const convertTimeZone = value.map((i) => {
-          if (i.updatedAt == null)
+    forkJoin({
+      getTransactions: this.dashboardService.getTransactions(),
+      getUserCount: this.dashboardService.getUserCount(),
+      getProductCount: this.dashboardService.getProductCount(),
+      getCategoryCount: this.dashboardService.getCategoryCount(),
+      getTransactionCount: this.dashboardService.getTransactionCount(),
+    }).subscribe({
+      next: ({
+        getTransactions,
+        getUserCount,
+        getProductCount,
+        getCategoryCount,
+        getTransactionCount,
+      }) => {
+        this.createRange(getTransactionCount);
+        this.count = {
+          user: getUserCount,
+          product: getProductCount,
+          transaction: getTransactionCount,
+          category: getCategoryCount,
+        };
+        const convertTimeZone = getTransactions.data.map((i) => {
+          if (i.updatedAt == null) {
             return {
               ...i,
               createdAt: this.convertTimeZoneUtcToBkk(i.createdAt),
             };
-
+          }
           return {
             ...i,
+            createdAt: this.convertTimeZoneUtcToBkk(i.createdAt),
             updatedAt: this.convertTimeZoneUtcToBkk(i.updatedAt),
           };
         });
-
         console.log('convertTimeZone', convertTimeZone);
-
         this.reports.next(convertTimeZone);
       },
-      error: (err) => {
-        if (err?.status == 401) {
-          this.shareService.tokenRedirectExpire();
-          return;
-        }
-
-        throw err;
-      },
     });
+  }
+
+  private createRange(range: number) {
+    const transactions = new Array(range).fill(0).map((n, index) => index + 1);
+    this.totalPage = transactions;
   }
 
   private convertTimeZoneUtcToBkk(dateTime: string): string {

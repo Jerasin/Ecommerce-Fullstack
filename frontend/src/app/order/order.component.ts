@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { NavbarService, SelectItem } from '../navbar/navbar.service';
+import { SelectItem } from '../navbar/navbar.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { OrderService } from './order.service';
 import {
@@ -11,6 +11,8 @@ import { Order } from '../../interfaces';
 import { TransactionService } from '../transaction/transaction.service';
 import { decodeToken } from '../../util';
 import { ShareService } from '../share';
+import { Store } from '@ngrx/store';
+import { resetSelectItem, setSelectItem } from '../store';
 
 @Component({
   selector: 'app-order',
@@ -28,6 +30,14 @@ export class OrderComponent implements OnInit {
     price: new FormControl(null),
   });
 
+  constructor(
+    @Inject('OrderService') private orderService: OrderService,
+    @Inject('TransactionService')
+    private transactionService: TransactionService,
+    @Inject('ShareService') private shareService: ShareService,
+    private store: Store<{ selectItemReducer: SelectItem[] }>
+  ) {}
+
   ngOnInit(): void {
     this.token = localStorage.getItem('token');
 
@@ -36,28 +46,12 @@ export class OrderComponent implements OnInit {
       this.email = decode.email;
     }
 
-    this.navbarService.getSelectItem().subscribe({
-      next: (value) => {
-        this.selectItem = value;
-      },
-      error: (err) => {
-        if (err?.status == 401) {
-          this.shareService.tokenRedirectExpire();
-          return;
-        }
-
-        throw err;
+    this.store.select('selectItemReducer').subscribe({
+      next: (value: SelectItem[]) => {
+        this.selectItem = value.map((item) => ({ ...item }));
       },
     });
   }
-
-  constructor(
-    @Inject('NavbarService') private navbarService: NavbarService,
-    @Inject('OrderService') private orderService: OrderService,
-    @Inject('TransactionService')
-    private transactionService: TransactionService,
-    @Inject('ShareService') private shareService: ShareService
-  ) {}
 
   public deleteSelectItem(productId: number) {
     const getSelectItem = this.selectItem.findIndex(
@@ -65,9 +59,14 @@ export class OrderComponent implements OnInit {
     );
 
     if (getSelectItem != -1) {
+      console.log('before splice', this.selectItem);
       this.selectItem.splice(getSelectItem, 1);
+
+      console.log('getSelectItem', getSelectItem);
+      console.log('this.selectItem', this.selectItem);
+
       localStorage.setItem('shopping', JSON.stringify(this.selectItem));
-      this.navbarService.setSelectItem(this.selectItem);
+      this.store.dispatch(setSelectItem({ session: this.selectItem }));
     }
   }
 
@@ -84,9 +83,7 @@ export class OrderComponent implements OnInit {
           console.log('updateWareHouse', e);
         });
 
-        // localStorage.removeItem('shopping');
-        // this.router.navigate(['products']);
-        this.navbarService.setSelectItem([]);
+        this.store.dispatch(resetSelectItem());
         return this.shareService.tokenRedirectExpire({
           keyLocalStorage: ['shopping'],
           path: 'products',

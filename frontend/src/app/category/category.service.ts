@@ -10,7 +10,7 @@ export class CategoryService {
 
   public getCategory(): Observable<Category[]> {
     return this.httpService.fetch<any, Category[]>(
-      `${environment.apiUrl}/category`
+      `${environment.apiUrl}/categories`
     );
   }
 }

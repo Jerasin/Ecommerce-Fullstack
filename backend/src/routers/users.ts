@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { requireJWTAuth } from "../middleware/auth.middleware";
 import { admin, test } from "../../mock/user";
-import { repo } from "./base";
+import { countAll, pagination, repo } from "./base";
 
 const router = Router();
 
@@ -53,8 +53,22 @@ router.get(
   "/",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const users = await userRepo().find();
+    const { page, size } = req.query ?? {};
+    const pageNumber = parseInt(page as string);
+    const sizeNumber = parseInt(size as string);
+
+    const users = await pagination(User, pageNumber, sizeNumber);
     res.json(users);
+  }
+);
+
+router.get(
+  "/count",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const total = await countAll(User);
+    console.log("total", total);
+    res.json(total);
   }
 );
 

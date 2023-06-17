@@ -13,7 +13,7 @@ export class TransactionService {
 
   public createTransaction(value: TransactionProps): Observable<Transaction> {
     return this.httpService.fetch(
-      `${environment.apiUrl}/transaction`,
+      `${environment.apiUrl}/transactions`,
       Method.POST,
       { props: value }
     );

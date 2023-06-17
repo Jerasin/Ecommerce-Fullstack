@@ -1,11 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { LayoutService } from './layout.service';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import {
-  showNavbarDashBoardDisable,
-  showNavbarDashBoardEnable,
-} from '../store/navbar-dashboard';
 
 @Component({
   selector: 'app-layout',
@@ -25,7 +20,6 @@ export class LayoutComponent {
     this.showNavbarDashBoardReducer$ = this.store.select(
       'showNavbarDashBoardReducer'
     );
-
     this.showNavbarReducer$ = this.store.select('showNavbarReducer');
   }
 }

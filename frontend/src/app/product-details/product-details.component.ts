@@ -1,13 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-
-import { Product } from '../../interfaces';
 import { ActivatedRoute } from '@angular/router';
 import { ProductDetailService } from './product-details.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { Observable, forkJoin } from 'rxjs';
-import { NavbarService } from '../navbar/navbar.service';
 import { ShareService } from '../share';
 
 @Component({
@@ -31,7 +28,6 @@ export class ProductDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     @Inject('ProductDetailService')
     private productDetailService: ProductDetailService,
-    @Inject('NavbarService') private navbarService: NavbarService,
     @Inject('ShareService') private shareService: ShareService
   ) {}
 
@@ -58,14 +54,10 @@ export class ProductDetailsComponent implements OnInit {
       },
       error: (err) => {
         if (err?.status == 401) {
-          this.navbarService.setIsShowSignIn(false);
+          this.shareService.signOut();
           this.shareService.tokenRedirectExpire({
             keyLocalStorage: ['token', 'shopping'],
           });
-
-          // localStorage.removeItem('token');
-          // localStorage.removeItem('shopping');
-          // this.router.navigate(['signIn']);
         }
       },
     });

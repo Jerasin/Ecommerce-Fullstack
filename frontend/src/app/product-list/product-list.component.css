@@ -123,11 +123,11 @@ li {
   border: 3px solid black;
 }
 
-.test :hover {
+.pagination-btn :hover {
   background-color: red;
 }
 
-.test1 {
+.disable-pagination-btn {
   pointer-events: none;
 }
 

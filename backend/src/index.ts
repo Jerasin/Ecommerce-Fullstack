@@ -20,7 +20,10 @@ import {
 } from "./routers/transaction";
 import { router as saleOrderRouter } from "./routers/saleOrder";
 import { router as productRouter, createProduct } from "./routers/products";
-import { router as categoryRouter, createCategory } from "./routers/category";
+import {
+  router as categoriesRouter,
+  createCategory,
+} from "./routers/categories";
 
 // mock data
 import { productList } from "../mock/product";
@@ -88,9 +91,9 @@ app.use("/users", userRouter);
 app.use("/auth", authRouter);
 app.use("/upload", uploadRouter);
 app.use("/wareHouse", wareHouseRouter);
-app.use("/transaction", transactionRouter);
+app.use("/transactions", transactionRouter);
 app.use("/saleOrder", saleOrderRouter);
-app.use("/category", categoryRouter);
+app.use("/categories", categoriesRouter);
 
 app.listen(port, () => {
   console.log("imgPath", imgPath);

@@ -10,12 +10,14 @@ import { ProductListService } from './product-list.service';
 import jwt_decode from 'jwt-decode';
 import { ParamMap, Params, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { BehaviorSubject, forkJoin } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { NavbarService, SelectItem } from '../navbar/navbar.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { BaseTypeOption, Pagination } from '../../interfaces/base.interface';
 import { ShareService } from '../share';
+import { Store } from '@ngrx/store';
+import { setSelectItem } from '../store';
 
 @Component({
   selector: 'app-product-list',
@@ -40,35 +42,28 @@ export class ProductListComponent implements OnInit {
     @Inject('NavbarService') private navbarService: NavbarService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    @Inject('ShareService') private shareService: ShareService
-  ) {
-    this.navbarService.getSelectItem().subscribe({
-      next: (value) => {
-        this.selectItem = value;
-      },
-      error: (err) => {
-        if (err?.status == 401) {
-          this.shareService.tokenRedirectExpire();
-          return;
-        }
-
-        throw err;
-      },
-    });
-  }
+    @Inject('ShareService') private shareService: ShareService,
+    private store: Store<{ selectItemReducer: SelectItem[] }>
+  ) {}
 
   public createRange(range: number) {
     return new Array(range).fill(0).map((n, index) => index + 1);
   }
 
   ngOnInit(): void {
+    this.store.select('selectItemReducer').subscribe({
+      next: (value) => {
+        // https://stackoverflow.com/questions/68671805/cannot-assign-to-read-only-property-selected-of-object-object-object
+        this.selectItem = value.map((item) => ({ ...item }));
+      },
+    });
+
     const routeParams: ParamMap = this.activatedRoute.snapshot.paramMap;
     this.selectPage = 1;
     this.selectSize = 5;
-    console.log('routeParams', routeParams);
+
     this.activatedRoute.queryParams.subscribe({
       next: (value: Params) => {
-        console.log('value', value);
         this.fetchProduct(routeParams, value);
       },
     });
@@ -128,10 +123,7 @@ export class ProductListComponent implements OnInit {
       },
       error: (err) => {
         if (err.status == 401) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('shopping');
-          this.navbarService.setIsShowSignIn(false);
-          this.router.navigate(['signIn']);
+          this.shareService.signOut();
         }
       },
     });
@@ -152,7 +144,7 @@ export class ProductListComponent implements OnInit {
     }
 
     localStorage.setItem('shopping', JSON.stringify(this.selectItem));
-    this.navbarService.setSelectItem(this.selectItem);
+    this.store.dispatch(setSelectItem({ session: this.selectItem }));
   }
 
   private calculateRedirectProductPage(

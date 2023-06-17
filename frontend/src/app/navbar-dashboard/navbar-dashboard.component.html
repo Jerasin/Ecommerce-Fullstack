@@ -1,8 +1,26 @@
-<div>
+<div class="container">
   <ul>
-    <li>test1</li>
-    <li>test2</li>
-    <li>test3</li>
-    <li>test4</li>
+    <div class="container-navbar-icon">
+      <mat-icon class="btn-navbar-icon">dashboard</mat-icon>
+    </div>
+    <div class="container-navbar-icon">
+      <mat-icon class="btn-navbar-icon">group</mat-icon>
+    </div>
+    <div class="container-navbar-icon">
+      <mat-icon class="btn-navbar-icon">category</mat-icon>
+    </div>
+    <div class="container-navbar-icon">
+      <mat-icon class="btn-navbar-icon">storefront</mat-icon>
+    </div>
+    <div class="container-navbar-icon" (click)="signOut()">
+      <mat-icon class="btn-navbar-icon">logout</mat-icon>
+    </div>
   </ul>
+
+  <!-- <ul>
+    <li><div>test1</div></li>
+    <li><div>test2</div></li>
+    <li><div>test3</div></li>
+    <li><div>test4</div></li>
+  </ul> -->
 </div>

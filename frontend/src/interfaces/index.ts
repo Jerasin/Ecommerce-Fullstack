@@ -6,3 +6,4 @@ export * from './transaction.interface';
 export * from './user.interface';
 export * from './warehouse.interface';
 export * from './product.interface';
+export * from './dashboard.interface';

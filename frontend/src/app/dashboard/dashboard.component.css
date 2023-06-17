@@ -134,3 +134,8 @@ td {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.card-count {
+  padding: 10px;
+  font-size: 35px;
+}

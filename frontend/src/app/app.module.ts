@@ -30,19 +30,33 @@ import {
   MetaReducer,
   StoreModule,
 } from '@ngrx/store';
-import { showNavbarDashBoardReducer, showNavbarReducer } from './store';
-import { localStorageSync } from 'ngrx-store-localstorage';
-
-const reducers: ActionReducerMap<any> = {
+import {
   showNavbarDashBoardReducer,
   showNavbarReducer,
+  isLoginReducer,
+  sessionUserReducer,
+  selectItemReducer,
+} from './store';
+import { localStorageSync } from 'ngrx-store-localstorage';
+
+export const reducers: ActionReducerMap<any> = {
+  showNavbarDashBoardReducer,
+  showNavbarReducer,
+  isLoginReducer,
+  sessionUserReducer,
+  selectItemReducer,
 };
 
 export function localStorageSyncReducer(
   reducer: ActionReducer<any>
 ): ActionReducer<any> {
   return localStorageSync({
-    keys: ['count', 'showNavbarDashBoardReducer', 'showNavbarReducer'],
+    keys: [
+      // 'count',
+      // 'showNavbarDashBoardReducer',
+      // 'showNavbarReducer',
+      // 'sessionUserReducer',
+    ],
   })(reducer);
 }
 

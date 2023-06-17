@@ -3,7 +3,7 @@ import { Product } from "../entities";
 import { Repository } from "typeorm";
 import { requireJWTAuth } from "../middleware/auth.middleware";
 import { ProductProps } from "../entities";
-import { pagination, repo } from "./base";
+import { countAll, pagination, repo } from "./base";
 
 const router = Router();
 
@@ -34,6 +34,15 @@ router.get(
     const sizeNumber = parseInt(size as string);
     const products = await pagination(Product, pageNumber, sizeNumber);
     res.json(products);
+  }
+);
+
+router.get(
+  "/count",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const total = await countAll(Product);
+    res.json(total);
   }
 );
 

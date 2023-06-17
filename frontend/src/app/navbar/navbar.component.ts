@@ -1,9 +1,11 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NavbarService } from './navbar.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { decodeToken } from '../../util';
 import { SessionUser } from '../../interfaces';
+import { ShareService } from '../share';
+import { Store } from '@ngrx/store';
+import { setSelectItem, setSessionUser } from '../store';
 
 @Component({
   selector: 'app-navbar',
@@ -11,32 +13,29 @@ import { SessionUser } from '../../interfaces';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  isShowSignIn = false;
-  isShowNavbar = true;
-  itemSelectCount = 0;
-  getIsShowSignInSub: Subscription;
+  itemSelectCount: number;
+  // getIsShowSignInSub: Subscription;
+  isShowSignIn$: Observable<boolean>;
   getSelectItemSub: Subscription;
-  getSessionUser: Subscription;
+  getSessionUser$: Observable<Record<string, any>>;
   userId: number;
   role: string;
 
   constructor(
     @Inject('NavbarService') private navbarService: NavbarService,
-    private router: Router
+    private store: Store<{
+      isLoginReducer: boolean;
+      sessionUserReducer: Record<string, any>;
+      selectItemReducer: Record<string, any>[];
+    }>,
+    @Inject('ShareService') private shareService: ShareService
   ) {}
 
-  signOut() {
-    // localStorage.removeItem('token');
-    // localStorage.removeItem('shopping');
-    localStorage.clear();
-    this.navbarService.setIsShowSignIn(false);
-    this.navbarService.setSelectItem([]);
-    this.navbarService.setSessionUser(null);
-    this.router.navigate(['signIn']);
+  signOut(): void {
+    this.shareService.signOut();
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit NavbarComponent');
     let tokenSessionUser: SessionUser = null;
     const getSelectItem = localStorage.getItem('shopping');
     const getToken = localStorage.getItem('token');
@@ -47,30 +46,35 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     if (tokenSessionUser != null) {
       this.userId = tokenSessionUser.id;
-      this.navbarService.setSessionUser(tokenSessionUser);
+      // this.navbarService.setSessionUser(tokenSessionUser);
+      this.store.dispatch(setSessionUser({ session: tokenSessionUser }));
     }
+
+    console.log('shopping', getSelectItem);
 
     if (getSelectItem != null) {
-      this.navbarService.setSelectItem(JSON.parse(getSelectItem));
-      this.itemSelectCount = JSON.parse(getSelectItem).length;
+      // this.navbarService.setSelectItem(JSON.parse(getSelectItem));
+      this.store.dispatch(
+        setSelectItem({ session: JSON.parse(getSelectItem) })
+      );
     }
 
-    this.getIsShowSignInSub = this.navbarService
-      .getIsShowSignIn()
-      .subscribe((e) => (this.isShowSignIn = e));
+    this.isShowSignIn$ = this.store.select('isLoginReducer');
 
-    this.getSelectItemSub = this.navbarService
-      .getSelectItem()
-      .subscribe((e) => (this.itemSelectCount = e.length));
+    this.store.select('selectItemReducer').subscribe({
+      next: (value) => {
+        this.itemSelectCount = value.length;
+      },
+    });
 
-    this.getSessionUser = this.navbarService.getSessionUser().subscribe((e) => {
+    this.store.select('sessionUserReducer').subscribe((e) => {
       this.role = e?.role;
     });
   }
 
   ngOnDestroy(): void {
-    this.getIsShowSignInSub.unsubscribe();
-    this.getSelectItemSub.unsubscribe();
-    this.getSessionUser.unsubscribe();
+    // this.getIsShowSignInSub.unsubscribe();
+    // this.getSelectItemSub.unsubscribe();
+    // this.getSessionUser.unsubscribe();
   }
 }

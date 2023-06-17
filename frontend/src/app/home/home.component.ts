@@ -10,8 +10,6 @@ import { HomeService } from './home.service';
 import { Product } from '../../interfaces';
 import { environment } from '../../environments/environment';
 import { Pagination } from '../../interfaces/base.interface';
-import { Store } from '@ngrx/store';
-import { showNavbarDashBoardDisable, showNavbarEnable } from '../store';
 
 @Component({
   selector: 'app-home',
@@ -26,12 +24,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
 
   constructor(
     @Inject('HomeService') private homeService: HomeService,
-    private elementRef: ElementRef,
-    private store: Store
-  ) {
-    this.store.dispatch(showNavbarDashBoardDisable());
-    this.store.dispatch(showNavbarEnable());
-  }
+    private elementRef: ElementRef
+  ) {}
 
   ngAfterViewInit() {
     console.log(

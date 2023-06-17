@@ -2,7 +2,7 @@ import { Request, Response, Router } from "express";
 import { Category, CategoryProps } from "../entities";
 import { Repository } from "typeorm";
 import { requireJWTAuth } from "../middleware/auth.middleware";
-import { repo } from "./base";
+import { countAll, repo } from "./base";
 
 const router = Router();
 
@@ -33,6 +33,15 @@ router.get(
     const products = await categoryRepo().find();
 
     res.json(products);
+  }
+);
+
+router.get(
+  "/count",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const total = await countAll(Category);
+    res.json(total);
   }
 );
 

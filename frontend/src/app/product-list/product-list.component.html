@@ -65,7 +65,10 @@
 
   <div class="container-pagination">
     <ul *ngFor="let item of createRange(totalPage)" class="pagination">
-      <li class="test" [ngClass]="{ test1: item === selectPage }">
+      <li
+        class="pagination-btn"
+        [ngClass]="{ 'disable-pagination-btn': item === selectPage }"
+      >
         <button
           [disabled]="selectPage == item"
           [ngClass]="{ 'dis-btn-page': item === selectPage }"

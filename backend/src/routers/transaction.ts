@@ -3,7 +3,7 @@ import { Transaction } from "../entities";
 import { Repository } from "typeorm";
 import { requireJWTAuth } from "../middleware/auth.middleware";
 import { TransactionProps, SaleOrder } from "../entities";
-import { repo } from "./base";
+import { countAll, pagination, repo } from "./base";
 
 const router = Router();
 
@@ -38,6 +38,15 @@ async function updateTransaction(
   return result;
 }
 
+router.get(
+  "/count",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const total = await countAll(Transaction);
+    res.json(total);
+  }
+);
+
 export const findOneTransaction = (
   id: TransactionProps
 ): Promise<Transaction | null> => {
@@ -51,7 +60,10 @@ router.get(
   "/",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const transactions = await transactionRepo().find();
+    const { page, size } = req.query ?? {};
+    const pageNumber = parseInt(page as string);
+    const sizeNumber = parseInt(size as string);
+    const transactions = await pagination(Transaction, pageNumber, sizeNumber);
     res.json(transactions);
   }
 );

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { filter } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { ShareService } from './share';
 
 @Component({
   selector: 'app-root',
@@ -8,16 +10,25 @@ import { Router, NavigationEnd } from '@angular/router';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router) {}
-  route: string;
+  constructor(
+    private router: Router,
+    @Inject('ShareService') private shareService: ShareService
+  ) {}
   title = 'Front End';
+  routeDashboard = ['/dashboard'];
 
   ngOnInit(): void {
-    // this.router.events
-    //   .pipe(filter((event) => event instanceof NavigationEnd))
-    //   .subscribe((event: NavigationEnd) => {
-    //     console.log('prev:', event.url);
-    //     this.route = event.url;
-    //   });
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        console.log('init byPassLogout and navBar');
+
+        this.shareService.byPassLogout();
+        if (this.routeDashboard.includes(event.url)) {
+          this.shareService.showNavbarDashBoard();
+        } else {
+          this.shareService.showNavbar();
+        }
+      });
   }
 }

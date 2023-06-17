@@ -2,7 +2,16 @@ import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavbarService } from '../navbar';
 import { Store } from '@ngrx/store';
-import { showNavbarDashBoardDisable, showNavbarEnable } from '../store';
+import {
+  isLogout,
+  resetSelectItem,
+  resetSessionUser,
+  showNavbarDashBoardDisable,
+  showNavbarDashBoardEnable,
+  showNavbarDisable,
+  showNavbarEnable,
+} from '../store';
+import { decodeToken } from 'src/util';
 
 export interface TokenRedirectExpireOptions {
   keyLocalStorage?: string[];
@@ -13,8 +22,7 @@ export interface TokenRedirectExpireOptions {
 export class ShareService {
   constructor(
     private router: Router,
-    private store: Store,
-    @Inject('NavbarService') private navbarService: NavbarService
+    private store: Store<{ isLoginReducer: boolean }>
   ) {}
 
   public tokenRedirectExpire(
@@ -34,11 +42,36 @@ export class ShareService {
 
   public signOut(): void {
     localStorage.clear();
-    this.navbarService.setIsShowSignIn(false);
-    this.navbarService.setSelectItem([]);
-    this.navbarService.setSessionUser(null);
+    this.store.dispatch(isLogout());
+    this.store.dispatch(resetSessionUser());
+    this.store.dispatch(resetSelectItem());
+    // this.navbarService.setSelectItem([]);
     this.store.dispatch(showNavbarDashBoardDisable());
     this.store.dispatch(showNavbarEnable());
     this.router.navigate(['signIn']);
+  }
+
+  public showNavbarDashBoard(): void {
+    this.store.dispatch(showNavbarDashBoardEnable());
+    this.store.dispatch(showNavbarDisable());
+  }
+
+  public showNavbar(): void {
+    this.store.dispatch(showNavbarDashBoardDisable());
+    this.store.dispatch(showNavbarEnable());
+  }
+
+  public byPassLogout(): void {
+    try {
+      console.log('byPassLogout');
+      const token = localStorage.getItem('token');
+      const decode = decodeToken(token);
+
+      if (decode == null) {
+        this.store.dispatch(isLogout());
+      }
+    } catch (error) {
+      this.store.dispatch(isLogout());
+    }
   }
 }
