@@ -13,6 +13,7 @@ export interface CategoryProps extends BaseInterface {
   description?: string;
   img?: string;
   weightPriority?: number;
+  status?: boolean;
 }
 
 @Entity()
@@ -28,6 +29,9 @@ export class Category extends Base implements CategoryProps {
 
   @Column({ nullable: true })
   img?: string;
+
+  @Column({ default: true })
+  status?: boolean;
 
   @Column({ unique: true })
   weightPriority?: number;

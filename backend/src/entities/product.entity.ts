@@ -9,6 +9,7 @@ export interface ProductProps extends BaseInterface {
   img?: string;
   weightPriority?: number;
   category: Category | number;
+  status?: boolean;
 }
 
 @Entity()
@@ -27,6 +28,9 @@ export class Product extends Base implements ProductProps {
 
   @Column({ nullable: true })
   img?: string;
+
+  @Column({ default: true })
+  status?: boolean;
 
   @Column({ nullable: true, unique: true })
   weightPriority?: number;

@@ -30,8 +30,6 @@
   box-shadow: none #ccc 5px 5px 5px;
 }
 
-
-
 .header-form {
   /* text-align: center; */
   margin-bottom: 10px;
@@ -53,10 +51,14 @@
   width: 100%;
 }
 
-.form-box-input{
+.form-box-input {
   padding: 5px;
   margin: 5px;
+}
 
+textarea:focus,
+input:focus {
+  outline: none;
 }
 
 .form-input {
@@ -84,7 +86,6 @@
   margin-top: 10px;
   margin: 5px;
   padding: 5px;
-  
 }
 
 .btn-sign-in {
@@ -96,45 +97,45 @@
   cursor: pointer;
 }
 
-.container-contact{
+.container-contact {
   width: 100%;
   height: 100%;
 }
 
-.header-contact{
+.header-contact {
   padding: 10px;
   /* border: 1px solid red; */
   text-align: center;
 }
 
-.body-contact{
+.body-contact {
   margin-top: 20px;
   padding: 10px;
   border: 2px solid white;
-  border-radius: 10px 
+  border-radius: 10px;
 }
 
-.box-container{
+.box-container {
   display: flex;
   margin: 5px;
 }
 
-.box-icon{
+.box-icon {
   display: block;
   width: 30%;
   text-align: center;
 }
 
-.box-text{
+.box-text {
   width: 70%;
   text-align: left;
 }
 
-.box-content{
+.box-content {
   width: 100%;
 }
 
-.contact-address{
+.contact-address {
   color: white;
   font-size: 22px;
 }

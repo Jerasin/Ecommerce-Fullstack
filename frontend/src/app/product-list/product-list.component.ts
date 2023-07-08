@@ -8,10 +8,10 @@ import {
 import { Product } from '../../interfaces';
 import { ProductListService } from './product-list.service';
 import jwt_decode from 'jwt-decode';
-import { ParamMap, Params, Router } from '@angular/router';
+import { ParamMap, Params } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { forkJoin } from 'rxjs';
-import { NavbarService, SelectItem } from '../navbar/navbar.service';
+import { SelectItem } from '../navbar/navbar.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { BaseTypeOption, Pagination } from '../../interfaces/base.interface';
@@ -39,8 +39,6 @@ export class ProductListComponent implements OnInit {
   constructor(
     @Inject('ProductListService')
     private productListService: ProductListService,
-    @Inject('NavbarService') private navbarService: NavbarService,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
     @Inject('ShareService') private shareService: ShareService,
     private store: Store<{ selectItemReducer: SelectItem[] }>
@@ -77,6 +75,7 @@ export class ProductListComponent implements OnInit {
   }
 
   private fetchProduct(routeParams?: ParamMap, pagination?: Params) {
+    console.log('fetchProduct');
     if (pagination?.page != null) {
       this.selectPage = Number(pagination?.page);
     }
@@ -162,11 +161,6 @@ export class ProductListComponent implements OnInit {
   }
 
   public selectPageAndSize(page: number, size: number) {
-    this.router.navigate([`products`], {
-      queryParams: {
-        page,
-        size,
-      },
-    });
+    this.shareService.selectPageAndSize('products', page, size);
   }
 }

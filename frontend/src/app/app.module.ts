@@ -38,6 +38,10 @@ import {
   selectItemReducer,
 } from './store';
 import { localStorageSync } from 'ngrx-store-localstorage';
+import { DashboardUserModule } from './dashboard-user';
+import { TableListModule } from './components';
+import { DashboardCategoryModule } from './dashboard-category';
+import { DashboardProductModule } from './dashboard-product';
 
 export const reducers: ActionReducerMap<any> = {
   showNavbarDashBoardReducer,
@@ -96,6 +100,10 @@ const HttpServiceProvider: Provider = {
     ShareModule,
     NavbarDashboardModule,
     StoreModule.forRoot(reducers, { metaReducers }),
+    DashboardUserModule,
+    TableListModule,
+    DashboardCategoryModule,
+    DashboardProductModule,
   ],
   providers: [AuthInterceptorProvider, HttpServiceProvider, GuardService],
   bootstrap: [AppComponent],

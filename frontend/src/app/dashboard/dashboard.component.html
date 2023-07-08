@@ -103,7 +103,7 @@
               <button
                 type="button"
                 class="btn-detail"
-                [routerLink]="['/orderDetail', item.orderId]"
+                [routerLink]="['/orderDetail', 'dashboard', item.orderId]"
               >
                 <b>Detail</b>
               </button>
@@ -114,18 +114,18 @@
     </div>
   </div>
 
-  <!-- <div class="container-pagination">
+  <div class="container-pagination">
     <ul *ngFor="let item of totalPage" class="pagination">
-      <li class="test" [ngClass]="{ test1: item === selectPage }">
+      <li class="test" [ngClass]="{ test1: item === page }">
         <button
-          [disabled]="selectPage == item"
-          [ngClass]="{ 'dis-btn-page': item === selectPage }"
+          [disabled]="page == item"
+          [ngClass]="{ 'dis-btn-page': item === page }"
           class="btn-page"
-          (click)="selectPageAndSize(item, 5)"
+          (click)="selectPageAndSize(item, size)"
         >
           {{ item }}
         </button>
       </li>
     </ul>
-  </div> -->
+  </div>
 </div>

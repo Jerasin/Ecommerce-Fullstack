@@ -24,8 +24,8 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
     matchPassword = await bcrypt.compare(password, user?.password);
   }
 
-  if (!matchPassword) {
-    res.status(404).json({ status: "Authentication Failed", code: 400 });
+  if (!matchPassword || user?.status == false) {
+    res.status(400).json({ status: "Authentication Failed", code: 400 });
     return;
   }
 

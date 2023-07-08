@@ -38,15 +38,6 @@
   cursor: pointer;
 }
 
-.btn-back {
-  padding: 6px;
-  width: 60px;
-  border: none;
-  border-radius: 5px;
-  background-color: rgba(255, 0, 0, 0.495);
-  cursor: pointer;
-}
-
 table {
   width: 100%;
 }

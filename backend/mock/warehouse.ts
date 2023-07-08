@@ -3,7 +3,7 @@ import { WareHouseProps } from "../src/entities";
 export const wareHouseList = [
   {
     productId: 1,
-    amount: 150,
+    amount: 0,
     createBy: "admin",
   },
   {

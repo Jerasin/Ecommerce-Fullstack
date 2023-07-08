@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { User, UserProps } from "../entities";
-import { Repository } from "typeorm";
+import { FindManyOptions, Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { requireJWTAuth } from "../middleware/auth.middleware";
 import { admin, test } from "../../mock/user";
@@ -11,8 +11,15 @@ const router = Router();
 const userRepo = (): Repository<User> => repo(User);
 
 const createUser = async (props: UserProps): Promise<User> => {
-  const { firstName, lastName, email, status, password, role }: UserProps =
-    props;
+  const {
+    firstName,
+    lastName,
+    email,
+    status,
+    password,
+    role,
+    createBy,
+  }: UserProps = props;
 
   const salt = await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(password, salt);
@@ -26,6 +33,7 @@ const createUser = async (props: UserProps): Promise<User> => {
     password: hashPassword,
     salt,
     role,
+    createBy,
   };
 
   const userProps = userRepo().create(user);
@@ -66,7 +74,24 @@ router.get(
   "/count",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const total = await countAll(User);
+    const { status, role } = req.query ?? {};
+
+    let query: FindManyOptions<User> = {};
+    if (status != null) {
+      query = {
+        where: {
+          status: status as any,
+        },
+      };
+    } else if (role != null) {
+      query = {
+        where: {
+          role: role as any,
+        },
+      };
+    }
+
+    const total = await countAll(User, query);
     console.log("total", total);
     res.json(total);
   }

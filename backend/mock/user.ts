@@ -6,6 +6,7 @@ export const admin: UserProps = {
   email: "admin@gmail.com",
   password: "123456",
   role: Role.Admin,
+  createBy: "admin",
 };
 
 export const test: UserProps = {
@@ -14,4 +15,5 @@ export const test: UserProps = {
   email: "test@gmail.com",
   password: "123456",
   role: Role.User,
+  createBy: "admin",
 };

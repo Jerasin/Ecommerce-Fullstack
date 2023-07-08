@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { Product } from "../entities";
-import { Repository } from "typeorm";
+import { FindManyOptions, Repository } from "typeorm";
 import { requireJWTAuth } from "../middleware/auth.middleware";
 import { ProductProps } from "../entities";
 import { countAll, pagination, repo } from "./base";
@@ -32,7 +32,9 @@ router.get(
     const { page, size } = req.query ?? {};
     const pageNumber = parseInt(page as string);
     const sizeNumber = parseInt(size as string);
-    const products = await pagination(Product, pageNumber, sizeNumber);
+    const products = await pagination(Product, pageNumber, sizeNumber, {
+      status: true,
+    });
     res.json(products);
   }
 );
@@ -41,7 +43,18 @@ router.get(
   "/count",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const total = await countAll(Product);
+    const { status } = req.query ?? {};
+
+    let query: FindManyOptions<Product> = {};
+    if (status != null) {
+      query = {
+        where: {
+          status: status as any,
+        },
+      };
+    }
+
+    const total = await countAll(Product, query);
     res.json(total);
   }
 );
@@ -49,7 +62,9 @@ router.get(
 router.get(
   "/productSuggest",
   async (req: Request, res: Response): Promise<void> => {
-    const products = await pagination(Product);
+    const products = await pagination(Product, 1, 5, {
+      status: true,
+    });
     res.json(products);
   }
 );

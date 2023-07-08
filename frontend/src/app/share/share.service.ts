@@ -12,6 +12,8 @@ import {
   showNavbarEnable,
 } from '../store';
 import { decodeToken } from 'src/util';
+import { Location } from '@angular/common';
+import { DateTime } from 'luxon';
 
 export interface TokenRedirectExpireOptions {
   keyLocalStorage?: string[];
@@ -22,7 +24,8 @@ export interface TokenRedirectExpireOptions {
 export class ShareService {
   constructor(
     private router: Router,
-    private store: Store<{ isLoginReducer: boolean }>
+    private store: Store<{ isLoginReducer: boolean }>,
+    private location: Location
   ) {}
 
   public tokenRedirectExpire(
@@ -38,6 +41,10 @@ export class ShareService {
     }
 
     return this.router.navigate([targetPath]);
+  }
+
+  backClicked() {
+    this.location.back();
   }
 
   public signOut(): void {
@@ -73,5 +80,27 @@ export class ShareService {
     } catch (error) {
       this.store.dispatch(isLogout());
     }
+  }
+
+  public selectPageAndSize(path: string, page: number, size: number) {
+    this.router.navigate([path], {
+      queryParams: {
+        page,
+        size,
+      },
+    });
+  }
+
+  public createRange(range: number): number[] {
+    const array = new Array(range).fill(0).map((n, index) => index + 1);
+    return array;
+  }
+
+  public convertTimeZoneUtcToBkk(dateTime: string): string {
+    return DateTime.fromISO(dateTime).setZone('Asia/Bangkok').toISO({
+      suppressSeconds: true,
+      suppressMilliseconds: true,
+      includeOffset: false,
+    });
   }
 }

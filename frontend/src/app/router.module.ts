@@ -13,7 +13,9 @@ import { UserComponent } from './user/user.component';
 import { HistoryComponent } from './history/history.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { DashboardUserComponent } from './dashboard-user';
+import { DashboardCategoryComponent } from './dashboard-category';
+import { DashboardProductComponent } from './dashboard-product';
 
 const routes: Routes = [
   {
@@ -24,9 +26,6 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    data: {
-      test: 1,
-    },
     canActivate: [adminRoute],
   },
   {
@@ -70,6 +69,22 @@ const routes: Routes = [
     canActivate: [privateRoute],
   },
   {
+    path: 'dashboard/users',
+    component: DashboardUserComponent,
+    canActivate: [adminRoute],
+  },
+  {
+    path: 'dashboard/categories',
+    component: DashboardCategoryComponent,
+    canActivate: [adminRoute],
+  },
+  {
+    path: 'dashboard/products',
+    component: DashboardProductComponent,
+    canActivate: [adminRoute],
+  },
+
+  {
     path: 'history/:userId',
     component: HistoryComponent,
     canActivate: [privateRoute],
@@ -78,6 +93,11 @@ const routes: Routes = [
     path: 'orderDetail/:orderId',
     component: OrderDetailComponent,
     canActivate: [privateRoute],
+  },
+  {
+    path: 'orderDetail/dashboard/:orderId',
+    component: OrderDetailComponent,
+    canActivate: [adminRoute],
   },
   { path: '', component: HomeComponent },
 ];

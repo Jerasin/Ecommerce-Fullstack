@@ -16,5 +16,20 @@
         />
       </div>
     </div>
+
+    <div class="container-pagination">
+      <ul *ngFor="let item of totalPage" class="pagination">
+        <li class="test" [ngClass]="{ test1: item === page }">
+          <button
+            [disabled]="page == item"
+            [ngClass]="{ 'dis-btn-page': item === page }"
+            class="btn-page"
+            (click)="selectPageAndSize(item, size)"
+          >
+            {{ item }}
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

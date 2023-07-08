@@ -5,4 +5,9 @@ export interface Product {
   description?: string;
   img?: string;
   available?: number;
+  status?: boolean;
+  createBy: string;
+  updateBy: string;
+  updatedAt?: string;
+  createdAt?: string;
 }

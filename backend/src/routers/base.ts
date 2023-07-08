@@ -1,5 +1,10 @@
 import { myDataSource } from "../app-data-source";
-import { Repository, EntityTarget, ObjectLiteral } from "typeorm";
+import {
+  Repository,
+  EntityTarget,
+  ObjectLiteral,
+  FindManyOptions,
+} from "typeorm";
 
 interface Pagination<T> {
   page: number;
@@ -12,6 +17,7 @@ interface Pagination<T> {
 interface PaginationOption extends Options {
   categoryId?: number;
   productId?: number;
+  status?: boolean;
 }
 
 interface Options {
@@ -63,6 +69,10 @@ export const pagination = async <T extends ObjectLiteral>(
     condition["where"]["id"] = options?.productId;
   }
 
+  if (options?.status != null) {
+    condition["where"]["status"] = options?.status;
+  }
+
   const data = await repo<T>(model).find({
     ...condition,
     skip: page,
@@ -87,7 +97,8 @@ export const pagination = async <T extends ObjectLiteral>(
 };
 
 export const countAll = async <T extends ObjectLiteral>(
-  model: EntityTarget<any>
+  model: EntityTarget<any>,
+  whereCondition?: FindManyOptions<T>
 ): Promise<number> => {
-  return repo<T>(model).count();
+  return repo<T>(model).count(whereCondition);
 };

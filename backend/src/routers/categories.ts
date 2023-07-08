@@ -1,8 +1,8 @@
 import { Request, Response, Router } from "express";
 import { Category, CategoryProps } from "../entities";
-import { Repository } from "typeorm";
+import { FindManyOptions, Repository } from "typeorm";
 import { requireJWTAuth } from "../middleware/auth.middleware";
-import { countAll, repo } from "./base";
+import { countAll, pagination, repo } from "./base";
 
 const router = Router();
 
@@ -30,8 +30,13 @@ router.get(
   "/",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const products = await categoryRepo().find();
+    const { page, size } = req.query ?? {};
+    const pageNumber = parseInt(page as string);
+    const sizeNumber = parseInt(size as string);
 
+    const products = await pagination(Category, pageNumber, sizeNumber, {
+      status: true,
+    });
     res.json(products);
   }
 );
@@ -40,7 +45,18 @@ router.get(
   "/count",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const total = await countAll(Category);
+    const { status } = req.query ?? {};
+
+    let query: FindManyOptions<Category> = {};
+    if (status != null) {
+      query = {
+        where: {
+          status: status as any,
+        },
+      };
+    }
+
+    const total = await countAll(Category, query);
     res.json(total);
   }
 );

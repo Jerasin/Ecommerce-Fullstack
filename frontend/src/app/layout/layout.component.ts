@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css'],
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
   showNavbarReducer$: Observable<boolean>;
   showNavbarDashBoardReducer$: Observable<boolean>;
 
@@ -21,5 +21,9 @@ export class LayoutComponent {
       'showNavbarDashBoardReducer'
     );
     this.showNavbarReducer$ = this.store.select('showNavbarReducer');
+  }
+
+  ngOnInit() {
+    console.log('ngOnInit LayoutComponent');
   }
 }

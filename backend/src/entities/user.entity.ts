@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Base } from "./base.entity";
 
 export enum Role {
   Admin = "admin",
@@ -16,10 +17,11 @@ export interface UserProps {
   salt?: string;
   role?: Role;
   address?: string;
+  createBy: string;
 }
 
 @Entity()
-export class User implements UserProps {
+export class User extends Base implements UserProps {
   @PrimaryGeneratedColumn()
   id: number;
 

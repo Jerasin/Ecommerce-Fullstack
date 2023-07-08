@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { myDataSource } from "../app-data-source";
-import { Repository } from "typeorm";
+import { FindManyOptions, FindOneOptions, Repository } from "typeorm";
 import { requireJWTAuth } from "../middleware/auth.middleware";
 import { WareHouse, WareHouseProps } from "../entities/warehouse.entity";
 
@@ -13,7 +13,7 @@ export const createWareHouse = async (
   props: WareHouseProps
 ): Promise<WareHouse | null> => {
   const productId = parseInt(props.productId as any);
-  const getWareHouse = await findOneWareHouse(productId);
+  const getWareHouse = await findOneWareHouseById(productId);
 
   if (getWareHouse != null) return null;
 
@@ -24,7 +24,7 @@ export const createWareHouse = async (
   return result;
 };
 
-const findOneWareHouse = async (
+const findOneWareHouseById = async (
   productId: number
 ): Promise<WareHouse | null> => {
   return wareHouseRepo()
@@ -38,6 +38,25 @@ router.get(
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
     const wareHouses = await wareHouseRepo().find();
+    res.json(wareHouses);
+  }
+);
+
+router.get(
+  "/count",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const { amount } = req.query ?? {};
+    let query: FindManyOptions<WareHouse> = {};
+    if (amount != null) {
+      query = {
+        where: {
+          amount: parseInt(amount as any),
+        },
+      };
+    }
+
+    const wareHouses = await wareHouseRepo().count(query);
     res.json(wareHouses);
   }
 );

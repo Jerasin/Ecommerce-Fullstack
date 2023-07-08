@@ -10,7 +10,7 @@ export class HistoryService {
 
   public getTransactionsByCreated(userId: number): Observable<Transaction[]> {
     return this.httpService.fetch<any, Transaction[]>(
-      `${environment.apiUrl}/transaction/history/${userId}`
+      `${environment.apiUrl}/transactions/history/${userId}`
     );
   }
 }

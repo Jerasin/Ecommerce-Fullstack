@@ -15,16 +15,23 @@ export class AppComponent implements OnInit {
     @Inject('ShareService') private shareService: ShareService
   ) {}
   title = 'Front End';
-  routeDashboard = ['/dashboard'];
+  masterPath = 'dashboard';
 
   ngOnInit(): void {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        console.log('init byPassLogout and navBar');
+        console.log('init byPassLogout and navBar', event.url);
 
+        const includePath = event.url.split('/');
+        const includeQueryStringPath = event.url.split('?');
+        console.log('includePath', includePath);
+        console.log('includeQueryStringPath', includeQueryStringPath);
         this.shareService.byPassLogout();
-        if (this.routeDashboard.includes(event.url)) {
+        if (
+          includePath.includes(this.masterPath) ||
+          includeQueryStringPath.includes(this.masterPath)
+        ) {
           this.shareService.showNavbarDashBoard();
         } else {
           this.shareService.showNavbar();

@@ -19,6 +19,10 @@ export class OrderDetailComponent implements OnInit {
     @Inject('ShareService') private shareService: ShareService
   ) {}
 
+  backClicked() {
+    this.shareService.backClicked();
+  }
+
   ngOnInit(): void {
     this.getSaleOrderById().subscribe({
       next: (value) => {

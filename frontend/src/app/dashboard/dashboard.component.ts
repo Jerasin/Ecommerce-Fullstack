@@ -10,6 +10,7 @@ import {
 import { DateTime } from 'luxon';
 import { decodeToken } from '../../util';
 import { ShareService } from '../share';
+import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,10 +23,13 @@ export class DashboardComponent implements OnInit {
   showNavbarDashBoardReducer$: Observable<boolean>;
   count: DashboardCount;
   totalPage: number[];
+  page = 1;
+  size = 5;
 
   constructor(
     @Inject('DashboardService') private dashboardService: DashboardService,
-    @Inject('ShareService') private shareService: ShareService
+    @Inject('ShareService') private shareService: ShareService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -34,8 +38,29 @@ export class DashboardComponent implements OnInit {
     tokenSessionUser = decodeToken(getToken);
     this.email = tokenSessionUser.email;
 
+    this.activatedRoute.queryParams.subscribe({
+      next: (value: Params) => {
+        this.fetchData(value);
+      },
+      error: (err) => {
+        if (err.status == 401) {
+          this.shareService.signOut();
+        }
+      },
+    });
+  }
+
+  private fetchData(pagination?: Params) {
+    if (pagination?.page != null && pagination?.size != null) {
+      this.page = Number(pagination?.page);
+      this.size = Number(pagination?.size);
+    }
+
     forkJoin({
-      getTransactions: this.dashboardService.getTransactions(),
+      getTransactions: this.dashboardService.getTransactions(
+        this.page,
+        this.size
+      ),
       getUserCount: this.dashboardService.getUserCount(),
       getProductCount: this.dashboardService.getProductCount(),
       getCategoryCount: this.dashboardService.getCategoryCount(),
@@ -48,7 +73,7 @@ export class DashboardComponent implements OnInit {
         getCategoryCount,
         getTransactionCount,
       }) => {
-        this.createRange(getTransactionCount);
+        this.createRange(getTransactions.totalPage);
         this.count = {
           user: getUserCount,
           product: getProductCount,
@@ -59,13 +84,13 @@ export class DashboardComponent implements OnInit {
           if (i.updatedAt == null) {
             return {
               ...i,
-              createdAt: this.convertTimeZoneUtcToBkk(i.createdAt),
+              createdAt: this.shareService.convertTimeZoneUtcToBkk(i.createdAt),
             };
           }
           return {
             ...i,
-            createdAt: this.convertTimeZoneUtcToBkk(i.createdAt),
-            updatedAt: this.convertTimeZoneUtcToBkk(i.updatedAt),
+            createdAt: this.shareService.convertTimeZoneUtcToBkk(i.createdAt),
+            updatedAt: this.shareService.convertTimeZoneUtcToBkk(i.updatedAt),
           };
         });
         console.log('convertTimeZone', convertTimeZone);
@@ -79,14 +104,6 @@ export class DashboardComponent implements OnInit {
     this.totalPage = transactions;
   }
 
-  private convertTimeZoneUtcToBkk(dateTime: string): string {
-    return DateTime.fromISO(dateTime).setZone('Asia/Bangkok').toISO({
-      suppressSeconds: true,
-      suppressMilliseconds: true,
-      includeOffset: false,
-    });
-  }
-
   public approveTransaction(transaction: Transaction) {
     transaction.status = Status.APPROVE;
     transaction.updatedAt = DateTime.utc().toISO();
@@ -97,5 +114,9 @@ export class DashboardComponent implements OnInit {
     transaction.status = Status.REJECT;
     transaction.updatedAt = DateTime.utc().toISO();
     return this.dashboardService.updateTransaction(transaction).subscribe();
+  }
+
+  public selectPageAndSize(page: number, size: number) {
+    this.shareService.selectPageAndSize('dashboard', page, size);
   }
 }
