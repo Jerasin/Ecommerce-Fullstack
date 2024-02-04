@@ -68,26 +68,28 @@ export class DashboardProductComponent implements OnInit {
       }) => {
         this.countWarning = getWarningAmountWareHouses;
 
+        console.log('getProducts', getProducts);
+
         this.total = getProducts.total;
         const convertTimeZone = getProducts.data.map((i) => {
           const findWareHouse = getWareHouses.find(
             (value: any) => value.productId == i.id
           );
 
-          if (findWareHouse == null) {
-            return {
-              ...i,
-              createdAt: this.shareService.convertTimeZoneUtcToBkk(i.createdAt),
-              available: findWareHouse?.amount ?? 0,
-              status: false,
-            };
-          }
+          // if (findWareHouse == null) {
+          //   return {
+          //     ...i,
+          //     createdAt: this.shareService.convertTimeZoneUtcToBkk(i.createdAt),
+          //     available: findWareHouse?.amount ?? 0,
+          //     status: false,
+          //   };
+          // }
 
           if (i.updatedAt == null) {
             return {
               ...i,
               createdAt: this.shareService.convertTimeZoneUtcToBkk(i.createdAt),
-              available: findWareHouse?.amount,
+              available: findWareHouse?.amount ?? 0,
             };
           }
           return {

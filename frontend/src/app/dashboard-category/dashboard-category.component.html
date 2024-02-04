@@ -46,6 +46,12 @@
       </div>
     </div>
 
+    <div class="container-btn-create">
+      <div class="card-btn-create">
+        <button type="button" class="btn-create">Create</button>
+      </div>
+    </div>
+
     <div class="container-report">
       <table class="container-table">
         <tr class="container-table-header">
@@ -55,7 +61,7 @@
           <th>Status</th>
           <th>UpdateDate</th>
           <th>UpdateTime</th>
-          <th>Edit</th>
+          <th>Action</th>
         </tr>
         <tr *ngFor="let item of data | async">
           <td>{{ item.id }}</td>
@@ -71,8 +77,14 @@
 
           <td>
             <div style="margin: 5px">
-              <button type="button" class="btn-detail">
+              <button type="button" class="btn-edit">
                 <b>Edit</b>
+              </button>
+            </div>
+
+            <div style="margin: 5px">
+              <button type="button" class="btn-delete">
+                <b>Delete</b>
               </button>
             </div>
           </td>

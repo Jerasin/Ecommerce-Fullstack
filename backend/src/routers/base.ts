@@ -4,6 +4,7 @@ import {
   EntityTarget,
   ObjectLiteral,
   FindManyOptions,
+  FindOptionsRelations,
 } from "typeorm";
 
 interface Pagination<T> {
@@ -52,10 +53,12 @@ export const pagination = async <T extends ObjectLiteral>(
 ): Promise<Pagination<T[]>> => {
   const page = (pageNumber - 1) * sizeNumber;
   const size = sizeNumber;
+
   const condition: Record<string, any> = {
     where: {},
   };
-  const relations: Record<string, any> = {
+
+  const relations: FindOptionsRelations<ObjectLiteral> = {
     relations: {},
   };
 

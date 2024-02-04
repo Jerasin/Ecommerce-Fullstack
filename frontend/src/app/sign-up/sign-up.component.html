@@ -1,5 +1,8 @@
 <div class="container">
-  <h1 class="header-login">Company Name</h1>
+  <div class="container-header">
+    <h1 class="header-login">Company Name</h1>
+  </div>
+
   <div class="container-box">
     <div class="flex-left">
       <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
@@ -16,14 +19,37 @@
                   type="email"
                   placeholder="Email"
                   formControlName="email"
+                  required
                 />
               </div>
+
               <div class="form-box-input">
                 <input
                   class="form-input"
                   type="password"
                   placeholder="Password"
                   formControlName="password"
+                  required
+                />
+              </div>
+
+              <div class="form-box-input">
+                <input
+                  class="form-input"
+                  type="text"
+                  placeholder="FirstName"
+                  formControlName="firstName"
+                  required
+                />
+              </div>
+
+              <div class="form-box-input">
+                <input
+                  class="form-input"
+                  type="text"
+                  placeholder="LastName"
+                  formControlName="lastName"
+                  required
                 />
               </div>
             </div>
@@ -33,11 +59,23 @@
                 class="form-description"
                 type="text"
                 placeholder="Description"
+                required
               />
             </div>
 
-            <div class="form-box-input">
+            <!-- <div class="form-box-input">
               <textarea class="form-address" placeholder="Address"></textarea>
+            </div> -->
+
+            <div class="form-box-input" *ngIf="showAlert">
+              <div class="alert">
+                <span
+                  class="closebtn"
+                  onclick="this.parentElement.style.display='none';"
+                  >&times;</span
+                >
+                Sign In Failed
+              </div>
             </div>
           </div>
 

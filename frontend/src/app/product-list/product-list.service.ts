@@ -8,7 +8,7 @@ export class ProductListService {
 
   getProducts(page = 1, size = 5): Observable<Pagination<Product[]>> {
     return this.httpService.fetch(
-      `http://localhost:3000/products?page=${page}&size=${size}`,
+      `http://localhost:3000/products?page=${page}&size=${size}&status=true`,
       Method.GET
     );
   }

@@ -29,12 +29,27 @@ router.get(
   "/",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const { page, size } = req.query ?? {};
+    const { page, size, status } = req.query ?? {};
     const pageNumber = parseInt(page as string);
     const sizeNumber = parseInt(size as string);
-    const products = await pagination(Product, pageNumber, sizeNumber, {
-      status: true,
-    });
+    let products = null;
+
+    if (status == null) {
+      products = await pagination(Product, pageNumber, sizeNumber);
+    } else {
+      const statusTarget: any = status;
+
+      if (statusTarget == "true") {
+        products = await pagination(Product, pageNumber, sizeNumber, {
+          status: true,
+        });
+      } else {
+        products = await pagination(Product, pageNumber, sizeNumber, {
+          status: false,
+        });
+      }
+    }
+
     res.json(products);
   }
 );
@@ -89,7 +104,7 @@ router.get(
       },
     });
 
-    console.log("products", typeof products.data[0].category);
+    console.log("products", products);
 
     res.json(products);
   }
@@ -115,9 +130,33 @@ router.post(
   "/",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const result = await createProduct(req.body);
+    try {
+      // console.log("req.body1", req.body);
 
-    res.json(result);
+      const { weightPriority } = req.body ?? {};
+
+      const product = await productRepo().findOne({
+        where: {
+          weightPriority,
+        },
+      });
+
+      if (product != null) {
+        res.status(400).json({
+          errorCode: 400,
+          message: "weightPriority Duplicated",
+        });
+        return;
+      }
+
+      const result = await createProduct(req.body);
+
+      // console.log("result", result);
+
+      res.json(result);
+    } catch (err) {
+      throw err;
+    }
   }
 );
 

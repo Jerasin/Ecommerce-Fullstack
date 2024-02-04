@@ -42,6 +42,15 @@ router.get(
 );
 
 router.get(
+  "/all",
+  requireJWTAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    const products = await categoryRepo().find();
+    res.json(products);
+  }
+);
+
+router.get(
   "/count",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {

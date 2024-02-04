@@ -43,6 +43,7 @@ export class DashboardComponent implements OnInit {
         this.fetchData(value);
       },
       error: (err) => {
+        console.error('err', err);
         if (err.status == 401) {
           this.shareService.signOut();
         }
@@ -95,6 +96,12 @@ export class DashboardComponent implements OnInit {
         });
         console.log('convertTimeZone', convertTimeZone);
         this.reports.next(convertTimeZone);
+      },
+      error: (err) => {
+        console.error('err', err);
+        if (err.status == 401) {
+          this.shareService.signOut();
+        }
       },
     });
   }

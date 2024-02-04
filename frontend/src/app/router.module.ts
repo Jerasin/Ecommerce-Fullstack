@@ -16,6 +16,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardUserComponent } from './dashboard-user';
 import { DashboardCategoryComponent } from './dashboard-category';
 import { DashboardProductComponent } from './dashboard-product';
+import { DbProductCreateComponent } from './db-product-create/db-product-create.component';
 
 const routes: Routes = [
   {
@@ -83,7 +84,11 @@ const routes: Routes = [
     component: DashboardProductComponent,
     canActivate: [adminRoute],
   },
-
+  {
+    path: 'dashboard/products-create',
+    component: DbProductCreateComponent,
+    canActivate: [adminRoute],
+  },
   {
     path: 'history/:userId',
     component: HistoryComponent,

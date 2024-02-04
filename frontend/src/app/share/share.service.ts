@@ -11,7 +11,7 @@ import {
   showNavbarDisable,
   showNavbarEnable,
 } from '../store';
-import { decodeToken } from 'src/util';
+import { decodeToken } from '../../util';
 import { Location } from '@angular/common';
 import { DateTime } from 'luxon';
 

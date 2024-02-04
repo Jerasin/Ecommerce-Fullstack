@@ -39,9 +39,10 @@ import {
 } from './store';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { DashboardUserModule } from './dashboard-user';
-import { TableListModule } from './components';
+import { ItemFormModule, TableListModule } from './components';
 import { DashboardCategoryModule } from './dashboard-category';
 import { DashboardProductModule } from './dashboard-product';
+import { DbProductCreateModule } from './db-product-create/db-product-create.module';
 
 export const reducers: ActionReducerMap<any> = {
   showNavbarDashBoardReducer,
@@ -80,6 +81,7 @@ const HttpServiceProvider: Provider = {
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    StoreModule.forRoot(reducers, { metaReducers }),
     RoutingModule,
     LayoutModule,
     BrowserModule,
@@ -99,11 +101,12 @@ const HttpServiceProvider: Provider = {
     OrderDetailModule,
     ShareModule,
     NavbarDashboardModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
     DashboardUserModule,
     TableListModule,
     DashboardCategoryModule,
     DashboardProductModule,
+    DbProductCreateModule,
+    ItemFormModule,
   ],
   providers: [AuthInterceptorProvider, HttpServiceProvider, GuardService],
   bootstrap: [AppComponent],

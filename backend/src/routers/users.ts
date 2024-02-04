@@ -10,7 +10,7 @@ const router = Router();
 
 const userRepo = (): Repository<User> => repo(User);
 
-const createUser = async (props: UserProps): Promise<User> => {
+export const createUser = async (props: UserProps): Promise<User> => {
   const {
     firstName,
     lastName,
@@ -101,9 +101,16 @@ router.get(
   "/:id",
   requireJWTAuth,
   async (req: Request, res: Response): Promise<void> => {
-    const id: number = parseInt(req.params.id);
+    const { id } = req.params ?? {};
+
+    if (id == null) {
+      res.status(400).json({ status: "Id Not Found", code: 400 });
+      return;
+    }
+
+    const userId: number = parseInt(id);
     const user = await userRepo().findOne({
-      where: { id },
+      where: { id: userId },
       select: {
         id: true,
         firstName: true,

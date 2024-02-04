@@ -50,7 +50,7 @@
 }
 
 .container-report {
-  margin-top: 35px;
+  margin-top: 15px;
 }
 
 table {
@@ -92,11 +92,21 @@ td {
   width: 10%;
 }
 
-.btn-detail {
+.btn-edit {
   padding: 6px;
   width: 80px;
   height: 40px;
   background-color: rgb(0, 118, 245);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-delete {
+  padding: 6px;
+  width: 80px;
+  height: 40px;
+  background-color: red;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -170,4 +180,24 @@ li {
 
 .dis-btn-page {
   cursor: default;
+}
+
+.container-btn-create {
+  margin: 15px;
+  margin-top: 30px;
+  height: 50px;
+}
+
+.card-btn-create {
+  float: right;
+}
+
+.btn-create {
+  padding: 6px;
+  width: 120px;
+  height: 40px;
+  background-color: greenyellow;
+  border: 2px solid black;
+  border-radius: 5px;
+  cursor: pointer;
 }
